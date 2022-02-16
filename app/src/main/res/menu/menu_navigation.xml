@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/it"
+            android:icon="@drawable/ic_baseline_card_travel_24"
+            android:title="Tuyển dụng" />
+        <item
+            android:id="@+id/study"
+            android:icon="@drawable/ic_baseline_layers_24"
+            android:title="Học lập trình" />
+
+        <item
+            android:id="@+id/contact"
+            android:icon="@drawable/ic_baseline_phone_callback_24"
+            android:title="Liên hệ với chúng tôi" />
+
+        <item
+            android:id="@+id/map"
+            android:icon="@drawable/location_menu"
+            android:title="Địa chỉ trường học" />
+
+        <item
+            android:icon="@drawable/ic_baseline_school_24"
+            android:id="@+id/register"
+            android:title="Đăng Ký Học" />
+
+        <item
+            android:id="@+id/log_out"
+            android:icon="@drawable/ic_baseline_compare_arrows_24"
+            android:title="Đăng xuất" />
+    </group>
+</menu>

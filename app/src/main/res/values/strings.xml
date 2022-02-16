@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">KMA</string>
+    <string name="error_default">Hệ thống đang bận ! Vui lòng thử lại sau !</string>
+    <string name="error_internet">Mất kết nối Internet ! Vui lòng kêt nối để sử dụng !</string>
+    <string name="synchronization_success">Đồng bộ dữ liệu thành công !</string>
+    <string name="sync">Đăng nhập thành công ! Dữ liệu đang được đồng bộ .</string>
+    <string name="sync_success">Đồng bộ dữ liệu thành công !</string>
+    <string name="info_sv">Thông tin cá nhân (SV)</string>
+    <string name="gioi">Giỏi</string>
+    <string name="kha">Khá</string>
+    <string name="trung_binh">Trung bình</string>
+    <string name="chua_co">Chưa có</string>
+    <string name="info_account">Thông tin tài khoản</string>
+    <string name="thong_tin_tai_khoan">Thông tin tài khoản</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="home">Home</string>
+    <string name="menu">Menu</string>
+    <string name="personal">Personal</string>
+    <string name="schedule">Schedule</string>
+    <string name="login_success">Đăng nhập thành công</string>
+    <string name="User_account_or_password_incorrect">Tài khoản hoặc mật khẩu sai !</string>
+    <string name="wrong_password">Sai mật khẩu !</string>
+    <string name="log_out">Đăng xuất thành công</string>
+    <string name="average_transcript">Bảng điểm </string>
+    <string name="detail_score">Bảng điểm chi tiết</string>
+    <string name="score_medium">Bảng điểm TB</string>
+    <string name="login_failed">Đăng nhập thất bại</string>
+    <string name="update_success">Cập nhật dữ liệu thành công</string>
+    <string name="update_failed">Cập nhật dữ liệu thất bại</string>
+    <string name="link_recruitment">https://careerbuilder.vn/viec-lam/cntt-phan-mem-c1e1-vi.html</string>
+    <string name="link_study">https://codelearn.io/learning</string>
+    <string name="link_actvn">http://actvn.edu.vn/Articles/thong-tin-tuyen-dung-cho-sinh-vien-52.html#page-1</string>
+    <string name="log_out_success">Đăng xuất thành công !</string>
+    <string name="recruitment">Tuyển dụng thực tập</string>
+    <string name="ban_can_bat_face_id">Bạn cần bật tính năng nhận diện bằng vân tay</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="query">div.wrap</string>
+    <string name="hr">href</string>
+    <string name="a">a</string>
+    <string name="img">img</string>
+    <string name="title">title</string>
+    <string name="default_img">http://nhanam.com.vn/</string>
+    <string name="c">http://nhanam.com.vn/?fbclid=IwAR1DhNQ3bN54AA-G1D4WpQUamzWPMtluc07PtWVK4jkQG32Ry8_dGQdJlrY</string>
+    <string name="all">Tất cả</string>
+    <string name="vn">Văn học Việt Nam</string>
+    <string name="tn">Thiếu nhi</string>
+    <string name="tt">Truyện tranh</string>
+    <string name="vnd">%s VNĐ</string>
+
+</resources>

@@ -14,8 +14,8 @@ import java.util.List;
 
 @Dao
 public interface ArticleDao {
-    @Query("SELECT * FROM Product WHERE idUserModel =:idUser")
-    List<Product> getAll(int idUser);
+//    @Query("SELECT * FROM Product WHERE idUserModel =:idUser")
+//    List<Product> getAll(int idUser);
 
 //    @Insert
 //    void insert(Article... articles);
@@ -29,23 +29,23 @@ public interface ArticleDao {
     @Query("DELETE FROM Product WHERE idUserModel=:idUser")
     void deleteAll(int idUser);
 
-    @Insert
-    void insertUser(UserModel... userModels);
+//    @Insert
+//    void insertUser(UserModel... userModels);
 
-    @Query("SELECT * FROM UserModel WHERE name like :name")
-    UserModel checkExistsUser(String name);
+//    @Query("SELECT * FROM UserModel WHERE name like :name")
+//    UserModel checkExistsUser(String name);
 
-    @Query("SELECT * FROM UserModel WHERE name = :user and password = :password")
-    UserModel login(String user, String password);
+   /* @Query("SELECT * FROM UserModel WHERE name = :user and password = :password")
+    UserModel login(String user, String password);*/
 
-    @Query("SELECT * FROM UserModel WHERE idUser ==:id")
-    UserModel getUserModelId(int id);
+//    @Query("SELECT * FROM UserModel WHERE idUser ==:id")
+//    UserModel getUserModelId(int id);
 
-    @Query("SELECT * FROM UserModel")
-    List<UserModel> getAllUser();
+//    @Query("SELECT * FROM UserModel")
+//    List<UserModel> getAllUser();
 
-    @Delete
-    void deleteAccount(UserModel... userModels);
+//    @Delete
+//    void deleteAccount(UserModel... userModels);
 
     @Insert
     void insertProduct(Product... product);

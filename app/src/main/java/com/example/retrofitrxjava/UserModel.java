@@ -18,16 +18,41 @@ import lombok.Setter;
 @Entity
 @Keep
 public class UserModel {
-    @PrimaryKey(autoGenerate = true)
-    private int idUser;
-    @ColumnInfo
+    //    @PrimaryKey(autoGenerate = true)
+//    private int idUser;
+//    @ColumnInfo
     private String name;
-    @ColumnInfo
-    private String password;
-    @ColumnInfo
-    private int permission;
+    private String email;
 
-    public boolean isAdmin() {
-        return permission == 0;
+    //    @ColumnInfo
+    private String password;
+    //    @ColumnInfo
+//    private int permission;
+//    @ColumnInfo
+    private String phoneNumber;
+    //    @ColumnInfo
+    private String address;
+
+    private String money;
+
+    public UserModel(String name, String email, String password, String phoneNumber, String address, String money) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.money = money;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber == null ? "New member" : phoneNumber;
+    }
+
+    public String getAddress() {
+        return address == null ? "New member" : address;
+    }
+
+    public String getMoney() {
+        return money == null ? "1000" : money;
     }
 }

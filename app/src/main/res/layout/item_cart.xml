@@ -23,10 +23,9 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_recruitment"
             thumb="@{item.image}"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:adjustViewBounds="true"
-            app:layout_constraintBottom_toTopOf="@id/tv_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,19 +37,22 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:singleLine="true"
-            android:text="@{item.name}"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/tv_price"
+            android:text="@{item.name}"
+            app:layout_constraintEnd_toEndOf="@id/tv_price"
+            app:layout_constraintEnd_toStartOf="@id/tv_price"
             app:layout_constraintLeft_toRightOf="@id/img_recruitment"
             app:layout_constraintRight_toLeftOf="@id/img_delete"
+            app:layout_constraintStart_toEndOf="@id/img_recruitment"
             app:layout_constraintTop_toTopOf="@id/img_recruitment"
-            app:layout_constraintVertical_chainStyle="packed" />
+            tools:text="âsassassssssssss" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_price"
             price="@{item.price}"
+            tools:text="$10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -58,8 +60,8 @@
             android:textColor="@android:color/black"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/img_recruitment"
-            app:layout_constraintLeft_toRightOf="@id/img_recruitment"
-            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/img_recruitment" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_count"
@@ -70,23 +72,38 @@
             android:text='@{"" +item.count}'
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_price"
+            app:layout_constraintBottom_toBottomOf="@id/img_add"
+            app:layout_constraintEnd_toStartOf="@id/img_add"
             app:layout_constraintLeft_toRightOf="@id/tv_price"
-            app:layout_constraintTop_toTopOf="@id/tv_price" />
+            app:layout_constraintStart_toEndOf="@id/img_delete"
+            app:layout_constraintTop_toTopOf="@id/img_add"
+            tools:text='30' />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_delete"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
             android:adjustViewBounds="true"
             android:onClick="@{()->listener.onItemDeleteClick(item)}"
             android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_title"
-            app:layout_constraintTop_toTopOf="@id/tv_title"
-            app:srcCompat="@drawable/ic_baseline_delete_24" />
+            app:layout_constraintStart_toEndOf="@id/img_recruitment"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            app:srcCompat="@drawable/ic__delete" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_add"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:adjustViewBounds="true"
+            android:onClick="@{()->listener.onItemDeleteClick(item)}"
+            android:padding="5dp"
+            app:layout_constraintBottom_toBottomOf="@id/img_delete"
+            app:layout_constraintStart_toEndOf="@id/tv_count"
+            app:srcCompat="@drawable/ic__add" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

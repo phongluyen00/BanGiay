@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_movies"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/menu_cart"
+        android:icon="@drawable/ic_slice_2"
+        android:title="Card" />
+
+    <item
+        android:id="@+id/menu_favorite"
+        android:icon="@drawable/ic_baseline_favorite_border_24"
+        android:title="Your order" />
+
+    <item
+        android:id="@+id/menu_account"
+        android:icon="@drawable/ic_group_777"
+        android:title="Account" />
+</menu>

@@ -50,7 +50,6 @@ public class MutilAdt<T> extends RecyclerView.Adapter<MutilAdt.ViewHolder> {
         T t = data.get(i);
         viewHolder.binding.setVariable(BR.item, t);
         viewHolder.binding.setVariable(BR.listener, listener);
-        viewHolder.binding.setVariable(BR.listeners, listener);
         viewHolder.binding.executePendingBindings();
     }
     public class ViewHolder extends RecyclerView.ViewHolder {

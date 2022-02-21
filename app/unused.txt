@@ -19221,7 +19221,7 @@ com.google.protobuf.CodedOutputStreamWriter
 com.google.api.BackendRule$PathTranslation$PathTranslationVerifier
 com.google.firestore.v1.ListDocumentsRequest
 com.google.api.MetricRule$MetricCostsDefaultEntryHolder
-com.example.retrofitrxjava.activity.HomeActivity
+com.example.retrofitrxjava.fragment.HomeFragment
     public static final java.lang.String EXTRA_DATA
 com.google.android.gms.internal.maps.zzl
 com.google.firebase.FirebaseOptions

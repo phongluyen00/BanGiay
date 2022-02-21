@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,153 +9,174 @@
             type="com.example.retrofitrxjava.UserModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:custom="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/rounded_border_edittext_login"
-        android:fillViewport="true"
-        android:orientation="vertical"
-        android:overScrollMode="never"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="0dp">
-
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/llContainerLogin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white"
-            android:gravity="center"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
+                    android:layout_marginTop="50dp"
+                    android:gravity="center_horizontal"
                     android:text="Login"
                     android:textColor="#223E5B"
-                    android:textSize="50sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="50dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_acount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tên đăng nhập"
-                    android:textColor="#AAAAAA"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@id/etAccount"
-                    app:layout_constraintLeft_toLeftOf="@id/etAccount"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_border_edittext_login"
+                android:hint="Email Address">
 
                 <EditText
                     android:id="@+id/etAccount"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:digits="qwertzuiopasdfghjklyxcvbnmQWERT@ZUIOPASDFGHJKLYXCVBNM "
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/rounded_border_edittext_login"
-                    android:gravity="center|left"
+                    android:background="@android:color/transparent"
+                    android:digits="qwertzuiopasdfghjklyxcvbnmQWERT@ZUIOPASDFGHJKLYXCVBNM1234567890"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLength="100"
                     android:padding="6dp"
+                    android:paddingStart="10dp"
                     android:singleLine="true"
-                    android:text="@={user.name}"
+                    android:text="@{user.name}"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <LinearLayout
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_password"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Mật khẩu"
-                    android:textColor="#AAAAAA"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@id/etPassword"
-                    app:layout_constraintLeft_toLeftOf="@id/etAccount"
-                    app:layout_constraintTop_toBottomOf="@id/etAccount" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_border_edittext_login"
+                android:hint="Password">
 
                 <EditText
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rounded_border_edittext_login"
-                    android:gravity="center|left"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@android:color/transparent"
+                    android:digits="qwertzuiopasdfghjklyxcvbnmQWERT@ZUIOPASDFGHJKLYXCVBNM1234567890"
                     android:imeOptions="actionNext"
-                    android:digits="qwertzuiopasdfghjklyxcvbnmQWERTZUIOPASDFGHJKLYXCVBNM "
                     android:inputType="textEmailAddress"
                     android:maxLength="100"
                     android:padding="6dp"
+                    android:paddingStart="10dp"
                     android:singleLine="true"
                     android:text="@={user.password}"
                     android:textColor="@android:color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:ignore="RtlSymmetry" />
 
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="Forgot Password?"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/btRequestLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
-                android:background="@color/colorPrimary"
-                android:clickable="true"
+                android:background="@drawable/ic_rectangle_6"
                 android:gravity="center"
-                android:paddingVertical="16sp"
-                android:text="Đăng nhập"
+                android:text="Login"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
-
 
             <TextView
                 android:id="@+id/btRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:text="Đăng ký"
+                android:text="Don’t have an account? Sign up"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black" />
 
+            <TextView
+                android:id="@+id/login_google"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/ic_rectangle_6__1_"
+                android:backgroundTint="#FF9900"
+                android:drawablePadding="6dp"
+                android:gravity="center|left"
+                android:paddingLeft="10dp"
+                android:text="Sign in with Google"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/ic_baseline_cruelty_free_24"
+                tools:ignore="RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/login_facebook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/ic_rectangle_6__1_"
+                android:gravity="center|left"
+                android:text="Sign in with Facebook"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </layout>

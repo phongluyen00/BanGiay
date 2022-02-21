@@ -10,7 +10,7 @@ import com.example.retrofitrxjava.Article;
 import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.UserModel;
 
-@Database(entities = {Article.class, UserModel.class, Product.class}, version = 1)
+@Database(entities = {Article.class, /*UserModel.class, */Product.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance = null;
 

@@ -4930,7 +4930,7 @@ com.google.android.material.R$style: int Widget_AppCompat_CompoundButton_RadioBu
 com.google.android.material.R$styleable: int CardView_contentPaddingBottom
 com.google.protobuf.WireFormat$FieldType$4: WireFormat$FieldType$4(java.lang.String,int,com.google.protobuf.WireFormat$JavaType,int)
 androidx.recyclerview.widget.RecyclerView: android.widget.EdgeEffect mRightGlow
-com.example.retrofitrxjava.activity.CartActivity: CartActivity()
+com.example.retrofitrxjava.fragment.CartFragment: CartActivity()
 com.google.android.material.R$attr: int searchViewStyle
 com.google.android.material.R$attr: int tabUnboundedRipple
 androidx.appcompat.R$dimen: int abc_text_size_body_1_material
@@ -6186,7 +6186,7 @@ com.google.android.material.R$style: int Base_TextAppearance_AppCompat_Title
 com.google.protobuf.WireFormat$FieldType: com.google.protobuf.WireFormat$FieldType BYTES
 androidx.appcompat.widget.FitWindowsLinearLayout: void setOnFitSystemWindowsListener(androidx.appcompat.widget.FitWindowsViewGroup$OnFitSystemWindowsListener)
 androidx.recyclerview.R$styleable: int RecyclerView_android_orientation
-com.example.retrofitrxjava.activity.HomeActivity: HomeActivity()
+com.example.retrofitrxjava.fragment.HomeFragment: HomeActivity()
 com.google.android.material.transformation.ExpandableTransformationBehavior
 com.google.android.material.R$layout: int mtrl_picker_header_fullscreen
 androidx.appcompat.R$styleable: int AppCompatTheme_toolbarNavigationButtonStyle
@@ -6960,7 +6960,7 @@ androidx.constraintlayout.solver.widgets.ConstraintAnchor$Type: <clinit>()
 com.google.android.material.R$color: int mtrl_btn_stroke_color_selector
 com.google.android.material.R$drawable: int design_fab_background
 com.squareup.okhttp.HttpUrl$Builder$ParseResult: <clinit>()
-com.example.retrofitrxjava.activity.CartActivity
+com.example.retrofitrxjava.fragment.CartFragment
 com.google.android.material.R$styleable: int CardView_contentPadding
 androidx.recyclerview.widget.RecyclerView: void addOnChildAttachStateChangeListener(androidx.recyclerview.widget.RecyclerView$OnChildAttachStateChangeListener)
 com.google.android.material.R$drawable: int abc_list_selector_background_transition_holo_light
@@ -7198,7 +7198,7 @@ com.google.android.material.R$attr: int textAppearanceSubtitle2
 com.google.android.gms.base.R$drawable: int common_google_signin_btn_icon_disabled
 androidx.appcompat.R$styleable: int AppCompatTextView_autoSizePresetSizes
 com.google.android.material.R$color: int switch_thumb_disabled_material_dark
-com.example.retrofitrxjava.activity.HomeActivity
+com.example.retrofitrxjava.fragment.HomeFragment
 com.google.gson.internal.bind.JsonTreeReader: boolean hasNext()
 androidx.appcompat.R$id: int chronometer
 io.grpc.stub.ClientCalls$StubType: io.grpc.stub.ClientCalls$StubType valueOf(java.lang.String)

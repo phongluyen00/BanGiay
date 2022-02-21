@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="item"
-            type="com.example.retrofitrxjava.UserModel" />
+            type="com.example.retrofitrxjava.model.Markets" />
 
         <variable
             name="listener"
             type="com.example.retrofitrxjava.ItemOnclickListener" />
 
-        <variable
-            name="listeners"
-            type="com.example.retrofitrxjava.ItemDeleteCartListener" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="4dp"
+        android:background="#20F1CFCF"
         android:onClick="@{()->listener.onItemMediaClick(item)}"
+        android:orientation="vertical"
         android:padding="10dp">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{item.name}"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img"
+            thumb="@{item.image}"
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitXY"
             android:textColor="#00BCD4"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -35,28 +40,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/img"
+            android:layout_alignStart="@id/img"
+            android:layout_alignEnd="@id/img"
+            android:gravity="center"
             android:padding="5dp"
-            android:src="@drawable/ic_baseline_description_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/img_delete"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{item.title}"
+            android:textColor="@android:color/black"
+            tools:text="454" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/img_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:adjustViewBounds="true"
-            android:onClick="@{()->listeners.onItemDeleteClick(item)}"
-            android:padding="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_delete_24" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </layout>

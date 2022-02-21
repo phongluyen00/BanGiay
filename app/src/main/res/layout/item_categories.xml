@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.example.retrofitrxjava.model.Categories" />
+
+        <variable
+            name="listener"
+            type="com.example.retrofitrxjava.ItemOnclickListener" />
+
+    </data>
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img"
+            thumb="@{item.image}"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/img"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{item.title}"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_below="@+id/img"
+            android:background="#2F404042"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+    </RelativeLayout>
+</layout>

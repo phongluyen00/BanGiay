@@ -5,6 +5,7 @@
     <data>
 
         <import type="android.view.View" />
+
         <variable
             name="total"
             type="String" />
@@ -86,12 +87,11 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_total"
+                price="@{total}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                price="@{total}"
                 android:layout_marginHorizontal="20dp"
-                android:layout_toEndOf="@id/title_Sum"
-                tools:text="10000" />
+                android:layout_toEndOf="@id/title_Sum" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_name"
@@ -99,10 +99,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_Sum"
                 android:layout_marginTop="3dp"
+                android:text="@{item.name}"
                 android:textColor="#FF5722"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:text="@{item.name}"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </RelativeLayout>
@@ -114,7 +114,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:background="#03A9F4"
+            android:backgroundTint="#00FFFF"
+            android:background="@drawable/rounded_border_edittext_login"
             android:text="Xác nhận đơn hàng"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

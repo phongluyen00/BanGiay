@@ -84,6 +84,7 @@ public class HomeActivity extends AppCompatAct<LayoutRecruitmentBinding> impleme
 
     @Override
     public void onItemDeleteClick(UserModel userModel) {
+        if (userModel.isAdmin()) return;
         appDatabase.getStudentDao().deleteAccount(userModel);
         adapterUser.setDt((ArrayList<UserModel>) appDatabase.getStudentDao().getAllUser());
     }

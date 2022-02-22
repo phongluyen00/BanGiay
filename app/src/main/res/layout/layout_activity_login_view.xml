@@ -173,7 +173,12 @@
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="visible" />
+
+            <com.paypal.checkout.paymentbutton.PayPalButton
+                android:id="@+id/payPalButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

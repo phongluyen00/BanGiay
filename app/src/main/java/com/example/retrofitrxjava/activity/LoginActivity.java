@@ -9,13 +9,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.retrofitrxjava.BuildConfig;
 import com.example.retrofitrxjava.DialogRegister;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.databinding.LayoutActivityLoginViewBinding;
-import com.example.retrofitrxjava.model.City;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -27,21 +25,15 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.paypal.checkout.PayPalCheckout;
-import com.paypal.checkout.config.CheckoutConfig;
-import com.paypal.checkout.config.Environment;
-import com.paypal.checkout.config.SettingsConfig;
-import com.paypal.checkout.createorder.CurrencyCode;
-import com.paypal.checkout.createorder.UserAction;
+
+import org.jsoup.helper.StringUtil;
 
 public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> implements View.OnClickListener {
-    private AppDatabase appDatabase;
-    private DialogRegister dialogRegister;
+
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 1331;
     public static final String clientKey = "AXZ0Pd6_JmCUCzpgtOUBnnsdfsVHBvAUlX1QdY9D7d28oXMI6VyRByt27dgKWv08thEBclxNB8FTdBo9";
     public static final int PAYPAL_REQUEST_CODE = 123;
-    public static UserModel userRegister = null;
 
     @Override
     protected void initLayout() {
@@ -67,16 +59,21 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
         bd.loginGoogle.setOnClickListener(v -> signIn());
 
         bd.loginFacebook.setOnClickListener(v -> getPayment());
+        bd.forgot.setOnClickListener(v -> mAuth.sendPasswordResetEmail(getText(bd.etAccount))
+                .addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "Send password resetEmail success", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Send password resetEmail failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }));
     }
 
     private void getPayment() {
-        CheckoutConfig config = new CheckoutConfig(
-                getApplication(),
-                clientKey,
-                Environment.SANDBOX,
-                BuildConfig.APPLICATION_ID, CurrencyCode.USD,
-                UserAction.PAY_NOW, new SettingsConfig());
-        PayPalCheckout.setConfig(config);
+
     }
 
     private void signIn() {
@@ -99,13 +96,17 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
                 break;
             case R.id.btRequestLogin:
                 hideKeyboard(this);
+                if (StringUtil.isBlank(getText(bd.etAccount)) || StringUtil.isBlank(getText(bd.etPassword)) || getText(bd.etPassword).length() < 7){
+                    Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 showDialog();
                 mAuth.signInWithEmailAndPassword(getText(bd.etAccount),getText(bd.etPassword)).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Login success", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Đăng nhập không thành công", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                     }
                     dismissDialog();
                 });
@@ -138,14 +139,11 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
-//                            updateUI(null);
                         }
                     }
                 });

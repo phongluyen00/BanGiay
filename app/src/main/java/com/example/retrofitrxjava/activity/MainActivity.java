@@ -2,16 +2,12 @@ package com.example.retrofitrxjava.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,10 +25,9 @@ import com.example.retrofitrxjava.fragment.FavoriteFragment;
 import com.example.retrofitrxjava.fragment.HomeFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.paypal.pyplcheckout.pojo.To;
+
+import org.jsoup.helper.StringUtil;
 
 public class MainActivity extends AppCompatAct<ActivityMainBinding> {
 
@@ -98,13 +93,26 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> {
         AlertDialog dialog = builder.create();
         customLayout.setItem(userModel);
         customLayout.save.setOnClickListener(v -> {
+            if (StringUtil.isBlank(getText(customLayout.password)) ||
+                    !userModel.getPassword().equalsIgnoreCase(getText(customLayout.password)) ||
+                    getText(customLayout.password).length() < 7) {
+                customLayout.error.setText("Invalid old password");
+                customLayout.error.setVisibility(View.VISIBLE);
+                return;
+            }
+            if (StringUtil.isBlank(getText(customLayout.edtPasswordNew)) || getText(customLayout.edtPasswordNew).length() < 7) {
+                customLayout.error.setText("Invalid new password");
+                customLayout.error.setVisibility(View.VISIBLE);
+                return;
+            }
+            customLayout.error.setVisibility(View.GONE);
             currentUser.updatePassword(getText(customLayout.edtPasswordNew))
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             userModel.setPassword(getText(customLayout.edtPasswordNew));
                             db.collection("account").document(currentUser.getUid()).set(userModel);
                             Toast.makeText(MainActivity.this, "Change password success", Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
                             Toast.makeText(MainActivity.this, "Change password failed", Toast.LENGTH_SHORT).show();
                         }
                         dialog.dismiss();

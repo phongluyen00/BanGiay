@@ -46,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="30dp"
+                android:paddingTop="6dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/rounded_border_edittext_login"
                 android:hint="Email Address">
@@ -61,12 +62,12 @@
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLength="100"
-                    android:padding="6dp"
                     android:paddingStart="10dp"
                     android:singleLine="true"
                     android:text="@{user.name}"
                     android:textColor="@android:color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:ignore="RtlSymmetry" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,6 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
+                android:paddingTop="6dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/rounded_border_edittext_login"
                 android:hint="Password">
@@ -90,7 +92,6 @@
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLength="100"
-                    android:padding="6dp"
                     android:paddingStart="10dp"
                     android:singleLine="true"
                     android:text="@={user.password}"
@@ -101,6 +102,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/forgot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

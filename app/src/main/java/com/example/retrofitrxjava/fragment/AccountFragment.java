@@ -37,22 +37,19 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
     protected void initFragment() {
         showDialog();
         userModel = new UserModel();
-        db.collection("account").document(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        userModel = document.toObject(UserModel.class);
-                    }else {
-                        userModel.setEmail(currentUser.getEmail());
-                        userModel.setName(currentUser.getDisplayName());
-                        db.collection("account").document(currentUser.getUid()).set(userModel);
-                    }
-                    binding.setItem(userModel);
+        db.collection("account").document(currentUser.getUid()).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    userModel = document.toObject(UserModel.class);
+                }else {
+                    userModel.setEmail(currentUser.getEmail());
+                    userModel.setName(currentUser.getDisplayName());
+                    db.collection("account").document(currentUser.getUid()).set(userModel);
                 }
-                dismissDialog();
+                binding.setItem(userModel);
             }
+            dismissDialog();
         });
 
         binding.save.setOnClickListener(v -> {

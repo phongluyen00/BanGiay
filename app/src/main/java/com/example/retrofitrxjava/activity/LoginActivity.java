@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
         bd.btRequestLogin.setOnClickListener(this);
         bd.loginGoogle.setOnClickListener(v -> signIn());
 
-        bd.loginFacebook.setOnClickListener(v -> getPayment());
+//        bd.loginFacebook.setOnClickListener(v -> getPayment());
         bd.forgot.setOnClickListener(v -> mAuth.sendPasswordResetEmail(getText(bd.etAccount))
                 .addOnCompleteListener(new OnCompleteListener() {
                     @Override

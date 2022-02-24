@@ -20,6 +20,7 @@ import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.activity.AppCompatAct;
 import com.example.retrofitrxjava.database.AppDatabase;
+import com.example.retrofitrxjava.model.EBook;
 import com.example.retrofitrxjava.model.Markets;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,12 +70,12 @@ public abstract class BaseFragment<BD extends ViewDataBinding> extends Fragment 
         initAdapter();
     }
 
-    protected void getAllData(AppCompatAct.onLoadData loadData) {
-        List<Markets> productList = new ArrayList<>();
-        db.collection("my_markets").get().addOnCompleteListener(task -> {
+    protected void getAllData(onLoadData loadData) {
+        List<EBook> productList = new ArrayList<>();
+        db.collection("db_comics").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
-                    Markets product = documentSnapshot.toObject(Markets.class);
+                    EBook product = documentSnapshot.toObject(EBook.class);
                     if (product != null) {
                         product.setDocumentId(documentSnapshot.getId());
                         productList.add(product);
@@ -83,6 +84,11 @@ public abstract class BaseFragment<BD extends ViewDataBinding> extends Fragment 
                 loadData.onDone(productList);
             }
         });
+    }
+
+
+    public interface onLoadData {
+        void onDone(List<EBook> products);
     }
 
     protected void showDialog() {

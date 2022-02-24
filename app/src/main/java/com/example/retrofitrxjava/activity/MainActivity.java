@@ -23,6 +23,7 @@ import com.example.retrofitrxjava.fragment.AccountFragment;
 import com.example.retrofitrxjava.fragment.CartFragment;
 import com.example.retrofitrxjava.fragment.FavoriteFragment;
 import com.example.retrofitrxjava.fragment.HomeFragment;
+import com.example.retrofitrxjava.fragment.MainFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,26 +35,26 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> {
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void initLayout() {
-        loadFragment(HomeFragment.newInstance());
+        loadFragment(MainFragment.newInstance());
         setTitle("Home");
-        bd.navigation.setOnNavigationItemSelectedListener(menuItem -> {
-            setTitle(menuItem.getTitle());
-            switch (menuItem.getItemId()) {
-                case R.id.menu_movies:
-                    loadFragment(HomeFragment.newInstance());
-                    return true;
-                case R.id.menu_cart:
-                    loadFragment(CartFragment.newInstance());
-                    return true;
-                case R.id.menu_favorite:
-                    loadFragment(FavoriteFragment.newInstance());
-                    return true;
-                case R.id.menu_account:
-                    loadFragment(AccountFragment.newInstance());
-                    return true;
-            }
-            return false;
-        });
+//        bd.navigation.setOnNavigationItemSelectedListener(menuItem -> {
+//            setTitle(menuItem.getTitle());
+//            switch (menuItem.getItemId()) {
+//                case R.id.menu_movies:
+//                    loadFragment(HomeFragment.newInstance());
+//                    return true;
+//                case R.id.menu_cart:
+//                    loadFragment(CartFragment.newInstance());
+//                    return true;
+//                case R.id.menu_favorite:
+//                    loadFragment(FavoriteFragment.newInstance());
+//                    return true;
+//                case R.id.menu_account:
+//                    loadFragment(AccountFragment.newInstance());
+//                    return true;
+//            }
+//            return false;
+//        });
     }
 
     @Override

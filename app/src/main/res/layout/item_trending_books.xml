@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.example.retrofitrxjava.model.EBook" />
+
+        <variable
+            name="listener"
+            type="com.example.retrofitrxjava.ItemOnclickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:onClick="@{()-> listener.onItemMediaClick(item)}">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="70dp"
+            app:layout_constraintBottom_toBottomOf="@id/card_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/card_view" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="168dp"
+            android:layout_height="0dp"
+            android:background="@drawable/rounded_border_edittext_login"
+            android:backgroundTint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="@id/author"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img"
+                thumb="@{item.image}"
+                android:layout_width="100dp"
+                android:layout_height="140dp"
+                android:scaleType="fitXY"
+                tools:src="@drawable/image23" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed"
+            android:singleLine="true"
+            android:text="@{item.title}"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/card_view"
+            app:layout_constraintTop_toBottomOf="@+id/card_view" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/author"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:paddingBottom="10dp"
+            android:singleLine="true"
+            android:text="@{item.author}"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/card_view"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -38,11 +38,11 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
     @Override
     protected void initAdapter() {
         getAllData(products -> {
-            adapterProduct = new MutilAdt<>(activity, R.layout.item_account);
-            adapterProduct.setDt((ArrayList<Markets>) products);
-            adapterProduct.setListener(this);
-            binding.rclMarket.setAdapter(adapterProduct);
-            dismissDialog();
+//            adapterProduct = new MutilAdt<>(activity, R.layout.item_account);
+//            adapterProduct.setDt((ArrayList<Markets>) products);
+//            adapterProduct.setListener(this);
+//            binding.rclMarket.setAdapter(adapterProduct);
+//            dismissDialog();
         });
     }
 

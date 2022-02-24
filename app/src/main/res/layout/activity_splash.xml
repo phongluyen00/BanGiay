@@ -3,51 +3,77 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/img_spash">
+        android:background="#000000"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_browser" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img"
+            android:layout_width="244dp"
+            android:layout_height="170dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            android:src="@drawable/undraw_book_lover_mkck" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/btRequestLogin"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:textColor="#1B0B0E"
-            android:gravity="center"
-            android:text="Welcome to our store"
-            android:textSize="36sp" />
-
-        <TextView
-            android:id="@+id/btRequestLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/register"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorPrimary"
-            android:clickable="true"
-            android:gravity="center"
-            android:paddingVertical="16sp"
-            android:text="Đăng nhập"
+            android:layout_below="@id/img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="13dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Keep reading,"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:textSize="34sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/register"
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_keep_reading"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/bg_blue_et_login"
+            android:layout_below="@id/content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Keep reading,"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_keep_reading"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="sans-serif-condensed"
             android:gravity="center"
-            android:paddingVertical="16sp"
-            android:text="Đăng ký"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp" />
+            android:text="A library of bite-sized business eBooks on soft skils and access to 30+ millions books in various languages with an easy and simple monthly subscription and read anywhere, any devices."
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/next"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_des"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/radius_constrain"
+            android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="Start your journey"
+            android:textColor="@android:color/white" />
 
     </RelativeLayout>
 </layout>

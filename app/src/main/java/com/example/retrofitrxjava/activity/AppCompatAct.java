@@ -3,7 +3,10 @@ package com.example.retrofitrxjava.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -128,6 +131,24 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public static Spanned textHtml(String html) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
+        }
+        else {
+            return Html.fromHtml(html);
+        }
+    }
+
+    @BindingAdapter("textHtml")
+    public static void textHtml(AppCompatTextView tv, String text) {
+        if (StringUtil.isBlank(text)){
+            tv.setText("");
+            return;
+        }
+        tv.setText(textHtml(text));
     }
 
     public interface onLoadData {

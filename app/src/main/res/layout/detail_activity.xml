@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.example.retrofitrxjava.model.EBook" />
+    </data>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="15dp"
+                android:fillViewport="true"
+                app:layout_constraintBottom_toTopOf="@id/title_price"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        thumb="@{item.image}"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:layout_alignParentEnd="true"
+                        android:background="#B0939393"
+                        android:scaleType="centerCrop" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="350dp"
+                        android:background="@drawable/rectangle13" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/img"
+                        thumb="@{item.image}"
+                        android:layout_width="160dp"
+                        android:layout_height="231dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="50dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/image23" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_marginStart="16dp"
+                        android:id="@+id/read"
+                        android:layout_toEndOf="@id/img"
+                        android:layout_width="0dp"
+                        android:layout_alignEnd="@id/view_detail"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/img"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="50dp"
+                        android:backgroundTint="#4C485F"
+                        android:background="@drawable/rounded_border_edittext_login"
+                        android:drawableStart="@drawable/ic_baseline_menu_book_24"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Read "
+                        android:textSize="20sp"
+                        android:textColor="@android:color/white" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="10dp"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:text="@{item.title}"
+                        android:textSize="18sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_name"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:text="@{item.author}"
+                        android:textSize="14sp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/view_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_author"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/rounded_border_edittext_login"
+                        android:backgroundTint="#2D00BCD4">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_baseline_grade_24"
+                            android:drawablePadding="4dp"
+                            android:fontFamily="sans-serif-condensed"
+                            android:gravity="center"
+                            android:paddingTop="18dp"
+                            android:text="@{item.vote}"
+                            android:textColor="@android:color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="@id/tv_rating"
+                            app:layout_constraintStart_toStartOf="@id/tv_rating"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="RtlSymmetry"
+                            tools:text="4.5" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:gravity="center"
+                            android:paddingTop="18dp"
+                            android:text="130"
+                            android:textColor="@android:color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="@id/tv_page"
+                            app:layout_constraintStart_toStartOf="@id/tv_page"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="RtlSymmetry" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:gravity="center"
+                            android:paddingTop="18dp"
+                            android:text="Eng"
+                            android:textColor="@android:color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="@id/tv_language"
+                            app:layout_constraintStart_toStartOf="@id/tv_language"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="RtlSymmetry" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_rating"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:gravity="center"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="14dp"
+                            android:text="Rating"
+                            app:layout_constraintEnd_toStartOf="@id/tv_page"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/rate"
+                            tools:ignore="RtlSymmetry" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_page"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:gravity="center"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="14dp"
+                            android:text="Pages"
+                            app:layout_constraintEnd_toStartOf="@id/tv_language"
+                            app:layout_constraintStart_toEndOf="@id/tv_rating"
+                            app:layout_constraintTop_toTopOf="@id/tv_rating"
+                            tools:ignore="RtlSymmetry" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_language"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:gravity="center"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="14dp"
+                            android:text="Language"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_page"
+                            app:layout_constraintTop_toTopOf="@id/tv_rating"
+                            tools:ignore="RtlSymmetry" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/des"
+                        textHtml="@{item.description}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_detail"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:textSize="14sp" />
+
+
+
+                </RelativeLayout>
+            </ScrollView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/title_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="Price"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/price"
+                app:layout_constraintEnd_toEndOf="@id/guideline"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/price"
+                price="@{item.price}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/payment"
+                app:layout_constraintEnd_toEndOf="@id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/payment" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/payment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/rounded_border_edittext_login"
+                android:backgroundTint="#4C485F"
+                android:drawableStart="@drawable/debit_card"
+                android:drawablePadding="10dp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:gravity="center"
+                android:paddingStart="15dp"
+                android:paddingTop="14dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="14dp"
+                android:text="Payment"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guideline" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>

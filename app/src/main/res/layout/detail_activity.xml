@@ -46,6 +46,12 @@
                         android:background="@drawable/rectangle13" />
 
                     <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="30dp"
+                        android:backgroundTint="#00f"
+                        app:srcCompat="@drawable/ic_baseline_arrow_back_ios_new_24"
+                        android:layout_height="30dp"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img"
                         thumb="@{item.image}"
                         android:layout_width="160dp"
@@ -273,7 +279,7 @@
                 android:paddingTop="14dp"
                 android:paddingEnd="15dp"
                 android:paddingBottom="14dp"
-                android:text="Payment"
+                android:text="Buy"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"

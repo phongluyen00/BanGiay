@@ -70,11 +70,7 @@ public class DialogPDFViewer extends BDialogFragment<DialogPdfViewerBinding> {
         protected void onPostExecute(InputStream inputStream) {
             //after the executing async task we load pdf in to pdfview.
             binding.idPDFView.
-                    fromStream(inputStream).
-                    defaultPage(0).
-                    onPageChange((page, pageCount) -> {
-                        Log.d("AAAAAAAAAAAA", page + "count " +pageCount + "page");
-                    }).onLoad(this).onError(this).load();
+                    fromStream(inputStream) .onLoad(this).onError(this).load();
         }
 
         @Override

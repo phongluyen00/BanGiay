@@ -34,6 +34,7 @@ public class UserModel {
     private String address;
 
     private String money;
+    private String image;
 
     public UserModel(String name, String email, String password, String phoneNumber, String address, String money) {
         this.name = name;

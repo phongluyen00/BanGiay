@@ -8,28 +8,83 @@ import android.widget.Toast;
 
 import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.R;
+import com.example.retrofitrxjava.adapter.BannerAdapter;
+import com.example.retrofitrxjava.adapter.MutilAdt;
 import com.example.retrofitrxjava.databinding.ActivityDetailTruyenBinding;
 import com.example.retrofitrxjava.fragment.CartFragment;
 import com.example.retrofitrxjava.fragment.HomeFragment;
+import com.example.retrofitrxjava.model.Banner;
+import com.example.retrofitrxjava.model.ProductCategories;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentSnapshot;
 
+import org.jsoup.helper.StringUtil;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class DetailActivity extends AppCompatAct<ActivityDetailTruyenBinding>{
+import static com.example.retrofitrxjava.fragment.HomeFragment.EXTRA_DATA;
 
-    private Product article;
+public class DetailActivity extends AppCompatAct<ActivityDetailTruyenBinding> {
+
+    private ProductCategories productCategories;
+    private boolean isFavorite;
+    private int count = 0;
 
     @Override
     protected void initLayout() {
         Intent intent = getIntent();
-        int id = intent.getIntExtra("idUser", 0);
-//        userModel = this.appDatabase.getStudentDao().getUserModelId(id);
-        article = (Product) getIntent().getSerializableExtra(HomeFragment.EXTRA_DATA);
-        bd.setItem(article);
-    }
+        if (intent != null) {
+            productCategories = (ProductCategories) intent.getSerializableExtra(EXTRA_DATA);
+            bd.setItem(productCategories);
+        }
 
-    @Override
-    protected int getID() {
-        return R.layout.activity_detail_truyen;
+        if (!productCategories.isFavorite()) {
+            db.collection("shopping_favorite").whereEqualTo("uid", currentUser.getUid()).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+                        ProductCategories product = documentSnapshot.toObject(ProductCategories.class);
+                        if (product != null && productCategories.getDocumentId().equalsIgnoreCase(product.getId_document())) {
+                            isFavorite = true;
+                            bd.favorite.setImageResource(R.drawable.ic_baseline_favorite_24_new);
+                            return;
+                        }
+                    }
+                }
+            });
+        } else {
+            isFavorite = true;
+            bd.favorite.setImageResource(R.drawable.ic_baseline_favorite_24_new);
+        }
+
+        bd.favorite.setOnClickListener(v -> addFavorite(productCategories));
+
+        bd.back.setOnClickListener(v -> finish());
+        bd.icAdd.setOnClickListener(v -> {
+            count ++;
+            bd.count.setText(String.valueOf(count));
+        });
+
+        bd.icDelete.setOnClickListener(v -> {
+            if (count == 0){
+                return;
+            }
+            count --;
+            bd.count.setText(String.valueOf(count));
+        });
+
+        bd.add.setOnClickListener(v -> {
+            if (count != 0){
+                productCategories.setId_document(productCategories.getDocumentId());
+                productCategories.setUid(currentUser.getUid());
+                db.collection("cart").document().set(productCategories);
+            }else {
+                Snackbar snackbar = Snackbar
+                        .make(bd.mainContent, "You need to enter the quantity", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        });
+
     }
 
     public void add(View view){
@@ -50,16 +105,24 @@ public class DetailActivity extends AppCompatAct<ActivityDetailTruyenBinding>{
 //        Toast.makeText(this, "Thêm giỏ hàng thành công!", Toast.LENGTH_SHORT).show();
     }
 
-    public void push(View view){
-        Intent intent = new Intent(this, CartFragment.class);
-//        intent.putExtra("idUser", userModel.getIdUser());
-        startActivity(intent);
-    }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        bd.img.setVisibility(View.VISIBLE);
-        bd.ll.setVisibility(View.VISIBLE);
+    protected int getID() {
+        return R.layout.activity_detail_truyen;
+    }
+
+    private void addFavorite(ProductCategories productCategories) {
+        if (!isFavorite){
+            productCategories.setId_document(productCategories.getDocumentId());
+            productCategories.setUid(currentUser.getUid());
+            bd.favorite.setImageResource(R.drawable.ic_baseline_favorite_24_new);
+            db.collection("shopping_favorite").document().set(productCategories);
+            isFavorite = true;
+        }else {
+            Snackbar snackbar = Snackbar
+                    .make(bd.mainContent, "The product has been liked !", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+
     }
 }

@@ -61,67 +61,6 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> {
         return R.layout.activity_main;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logout:
-                mAuth.signOut();
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
-            case R.id.change_password:
-                checkAccount();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void showAlertDialogButtonClicked(UserModel userModel) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Change password");
-        CustomLayoutBinding customLayout = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.custom_layout, null, false);
-        builder.setView(customLayout.getRoot());
-        AlertDialog dialog = builder.create();
-        customLayout.setItem(userModel);
-        customLayout.save.setOnClickListener(v -> {
-            if (StringUtil.isBlank(getText(customLayout.password)) ||
-                    !userModel.getPassword().equalsIgnoreCase(getText(customLayout.password)) ||
-                    getText(customLayout.password).length() < 7) {
-                customLayout.error.setText("Invalid old password");
-                customLayout.error.setVisibility(View.VISIBLE);
-                return;
-            }
-            if (StringUtil.isBlank(getText(customLayout.edtPasswordNew)) || getText(customLayout.edtPasswordNew).length() < 7) {
-                customLayout.error.setText("Invalid new password");
-                customLayout.error.setVisibility(View.VISIBLE);
-                return;
-            }
-            customLayout.error.setVisibility(View.GONE);
-            currentUser.updatePassword(getText(customLayout.edtPasswordNew))
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            userModel.setPassword(getText(customLayout.edtPasswordNew));
-                            db.collection("account").document(currentUser.getUid()).set(userModel);
-                            Toast.makeText(MainActivity.this, "Change password success", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(MainActivity.this, "Change password failed", Toast.LENGTH_SHORT).show();
-                        }
-                        dialog.dismiss();
-                    });
-
-        });
-        dialog.show();
-    }
-
     private void loadFragment(Fragment fragment) {
         // load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -130,24 +69,7 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> {
         transaction.commit();
     }
 
-    private void checkAccount() {
-        showDialog();
-        db.collection("account").document(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        userModel = document.toObject(UserModel.class);
-                        showAlertDialogButtonClicked(userModel);
-                    } else {
-                        Toast.makeText(MainActivity.this, "Account condition change password is not enough !", Toast.LENGTH_SHORT).show();
-                    }
-                    dismissDialog();
-                }
-                dismissDialog();
-            }
-        });
+    public void setTitle(String title){
+        bd.title.setText(title);
     }
-
 }

@@ -19,7 +19,7 @@
         <LinearLayout
             android:id="@+id/llContainerLogin"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@android:color/white"
             android:orientation="vertical">
 
@@ -27,22 +27,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="150dp"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img"
+                    android:layout_width="120dp"
+                    android:layout_height="130dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="16dp"
-                    android:src="@drawable/icon_card" />
+                    thumb="@{item.image}"
+                    android:src="@drawable/image_avata" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    price="@{item.money}"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/img"
                     android:layout_centerInParent="true"
-                    android:textColor="@android:color/white"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:padding="15dp"
+                    android:src="@drawable/ic_baseline_photo_camera_24" />
 
             </RelativeLayout>
 
@@ -50,11 +53,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/rounded_border_edittext_login"
                 android:hint="User name"
-                android:paddingTop="10dp"
+                android:paddingTop="4dp"
                 android:textColorHint="#00BCD4">
 
                 <EditText
@@ -66,7 +69,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLength="100"
-                    android:paddingStart="10dp"
+                    android:paddingStart="16dp"
                     android:singleLine="true"
                     android:text="@={item.name}"
                     android:textColor="@android:color/black"
@@ -84,7 +87,7 @@
                 android:background="@drawable/rounded_border_edittext_login"
                 android:enabled="false"
                 android:hint="Email Address"
-                android:paddingTop="10dp"
+                android:paddingTop="4dp"
                 android:textColorHint="#00BCD4">
 
                 <EditText
@@ -98,7 +101,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLength="100"
-                    android:paddingStart="10dp"
+                    android:paddingStart="16dp"
                     android:singleLine="true"
                     android:text="@={item.email}"
                     android:textColor="@android:color/black"
@@ -116,7 +119,7 @@
                 android:background="@drawable/rounded_border_edittext_login"
                 android:enabled="false"
                 android:hint="Password"
-                android:paddingTop="10dp"
+                android:paddingTop="4dp"
                 android:textColorHint="#00BCD4"
                 android:visibility="@{item.password == null ? View.GONE : View.VISIBLE}">
 
@@ -131,7 +134,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:maxLength="100"
-                    android:paddingStart="10dp"
+                    android:paddingStart="16dp"
                     android:singleLine="true"
                     android:text="@={item.password}"
                     android:textColor="@android:color/black"
@@ -148,7 +151,7 @@
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/rounded_border_edittext_login"
                 android:hint="Phone number"
-                android:paddingTop="10dp"
+                android:paddingTop="4dp"
                 android:textColorHint="#00BCD4">
 
                 <EditText
@@ -160,7 +163,7 @@
                     android:background="@android:color/transparent"
                     android:imeOptions="actionNext"
                     android:maxLength="100"
-                    android:paddingStart="10dp"
+                    android:paddingStart="16dp"
                     android:singleLine="true"
                     android:text="@={item.phoneNumber}"
                     android:textColor="@android:color/black"
@@ -177,7 +180,7 @@
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/rounded_border_edittext_login"
                 android:hint="Address"
-                android:paddingTop="10dp"
+                android:paddingTop="4dp"
                 android:textColorHint="#00BCD4">
 
                 <EditText
@@ -190,7 +193,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLength="100"
-                    android:paddingStart="10dp"
+                    android:paddingStart="16dp"
                     android:singleLine="true"
                     android:text="@={item.address}"
                     android:textColor="@android:color/black"
@@ -204,15 +207,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/rounded_border_edittext_login"
+                android:backgroundTint="#DA00BCD4"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Save"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/change_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/rounded_border_edittext_login"
+                android:backgroundTint="#DA00BCD4"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Change password"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="30dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/rounded_border_edittext_login"
                 android:backgroundTint="#DA00BCD4"
                 android:gravity="center"
-                android:padding="15dp"
-                android:text="Save"
+                android:padding="10dp"
+                android:text="Log out"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 

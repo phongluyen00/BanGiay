@@ -11,45 +11,56 @@
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/background_login"
+        android:fillViewport="true">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/llContainerLogin"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="30dp"
+                android:background="#FA4CAD73" />
 
-                <TextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="50dp"
-                    android:gravity="center_horizontal"
-                    android:text="Login"
-                    android:textColor="#223E5B"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="310dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="75dp"
+                app:srcCompat="@drawable/icon_login" />
 
-            </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="250dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:gravity="left"
+                android:text="Login"
+                android:textColor="@android:color/white"
+                android:textSize="34sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ti_edtaccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/icon"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="30dp"
-                android:paddingTop="6dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/rounded_border_edittext_login"
-                android:hint="Email Address">
+                android:hint="Email Address"
+                android:paddingTop="6dp">
 
                 <EditText
                     android:id="@+id/etAccount"
@@ -58,7 +69,6 @@
                     android:layout_marginTop="14dp"
                     android:layout_marginBottom="10dp"
                     android:background="@android:color/transparent"
-                    android:digits="qwertzuiopasdfghjklyxcvbnmQWERT@ZUIOPASDFGHJKLYXCVBNM1234567890"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLength="100"
@@ -72,14 +82,16 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ti_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/ti_edtaccount"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:paddingTop="6dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/rounded_border_edittext_login"
-                android:hint="Password">
+                android:hint="Password"
+                android:paddingTop="6dp">
 
                 <EditText
                     android:id="@+id/etPassword"
@@ -88,7 +100,6 @@
                     android:layout_marginTop="14dp"
                     android:layout_marginBottom="10dp"
                     android:background="@android:color/transparent"
-                    android:digits="qwertzuiopasdfghjklyxcvbnmQWERT@ZUIOPASDFGHJKLYXCVBNM1234567890"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLength="100"
@@ -105,40 +116,49 @@
                 android:id="@+id/forgot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_below="@+id/ti_password"
+                android:layout_gravity="end"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="6dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
-                android:text="Forgot Password?"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="16sp"
+                android:gravity="end"
+                android:padding="5dp"
+                android:text="Forgot Password"
+                android:textColor="#0EB177"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/btRequestLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/forgot"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="18dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/ic_rectangle_6"
+                android:backgroundTint="#4CAD73"
+                android:fontFamily="sans-serif-condensed-medium"
                 android:gravity="center"
                 android:text="Login"
                 android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/btRegister"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:text="Don’t have an account? Sign up"
+                android:layout_below="@id/btRequestLogin"
+                android:text="Not have an account? Register"
                 android:textAllCaps="false"
-                android:textColor="@android:color/black" />
+                android:textColor="#4CAD73"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/login_google"
@@ -158,6 +178,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:drawableStartCompat="@drawable/ic_baseline_cruelty_free_24"
                 tools:ignore="RtlSymmetry" />
 
@@ -175,14 +196,15 @@
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <com.paypal.checkout.paymentbutton.PayPalButton
                 android:id="@+id/payPalButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </ScrollView>
 

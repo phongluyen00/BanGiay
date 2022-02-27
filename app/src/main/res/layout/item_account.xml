@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -14,27 +15,22 @@
 
     </data>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginTop="4dp"
-        android:background="#20F1CFCF"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/rounded_border_edittext_login"
         android:onClick="@{()->listener.onItemMediaClick(item)}"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img"
             thumb="@{item.image}"
-            android:layout_width="120dp"
-            android:layout_height="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:scaleType="fitXY"
-            android:textColor="#00BCD4"
-            android:textSize="14sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/icon"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,9 +43,9 @@
             android:layout_below="@id/img"
             android:layout_alignStart="@id/img"
             android:layout_alignEnd="@id/img"
-            android:gravity="center"
-            android:padding="5dp"
             android:ellipsize="end"
+            android:gravity="center"
+            android:padding="2dp"
             android:singleLine="true"
             android:text="@{item.title}"
             android:textColor="@android:color/black"

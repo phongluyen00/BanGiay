@@ -2,6 +2,7 @@ package com.example.retrofitrxjava.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -11,15 +12,19 @@ import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.activity.CategoriesActivity;
 import com.example.retrofitrxjava.activity.DetailActivity;
+import com.example.retrofitrxjava.activity.MainActivity;
+import com.example.retrofitrxjava.adapter.BannerAdapter;
 import com.example.retrofitrxjava.adapter.MutilAdt;
 import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.databinding.LayoutRecruitmentBinding;
+import com.example.retrofitrxjava.model.Banner;
 import com.example.retrofitrxjava.model.Markets;
 import com.example.retrofitrxjava.model.ProductCategories;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> implements ItemOnclickProductListener<ProductCategories>, ItemOnclickListener<Markets>, MutilAdt.ListItemListener {
 
@@ -55,7 +60,6 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
     protected void initFragment() {
         appDatabase = AppDatabase.getInstance(getActivity());
         Intent intent = activity.getIntent();
-        int id = intent.getIntExtra("idUser", 100);
         showDialog();
         ArrayList<ProductCategories> productCategoriesList = new ArrayList<>();
         db.collection("product_categories").whereEqualTo("type", "home_new").get().addOnCompleteListener(task -> {
@@ -73,6 +77,36 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
                 categoriesAdt.setDt(productCategoriesList);
             }
         });
+
+        db.collection("banner").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Banner> banners = new ArrayList<>();
+                for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+                    Banner banner = documentSnapshot.toObject(Banner.class);
+                    if (banner != null) {
+//                        product.setDocumentId(documentSnapshot.getId());
+                        banners.add(banner);
+                    }
+                }
+                BannerAdapter adapter1 = new BannerAdapter(activity, (ArrayList) banners, R.layout.item_banner);
+                binding.viewpager.setAdapter(adapter1);
+            }
+        });
+
+//        binding.circleIndicator.setViewPager(binding.viewpager);
+//        handler = new Handler();
+//        runnable = () -> {
+//            currentItem = binding.viewpager.getCurrentItem();
+//            currentItem++;
+//            if (currentItem >= Objects.requireNonNull(binding.viewpager.getAdapter()).getCount()) {
+//                currentItem = 0;
+//            }
+//            binding.viewpager.setCurrentItem(currentItem, true);
+//            handler.postDelayed(runnable, 4500);
+//
+//        };
+//        handler.postDelayed(runnable, 4500);
+
     }
 
     @Override
@@ -117,6 +151,12 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
         Intent intent = new Intent(getActivity(), CategoriesActivity.class);
         intent.putExtra("status", markets.getStatus());
         startActivity(intent);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((MainActivity) activity).setTitle("Trang Chủ");
     }
 }
 

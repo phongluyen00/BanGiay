@@ -30,7 +30,7 @@
 
 
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.SplashActivity"
             android:exported="true"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
@@ -47,6 +47,7 @@
         <activity android:name=".activity.PaymentSuccessActivity" />
         <activity android:name=".DialogRegister" />
         <activity android:name=".activity.CategoriesActivity" />
+        <activity android:name=".activity.LoginActivity" />
 
     </application>
 

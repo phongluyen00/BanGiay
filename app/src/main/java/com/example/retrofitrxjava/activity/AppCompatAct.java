@@ -3,7 +3,10 @@ package com.example.retrofitrxjava.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -95,7 +98,7 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
     public static void setThumb(ImageView im, String img) {
         Glide.with(im)
                 .load(img)
-                .error(R.drawable.ic_baseline_warning_24)
+                .error(R.drawable.image_avata)
                 .into(im);
     }
 
@@ -127,6 +130,23 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+    @BindingAdapter("setTextHtml")
+    public static void setTextHtml(AppCompatTextView appCompatTextView, String text){
+        if (StringUtil.isBlank(text)){
+            appCompatTextView.setText("");
+        }else {
+            appCompatTextView.setText(textHtml(text));
+        }
+    }
+
+    public static Spanned textHtml(String html) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
+        }
+        else {
+            return Html.fromHtml(html);
         }
     }
 

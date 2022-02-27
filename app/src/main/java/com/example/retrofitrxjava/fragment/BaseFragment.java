@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -85,7 +86,12 @@ public abstract class BaseFragment<BD extends ViewDataBinding> extends Fragment 
         });
     }
 
+    protected String getText(EditText editText) {
+        return editText.getText().toString().trim();
+    }
+
     protected void showDialog() {
+        progressDialog.setCancelable(false);
         progressDialog.show();
     }
 

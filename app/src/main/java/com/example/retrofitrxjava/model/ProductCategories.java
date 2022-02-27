@@ -19,4 +19,8 @@ public class ProductCategories implements Serializable {
     private String price;
     private String vote;
     private int count;
+    private String description;
+    private String id_document;
+    private String uid;
+    private boolean isFavorite;
 }

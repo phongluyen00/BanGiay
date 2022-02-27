@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.example.retrofitrxjava.Product" />
+            type="com.example.retrofitrxjava.model.ProductCategories" />
 
         <variable
             name="listener"
@@ -40,7 +40,7 @@
             android:textColor="@android:color/holo_red_dark"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:text="@{item.name}"
+            android:text="@{item.title}"
             app:layout_constraintEnd_toEndOf="@id/tv_price"
             app:layout_constraintEnd_toStartOf="@id/tv_price"
             app:layout_constraintLeft_toRightOf="@id/img_recruitment"

@@ -10,7 +10,7 @@
 
         <variable
             name="listener"
-            type="com.example.retrofitrxjava.ItemOnclickProductListener" />
+            type="com.example.retrofitrxjava.ItemFavoriteListener" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,68 +26,74 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{()->listener.onItemProductClick(item)}"
+            android:onClick="@{()->listener.onClickProduct(item)}"
             android:padding="4dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_recruitment"
                 thumb="@{item.image}"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
                 android:adjustViewBounds="true"
                 android:minHeight="150dp"
                 android:scaleType="fitXY"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/price"
-                price="@{item.price}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textColor="@android:color/black"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@id/img_recruitment"
-                app:layout_constraintTop_toBottomOf="@id/img_recruitment"
-                tools:text="21212" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:ellipsize="end"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="sans-serif-condensed-medium"
                 android:singleLine="true"
                 android:text="@{item.title}"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/buy"
-                app:layout_constraintStart_toStartOf="@id/img_recruitment"
-                app:layout_constraintTop_toBottomOf="@id/price"
+                app:layout_constraintBottom_toTopOf="@id/done"
+                app:layout_constraintEnd_toStartOf="@+id/favorite"
+                app:layout_constraintStart_toEndOf="@id/img_recruitment"
                 tools:text="1212121121212" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/buy"
-                android:layout_width="60dp"
+                android:id="@+id/done"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/rounded_border_edittext_login"
+                android:drawableEnd="@drawable/ic_baseline_done_24"
+                android:drawablePadding="3dp"
+                android:ellipsize="end"
+                android:layout_marginBottom="3dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:gravity="center"
-                android:onClick="@{()-> listener.onItemAddListener(item)}"
-                android:padding="8dp"
-                android:text="Buy"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:singleLine="true"
+                android:text="Yêu thích"
                 android:textColor="#4CAD73"
-                android:textSize="14sp"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@id/img_recruitment"
+                app:layout_constraintStart_toEndOf="@id/img_recruitment" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/favorite"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/dialog_bg"
+                android:backgroundTint="#22D3D3D5"
+                android:ellipsize="end"
+                android:onClick="@{()-> listener.onClickRemove(item)}"
+                android:padding="6dp"
+                android:singleLine="true"
+                android:textColor="@android:color/holo_red_dark"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/tv_name"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@id/done"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_baseline_delete_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

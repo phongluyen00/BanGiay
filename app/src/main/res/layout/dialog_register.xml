@@ -12,7 +12,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/rounded_border_edittext_login"
+        android:background="@drawable/background_login"
         android:fillViewport="true">
 
         <LinearLayout
@@ -195,10 +195,11 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="5dp"
                 android:background="@drawable/ic_rectangle_6"
                 android:gravity="center"
                 android:text="Register"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:backgroundTint="#4CAD73"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
@@ -208,7 +209,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
                 android:backgroundTint="#4E4E53"

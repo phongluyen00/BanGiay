@@ -1,53 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/img_spash">
+        android:background="@drawable/background_login">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/icon"
+            android:layout_width="272dp"
+            android:layout_height="239dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="130dp"
+            app:srcCompat="@drawable/icon_splash" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/btRequestLogin"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:textColor="#1B0B0E"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
-            android:text="Welcome to our store"
-            android:textSize="36sp" />
+            android:text="Kangsayur "
+            android:textColor="@android:color/white"
+            android:textSize="34sp" />
+
+        <View
+            android:textColor="#00FF67"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"/>
 
         <TextView
             android:id="@+id/btRequestLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/register"
+            android:layout_below="@+id/icon"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/ic_rectangle_6"
+            android:backgroundTint="#4CAD73"
             android:clickable="true"
+            android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
             android:paddingVertical="16sp"
-            android:text="Đăng nhập"
+            android:text="Login"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/btRequestLogin"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
-            android:background="@color/bg_blue_et_login"
+            android:background="@drawable/ic_rectangle_6"
+            android:backgroundTint="#8C8E8D"
+            android:clickable="true"
+            android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
             android:paddingVertical="16sp"
-            android:text="Đăng ký"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp" />
+            android:text="Register"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/or"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/register"
+            android:gravity="center"
+            android:text="Or login with" />
+
+        <TextView
+            android:id="@+id/login_google"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/or"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/ic_rectangle_6__1_"
+            android:backgroundTint="#FF9900"
+            android:gravity="center"
+            android:text="Google"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 </layout>

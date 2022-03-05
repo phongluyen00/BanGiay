@@ -1,5 +1,5 @@
 package com.example.retrofitrxjava;
 
 public interface ItemOnLongclickListener<T> {
-    void onItemLongClick(T t);
+    void onItemLongClick(T t, int index);
 }

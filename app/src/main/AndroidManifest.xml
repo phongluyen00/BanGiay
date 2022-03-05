@@ -32,7 +32,7 @@
 
 
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".activity.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
@@ -49,7 +49,7 @@
         <activity android:name=".activity.PaymentSuccessActivity" />
         <activity android:name=".DialogRegister" />
         <activity android:name=".activity.CategoriesActivity" />
-        <activity android:name=".activity.DetailEBookActivity" />
+        <activity android:name=".activity.DetailEBookDialog" />
 
     </application>
 

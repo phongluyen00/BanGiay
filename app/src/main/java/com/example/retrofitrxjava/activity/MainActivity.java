@@ -37,24 +37,21 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> {
     protected void initLayout() {
         loadFragment(MainFragment.newInstance());
         setTitle("Home");
-//        bd.navigation.setOnNavigationItemSelectedListener(menuItem -> {
-//            setTitle(menuItem.getTitle());
-//            switch (menuItem.getItemId()) {
-//                case R.id.menu_movies:
-//                    loadFragment(HomeFragment.newInstance());
-//                    return true;
-//                case R.id.menu_cart:
-//                    loadFragment(CartFragment.newInstance());
-//                    return true;
-//                case R.id.menu_favorite:
-//                    loadFragment(FavoriteFragment.newInstance());
-//                    return true;
-//                case R.id.menu_account:
-//                    loadFragment(AccountFragment.newInstance());
-//                    return true;
-//            }
-//            return false;
-//        });
+        bd.navigation.setOnNavigationItemSelectedListener(menuItem -> {
+            setTitle(menuItem.getTitle());
+            switch (menuItem.getItemId()) {
+                case R.id.menu_movies:
+                    loadFragment(MainFragment.newInstance());
+                    return true;
+                case R.id.menu_favorite:
+                    loadFragment(FavoriteFragment.newInstance());
+                    return true;
+                case R.id.menu_account:
+                    loadFragment(AccountFragment.newInstance());
+                    return true;
+            }
+            return false;
+        });
     }
 
     @Override

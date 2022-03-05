@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@android:color/white"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@android:color/white"
+       >
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#020202"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textSize="18sp"
-            android:drawableStart="@drawable/ic_baseline_keyboard_backspace_24"
-            android:fontFamily="sans-serif-condensed-medium"
             android:layout_gravity="center"
+            android:backgroundTint="#020202"
+            android:drawableStart="@drawable/ic_baseline_keyboard_backspace_24"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textSize="18sp" />
 
         <com.github.barteksc.pdfviewer.PDFView
-            android:layout_below="@id/title"
             android:id="@+id/idPDFView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/title"
             android:layout_marginStart="8dp"
+            android:layout_marginBottom="40dp"
             android:layout_marginEnd="8dp" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -34,7 +35,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:indeterminate="true"/>
+            android:indeterminate="true" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/save"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_baseline_save_alt_24"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+          />
 
     </RelativeLayout>
 </layout>

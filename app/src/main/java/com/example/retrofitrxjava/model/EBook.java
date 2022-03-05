@@ -12,6 +12,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EBook implements Serializable {
-    private String documentId, image, title, description, author, categories, price, file_pdf, vote;
+    private String documentId, image, title, description, author, price, file_pdf, vote;
     private int percent;
+    private String id_document;
+    private String uid;
+    private String total_page;
+    private int page;
 }

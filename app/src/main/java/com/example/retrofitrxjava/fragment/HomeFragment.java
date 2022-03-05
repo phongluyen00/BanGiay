@@ -71,6 +71,7 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
                 categoriesAdt.setListener(this);
                 binding.rvRecruitment.setAdapter(categoriesAdt);
                 categoriesAdt.setDt(productCategoriesList);
+                dismissDialog();
             }
         });
     }
@@ -113,10 +114,15 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
     }
 
     @Override
-    public void onItemMediaClick(Markets markets) {
+    public void onItemBookClick(Markets markets, int position) {
         Intent intent = new Intent(getActivity(), CategoriesActivity.class);
         intent.putExtra("status", markets.getStatus());
         startActivity(intent);
+    }
+
+    @Override
+    public void onRemove(Markets markets, int position) {
+
     }
 }
 

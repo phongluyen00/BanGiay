@@ -26,6 +26,7 @@ public class MutilAdt<T> extends RecyclerView.Adapter<MutilAdt.ViewHolder> {
         this.resId = resId;
         inflater = LayoutInflater.from(context);
     }
+
     public void setDt(ArrayList<T> data) {
         this.data = data;
         notifyDataSetChanged();
@@ -34,31 +35,38 @@ public class MutilAdt<T> extends RecyclerView.Adapter<MutilAdt.ViewHolder> {
     public void setListener(ListItemListener listener) {
         this.listener = listener;
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, resId, viewGroup, false);
         return new ViewHolder(binding);
     }
+
     @Override
     public int getItemCount() {
         return data == null ? 0 : data.size();
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MutilAdt.ViewHolder viewHolder, int i) {
-        T t = data.get(i);
+    public void onBindViewHolder(@NonNull MutilAdt.ViewHolder viewHolder, int position) {
+        T t = data.get(position);
         viewHolder.binding.setVariable(BR.item, t);
         viewHolder.binding.setVariable(BR.listener, listener);
+        viewHolder.binding.setVariable(BR.index, position);
         viewHolder.binding.executePendingBindings();
     }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ViewDataBinding binding;
+
         public ViewHolder(@NonNull ViewDataBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
     }
+
     public interface ListItemListener {
     }
+
 }

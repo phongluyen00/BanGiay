@@ -18,12 +18,19 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 public abstract class BDialogFragment<BD extends ViewDataBinding> extends DialogFragment {
 
     protected BD binding;
     protected ProgressDialog progressDialog;
     private Activity activity;
+    protected FirebaseAuth mAuth;
+    protected FirebaseUser currentUser;
+    protected FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Nullable
     @Override
@@ -55,6 +62,8 @@ public abstract class BDialogFragment<BD extends ViewDataBinding> extends Dialog
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         activity = getActivity();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser =  mAuth.getCurrentUser();
         progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage("Loading...");
         initLayout();

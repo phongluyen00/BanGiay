@@ -9,6 +9,10 @@
             type="com.example.retrofitrxjava.model.EBook" />
 
         <variable
+            name="index"
+            type="int"/>
+
+        <variable
             name="listener"
             type="com.example.retrofitrxjava.ItemOnclickListener" />
     </data>
@@ -19,7 +23,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:onClick="@{()-> listener.onItemMediaClick(item)}">
+        android:onClick="@{()-> listener.onItemBookClick(item, index)}">
 
         <View
             android:id="@+id/view"

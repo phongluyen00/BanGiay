@@ -11,25 +11,27 @@
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <LinearLayout
-            android:id="@+id/llContainerLogin"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/llContainerLogin"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
 
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
                     android:layout_marginTop="50dp"
+                    android:fontFamily="sans-serif-condensed-medium"
                     android:gravity="center_horizontal"
                     android:text="Login"
                     android:textColor="#223E5B"
@@ -39,135 +41,157 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:gravity="center_horizontal"
+                    android:text="By signing in you are agreeing our Term and privacy policy"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/rounded_border_edittext_login"
+                    android:hint="Email Address"
+                    android:paddingTop="6dp">
+
+                    <EditText
+                        android:id="@+id/etAccount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@android:color/transparent"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:maxLength="100"
+                        android:paddingStart="10dp"
+                        android:singleLine="true"
+                        android:text="@{user.name}"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/rounded_border_edittext_login"
+                    android:hint="Password"
+                    android:paddingTop="6dp">
+
+                    <EditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@android:color/transparent"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:maxLength="100"
+                        android:paddingStart="10dp"
+                        android:singleLine="true"
+                        android:text="@={user.password}"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/forgot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Forgot Password?"
+                    android:textColor="#0386D0"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btRequestLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="#0386D0"
+                    android:background="@drawable/ic_rectangle_6"
+                    android:gravity="center"
+                    android:text="Login"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/btRegister"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="Don’t have an account? Sign up"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/login_google"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/ic_rectangle_6__1_"
+                    android:backgroundTint="#FF9900"
+                    android:drawablePadding="6dp"
+                    android:gravity="center|left"
+                    android:paddingLeft="10dp"
+                    android:text="Sign in with Google"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_baseline_cruelty_free_24"
+                    tools:ignore="RtlSymmetry" />
+
             </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/bottom"
+                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="30dp"
-                android:paddingTop="6dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/rounded_border_edittext_login"
-                android:hint="Email Address">
+                android:src="@drawable/image1111"
+                android:layout_height="wrap_content"/>
 
-                <EditText
-                    android:id="@+id/etAccount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@android:color/transparent"
-                    android:digits="qwertzuiopasdfghjklyxcvbnmQWERT@ZUIOPASDFGHJKLYXCVBNM1234567890"
-                    android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress"
-                    android:maxLength="100"
-                    android:paddingStart="10dp"
-                    android:singleLine="true"
-                    android:text="@{user.name}"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    tools:ignore="RtlSymmetry" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:paddingTop="6dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/rounded_border_edittext_login"
-                android:hint="Password">
+                android:src="@drawable/subtract"
+                android:layout_alignBottom="@id/bottom"
+                android:layout_height="wrap_content"/>
 
-                <EditText
-                    android:id="@+id/etPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@android:color/transparent"
-                    android:digits="qwertzuiopasdfghjklyxcvbnmQWERT@ZUIOPASDFGHJKLYXCVBNM1234567890"
-                    android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress"
-                    android:maxLength="100"
-                    android:paddingStart="10dp"
-                    android:singleLine="true"
-                    android:text="@={user.password}"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    tools:ignore="RtlSymmetry" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/forgot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:text="Forgot Password?"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/btRequestLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/ic_rectangle_6"
-                android:gravity="center"
-                android:text="Login"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/btRegister"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:text="Don’t have an account? Sign up"
-                android:textAllCaps="false"
-                android:textColor="@android:color/black" />
-
-            <TextView
-                android:id="@+id/login_google"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/ic_rectangle_6__1_"
-                android:backgroundTint="#FF9900"
-                android:drawablePadding="6dp"
-                android:gravity="center|left"
-                android:paddingLeft="10dp"
-                android:text="Sign in with Google"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/ic_baseline_cruelty_free_24"
-                tools:ignore="RtlSymmetry" />
-
-            <com.paypal.checkout.paymentbutton.PayPalButton
-                android:id="@+id/payPalButton"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
+        </RelativeLayout>
 
     </ScrollView>
 

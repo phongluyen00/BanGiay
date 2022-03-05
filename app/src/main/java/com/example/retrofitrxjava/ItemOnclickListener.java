@@ -1,5 +1,6 @@
 package com.example.retrofitrxjava;
 
 public interface ItemOnclickListener<T> {
-    void onItemMediaClick(T t);
+    void onItemBookClick(T t, int position);
+    void onRemove(T t, int position);
 }

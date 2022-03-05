@@ -9,8 +9,12 @@
             type="com.example.retrofitrxjava.model.EBook" />
 
         <variable
+            name="index"
+            type="int" />
+
+        <variable
             name="listener"
-            type="com.example.retrofitrxjava.ItemOnclickListener" />
+            type="com.example.retrofitrxjava.ItemOnLongclickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,7 +23,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:onClick="@{()-> listener.onItemMediaClick(item)}">
+        android:onClick="@{()-> listener.onItemLongClick(item,index)}">
 
         <View
             android:id="@+id/view"
@@ -67,9 +71,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="sans-serif-condensed"
-            android:gravity="left"
+            android:gravity="center"
             android:text="@{item.title}"
             android:textColor="@android:color/black"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,20 +89,19 @@
             android:text="@{item.percent + `%`}"
             android:textColor="@android:color/black"
             android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@id/progress"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/progress" />
+            app:layout_constraintStart_toStartOf="@+id/progress"
+            app:layout_constraintTop_toBottomOf="@id/progress" />
 
         <ProgressBar
             android:id="@+id/progress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginTop="1dp"
             android:max="100"
             android:progress="@{item.percent}"
-            app:layout_constraintEnd_toStartOf="@+id/percent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 

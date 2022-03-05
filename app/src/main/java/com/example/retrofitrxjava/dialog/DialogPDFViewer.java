@@ -1,34 +1,48 @@
 package com.example.retrofitrxjava.dialog;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.example.retrofitrxjava.R;
+import com.example.retrofitrxjava.activity.MainActivity;
+import com.example.retrofitrxjava.adapter.MutilAdt;
 import com.example.retrofitrxjava.databinding.DialogPdfViewerBinding;
+import com.example.retrofitrxjava.model.EBook;
+import com.example.retrofitrxjava.model.MessageEvent;
 import com.github.barteksc.pdfviewer.listener.OnErrorListener;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
-import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.MetadataChanges;
+
+import org.greenrobot.eventbus.EventBus;
+import org.jsoup.helper.StringUtil;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class DialogPDFViewer extends BDialogFragment<DialogPdfViewerBinding> {
 
-    private String title;
-    private String urlPDF;
+    private EBook eBook;
+    private EBook eBookSave;
 
-    public DialogPDFViewer(String title, String urlPDF) {
-        this.title = title;
-        this.urlPDF = urlPDF;
+    public DialogPDFViewer(EBook eBook, EBook eBookSave) {
+        this.eBook = eBook;
+        this.eBookSave = eBookSave;
     }
 
     @Override
@@ -38,10 +52,23 @@ public class DialogPDFViewer extends BDialogFragment<DialogPdfViewerBinding> {
 
     @Override
     protected void initLayout() {
-        binding.title.setText(title);
+        binding.title.setText(eBook.getTitle());
         binding.progressCircular.setVisibility(View.VISIBLE);
-        binding.title.setOnClickListener(v -> dismiss());
-        new loadPdfURLViewer().execute(urlPDF);
+        binding.title.setOnClickListener(v -> {
+            dismiss();
+        });
+        new loadPdfURLViewer().execute(eBook.getFile_pdf());
+
+        binding.save.setOnClickListener(v -> {
+            eBook.setUid(currentUser.getUid());
+            if (eBookSave != null) {
+                db.collection("continue_reading").document(eBookSave.getDocumentId()).set(eBook);
+            } else {
+                db.collection("continue_reading").document().set(eBook);
+            }
+            EventBus.getDefault().post(new MessageEvent());
+        });
+
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -69,8 +96,17 @@ public class DialogPDFViewer extends BDialogFragment<DialogPdfViewerBinding> {
         @Override
         protected void onPostExecute(InputStream inputStream) {
             //after the executing async task we load pdf in to pdfview.
-            binding.idPDFView.
-                    fromStream(inputStream) .onLoad(this).onError(this).load();
+            binding.idPDFView.fromStream(inputStream).defaultPage(eBookSave != null ? eBookSave.getPage() : eBook.getPage()).onPageChange((page, pageCount) -> {
+                eBook.setPage(page);
+                pagegg = page + 1;
+                pageCountttt = pageCount;
+
+                float percent = (pagegg / pageCountttt) * 100;
+                Log.d("AAAAAAAAAAAA", percent+ " percent");
+                int b = (int) percent + 1;
+                eBook.setPercent(b);
+
+            }).onLoad(this).onError(this).load();
         }
 
         @Override
@@ -85,5 +121,6 @@ public class DialogPDFViewer extends BDialogFragment<DialogPdfViewerBinding> {
         }
     }
 
+    float pagegg, pageCountttt;
 
 }

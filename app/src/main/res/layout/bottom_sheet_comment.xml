@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Bình luân"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcl_comment"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/no_data"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_comment" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:gravity="center"
+            android:id="@+id/no_data"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            android:textSize="20sp"
+            android:text="Không có bình luận nào !"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_circular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rcl_comment"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toStartOf="@id/send"
+            android:background="@drawable/rounded_border_edittext_login"
+            android:hint="Bình luận"
+            android:padding="10dp"
+            android:singleLine="true" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/send"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@id/edt_comment"
+            android:layout_alignBottom="@+id/edt_comment"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_send_24" />
+
+    </RelativeLayout>
+</layout>

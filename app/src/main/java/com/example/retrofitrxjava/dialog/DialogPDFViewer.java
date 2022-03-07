@@ -17,6 +17,7 @@ import com.example.retrofitrxjava.model.EBook;
 import com.example.retrofitrxjava.model.MessageEvent;
 import com.github.barteksc.pdfviewer.listener.OnErrorListener;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -54,19 +55,46 @@ public class DialogPDFViewer extends BDialogFragment<DialogPdfViewerBinding> {
     protected void initLayout() {
         binding.title.setText(eBook.getTitle());
         binding.progressCircular.setVisibility(View.VISIBLE);
-        binding.title.setOnClickListener(v -> {
-            dismiss();
+
+        binding.back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+
+            }
         });
+
         new loadPdfURLViewer().execute(eBook.getFile_pdf());
 
         binding.save.setOnClickListener(v -> {
-            eBook.setUid(currentUser.getUid());
-            if (eBookSave != null) {
-                db.collection("continue_reading").document(eBookSave.getDocumentId()).set(eBook);
-            } else {
-                db.collection("continue_reading").document().set(eBook);
+            if (binding.progressCircular.getVisibility() == View.VISIBLE){
+                Snackbar snackbar = Snackbar
+                        .make(binding.main, "File download in progress. Please wait !", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                return;
             }
+            eBook.setUid(currentUser.getUid());
+            eBook.setId_book(eBook.getDocumentId());
+            if (binding.save.getText().equals("Đọc xong")) {
+                db.collection("continue_reading").document(eBookSave.getDocumentId()).delete()
+                        .addOnSuccessListener(aVoid -> {
+                        })
+                        .addOnFailureListener(e -> {
+                        });
+            }else {
+                if (eBookSave != null) {
+                    eBookSave.setUid(currentUser.getUid());
+                    db.collection("continue_reading").document(eBookSave.getDocumentId()).set(eBook);
+                } else {
+                    db.collection("continue_reading").document().set(eBook);
+                }
+            }
+
             EventBus.getDefault().post(new MessageEvent());
+            Snackbar snackbar = Snackbar
+                    .make(binding.main, "Added read later", Snackbar.LENGTH_LONG);
+            snackbar.show();
+            dismiss();
         });
 
     }
@@ -97,15 +125,24 @@ public class DialogPDFViewer extends BDialogFragment<DialogPdfViewerBinding> {
         protected void onPostExecute(InputStream inputStream) {
             //after the executing async task we load pdf in to pdfview.
             binding.idPDFView.fromStream(inputStream).defaultPage(eBookSave != null ? eBookSave.getPage() : eBook.getPage()).onPageChange((page, pageCount) -> {
+                if (StringUtil.isBlank(eBook.getTotal_page())){
+                    eBook.setTotal_page(String.valueOf(pageCount));
+                    db.collection("db_comics").document(eBook.getDocumentId()).set(eBook);
+                }
                 eBook.setPage(page);
                 pagegg = page + 1;
+
                 pageCountttt = pageCount;
 
                 float percent = (pagegg / pageCountttt) * 100;
-                Log.d("AAAAAAAAAAAA", percent+ " percent");
+                Log.d("AAAAAAAAAAAA", percent + " percent");
                 int b = (int) percent + 1;
                 eBook.setPercent(b);
-
+                if (b >= 100) {
+                    binding.save.setText("Đọc xong");
+                }else {
+                    binding.save.setText("Đọc sau");
+                }
             }).onLoad(this).onError(this).load();
         }
 

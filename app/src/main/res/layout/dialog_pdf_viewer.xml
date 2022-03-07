@@ -2,23 +2,54 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-       >
+        android:background="@android:color/white">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/title"
+            android:layout_alignBottom="@id/title"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_keyboard_backspace_24" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_toStartOf="@id/save"
+            android:layout_toEndOf="@id/back"
             android:backgroundTint="#020202"
-            android:drawableStart="@drawable/ic_baseline_keyboard_backspace_24"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:text="asdasdsad"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/title"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rounded_border_edittext_login"
             android:ellipsize="end"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="8dp"
             android:singleLine="true"
+            android:text="Đọc sau"
+            android:textColor="#FF5722"
             android:textSize="18sp" />
 
         <com.github.barteksc.pdfviewer.PDFView
@@ -27,8 +58,8 @@
             android:layout_height="match_parent"
             android:layout_below="@id/title"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="40dp"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="40dp" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progress_circular"
@@ -36,17 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:indeterminate="true" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/save"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_baseline_save_alt_24"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-          />
 
     </RelativeLayout>
 </layout>

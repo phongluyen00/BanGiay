@@ -1,6 +1,7 @@
 package com.example.retrofitrxjava.fragment;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.retrofitrxjava.ItemOnLongclickListener;
 import com.example.retrofitrxjava.ItemOnclickListener;
@@ -112,7 +113,7 @@ public class MainFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
     }
 
     private void onReload(){
-        getAllData(products -> {
+        getTrendingData(products -> {
             eBookArrayList.clear();
             eBookArrayList.addAll(products);
             eBookAdapter = new MutilAdt<>(activity, R.layout.item_trending_books);
@@ -129,10 +130,24 @@ public class MainFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
                         for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
                             EBook product = documentSnapshot.toObject(EBook.class);
                             if (product != null) {
-                                product.setDocumentId(documentSnapshot.getId());
+//                                product.setDocumentId(documentSnapshot.getId());
                                 continueReadingList.add(product);
+                                if (product.getPercent() >= 100){
+                                    db.collection("continue_reading").document(product.getDocumentId()).delete()
+                                            .addOnSuccessListener(aVoid -> {
+                                            })
+                                            .addOnFailureListener(e -> {
+                                            });
+                                }
                             }
                         }
+
+                        if (continueReadingList.size() > 0){
+                            binding.continute.setVisibility(View.VISIBLE);
+                        }else {
+                            binding.continute.setVisibility(View.GONE);
+                        }
+
                         eBookContinueReading.clear();
                         eBookContinueReading.addAll(continueReadingList);
                         continueReadingAdapter = new MutilAdt<>(activity, R.layout.item_continue_reading);

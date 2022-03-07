@@ -73,7 +73,7 @@ public class FavoriteFragment extends BaseFragment<FragmentFavoriteBinding> impl
     @Override
     public void onRemove(EBook eBook, int position) {
         showDialog();
-        db.collection("shopping_favorite").document(eBook.getDocumentId())
+        db.collection("book_favorite").document(eBook.getDocumentId())
                 .delete()
                 .addOnSuccessListener(aVoid -> {
                     Snackbar snackbar = Snackbar

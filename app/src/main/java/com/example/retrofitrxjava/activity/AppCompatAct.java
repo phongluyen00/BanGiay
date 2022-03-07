@@ -98,7 +98,7 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
     public static void setThumb(ImageView im, String img) {
         Glide.with(im)
                 .load(img)
-                .error(R.drawable.ic_baseline_warning_24)
+                .error(R.drawable.ic_baseline_no_accounts_24)
                 .into(im);
     }
 

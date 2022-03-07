@@ -6,6 +6,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -13,17 +14,29 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed-medium"
             android:padding="10dp"
-            android:text="Yêu Thích"
+            android:text="Tìm kiếm"
             android:textColor="@android:color/black"
             android:textSize="20sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcl_favorite"
-            android:layout_marginTop="5dp"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edit_query"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
+            android:background="@drawable/rounded_border_edittext_login"
+            android:hint="Tìm kiếm theo tên"
+            android:imeOptions="actionDone"
+            android:padding="10dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcl_all"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_favorite" />

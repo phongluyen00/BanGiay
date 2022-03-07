@@ -32,11 +32,12 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
+                android:layout_height="160dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:scaleType="fitXY"
+                thumb="@{`https://cungdocsach.vn/wp-content/uploads/2019/07/Ti%E1%BB%83u-thuy%E1%BA%BFt-ng%C3%B4n-t%C3%ACnh-hay-nh%E1%BA%A5t.jpg`}"
                 android:src="@drawable/image7" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -66,6 +67,9 @@
                 tools:listitem="@layout/item_account" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/continute"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

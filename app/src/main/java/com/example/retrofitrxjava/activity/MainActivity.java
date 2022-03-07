@@ -24,6 +24,7 @@ import com.example.retrofitrxjava.fragment.CartFragment;
 import com.example.retrofitrxjava.fragment.FavoriteFragment;
 import com.example.retrofitrxjava.fragment.HomeFragment;
 import com.example.retrofitrxjava.fragment.MainFragment;
+import com.example.retrofitrxjava.fragment.SearchFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,6 +32,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import org.jsoup.helper.StringUtil;
 
 public class MainActivity extends AppCompatAct<ActivityMainBinding> {
+
+    public static UserModel userModel;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -49,9 +52,28 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> {
                 case R.id.menu_account:
                     loadFragment(AccountFragment.newInstance());
                     return true;
+                case R.id.search:
+                    loadFragment(SearchFragment.newInstance());
+                    return true;
             }
             return false;
         });
+
+        showDialog();
+        db.collection("account").document(currentUser.getUid()).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    userModel = document.toObject(UserModel.class);
+                }else {
+                    userModel.setEmail(currentUser.getEmail());
+                    userModel.setName(currentUser.getDisplayName());
+                    db.collection("account").document(currentUser.getUid()).set(userModel);
+                }
+            }
+            dismissDialog();
+        });
+
     }
 
     @Override
@@ -147,5 +169,7 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> {
             }
         });
     }
+
+
 
 }

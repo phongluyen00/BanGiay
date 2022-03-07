@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -86,6 +87,22 @@ public abstract class BaseFragment<BD extends ViewDataBinding> extends Fragment 
         });
     }
 
+    protected void getTrendingData(onLoadData loadData) {
+        List<EBook> productList = new ArrayList<>();
+        db.collection("db_comics").whereEqualTo("type","top").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+                    EBook product = documentSnapshot.toObject(EBook.class);
+                    if (product != null) {
+                        product.setDocumentId(documentSnapshot.getId());
+                        productList.add(product);
+                    }
+                }
+                loadData.onDone(productList);
+            }
+        });
+    }
+
 
     public interface onLoadData {
         void onDone(List<EBook> products);
@@ -107,6 +124,20 @@ public abstract class BaseFragment<BD extends ViewDataBinding> extends Fragment 
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public List<EBook> getListSearchUser(String textQuery, List<EBook> lst) {
+        List<EBook> lstSearch = new ArrayList<>();
+        for (EBook model : lst) {
+            if (model.getTitle().toLowerCase().contains(textQuery.toLowerCase())) {
+                lstSearch.add(model);
+            }
+        }
+        return lstSearch;
+    }
+
+    protected String getText(EditText editText) {
+        return editText.getText().toString().trim();
     }
 
     protected abstract void initAdapter();

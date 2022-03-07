@@ -1,21 +1,27 @@
 package com.example.retrofitrxjava.fragment;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
 import com.bumptech.glide.Glide;
 import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
+import com.example.retrofitrxjava.activity.LoginActivity;
 import com.example.retrofitrxjava.activity.MainActivity;
+import com.example.retrofitrxjava.activity.SplashActivity;
+import com.example.retrofitrxjava.databinding.CustomLayoutBinding;
 import com.example.retrofitrxjava.databinding.FragmentAccountBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,26 +56,13 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
 
     @Override
     protected void initFragment() {
-        showDialog();
-        userModel = new UserModel();
-        db.collection("account").document(currentUser.getUid()).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    userModel = document.toObject(UserModel.class);
-                }else {
-                    userModel.setEmail(currentUser.getEmail());
-                    userModel.setName(currentUser.getDisplayName());
-                    db.collection("account").document(currentUser.getUid()).set(userModel);
-                }
-                binding.setItem(userModel);
-            }
-            dismissDialog();
-        });
+        userModel = MainActivity.userModel;
+        binding.setItem(userModel);
 
         binding.save.setOnClickListener(v -> {
             userModel = binding.getItem();
             if (imageUri != null) {
+                showDialog();
                 StorageReference storageReferenc = FirebaseStorage.getInstance().getReference().child("image_account").child(System.currentTimeMillis() + "." + getFileEx(imageUri));
                 storageReferenc.putFile(imageUri).addOnCompleteListener(task -> storageReferenc.getDownloadUrl().addOnSuccessListener(uri -> {
                     if (!StringUtil.isBlank(userModel.getImage())){
@@ -85,6 +78,7 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
                 db.collection("account").document(currentUser.getUid()).set(userModel);
                 Toast.makeText(activity, "Save success", Toast.LENGTH_SHORT).show();
             }
+            MainActivity.userModel = userModel;
         });
 
         binding.camera.setOnClickListener(v -> {
@@ -93,7 +87,53 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
             photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(photoPickerIntent, 1);
         });
+        
+        binding.changePassword.setOnClickListener(v -> showAlertDialogButtonClicked(userModel));
+        
+        binding.logout.setOnClickListener(v -> {
+            startActivity(new Intent(activity, LoginActivity.class));
+            activity.finish();
+            mAuth.signOut();
+        });
 
+    }
+
+
+    public void showAlertDialogButtonClicked(UserModel userModel) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Change password");
+        CustomLayoutBinding customLayout = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.custom_layout, null, false);
+        builder.setView(customLayout.getRoot());
+        AlertDialog dialog = builder.create();
+        customLayout.setItem(userModel);
+        customLayout.save.setOnClickListener(v -> {
+            if (StringUtil.isBlank(getText(customLayout.password)) ||
+                    !userModel.getPassword().equalsIgnoreCase(getText(customLayout.password)) ||
+                    getText(customLayout.password).length() < 7) {
+                customLayout.error.setText("Invalid old password");
+                customLayout.error.setVisibility(View.VISIBLE);
+                return;
+            }
+            if (StringUtil.isBlank(getText(customLayout.edtPasswordNew)) || getText(customLayout.edtPasswordNew).length() < 7) {
+                customLayout.error.setText("Invalid new password");
+                customLayout.error.setVisibility(View.VISIBLE);
+                return;
+            }
+            customLayout.error.setVisibility(View.GONE);
+            currentUser.updatePassword(getText(customLayout.edtPasswordNew))
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            userModel.setPassword(getText(customLayout.edtPasswordNew));
+                            db.collection("account").document(currentUser.getUid()).set(userModel);
+                            Toast.makeText(activity, "Change password success", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(activity, "Change password failed", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                    });
+
+        });
+        dialog.show();
     }
 
     @Override

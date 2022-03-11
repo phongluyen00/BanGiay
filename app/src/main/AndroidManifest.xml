@@ -49,6 +49,7 @@
         <activity android:name=".activity.PaymentSuccessActivity" />
         <activity android:name=".DialogRegister" />
         <activity android:name=".activity.CategoriesActivity" />
+        <activity android:name=".activity.DetailEBookDialog"/>
 
     </application>
 

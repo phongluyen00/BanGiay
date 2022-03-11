@@ -1,8 +1,10 @@
 package com.example.retrofitrxjava.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 
 import com.example.retrofitrxjava.ItemOnclickListener;
 import com.example.retrofitrxjava.R;
@@ -14,6 +16,7 @@ import com.example.retrofitrxjava.model.EBook;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +49,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
             eBookArrayList.addAll(products);
             eBookAdapter = new MutilAdt<>(activity, R.layout.item_search);
             binding.rclAll.setAdapter(eBookAdapter);
-            eBookAdapter.setDt((ArrayList<EBook>) products);
+            eBookAdapter.setDt((ArrayList<EBook>) eBookArrayList);
             eBookAdapter.setListener(this);
         });
 
@@ -75,8 +78,12 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
 
     @Override
     public void onItemBookClick(EBook eBook, int position) {
-        DetailEBookDialog detailEBookDialog = new DetailEBookDialog(eBook, position, eBookArrayList);
-        detailEBookDialog.show(getChildFragmentManager(), detailEBookDialog.getTag());
+        Intent intent = new Intent(activity, DetailEBookDialog.class);
+        Log.d("AAAAAAAAAAA", eBook.getDocumentId() + "--------" + eBook.getId_book());
+        intent.putExtra("ebook", eBook);
+        intent.putExtra("index", position);
+        intent.putExtra("list", (Serializable) eBookArrayList);
+        startActivity(intent);
     }
 
     @Override

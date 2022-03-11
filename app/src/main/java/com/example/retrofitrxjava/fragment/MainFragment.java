@@ -1,6 +1,9 @@
 package com.example.retrofitrxjava.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 
 import com.example.retrofitrxjava.ItemOnLongclickListener;
@@ -18,6 +21,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,8 +81,12 @@ public class MainFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
 
     @Override
     public void onItemBookClick(EBook eBook, int position) {
-        DetailEBookDialog detailEBookDialog = new DetailEBookDialog(eBook, position, eBookArrayList);
-        detailEBookDialog.show(getChildFragmentManager(), detailEBookDialog.getTag());
+        Intent intent = new Intent(activity, DetailEBookDialog.class);
+        Log.d("AAAAAAAAAAA", eBook.getDocumentId());
+        intent.putExtra("ebook", eBook);
+        intent.putExtra("index", position);
+        intent.putExtra("list", (Serializable) eBookArrayList);
+        startActivity(intent);
     }
 
     @Override
@@ -101,7 +109,7 @@ public class MainFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         // Do something
-        if (event != null){
+        if (event != null) {
             onReload();
         }
     }
@@ -112,7 +120,7 @@ public class MainFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
         EventBus.getDefault().unregister(this);
     }
 
-    private void onReload(){
+    private void onReload() {
         getTrendingData(products -> {
             eBookArrayList.clear();
             eBookArrayList.addAll(products);
@@ -130,9 +138,9 @@ public class MainFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
                         for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
                             EBook product = documentSnapshot.toObject(EBook.class);
                             if (product != null) {
-//                                product.setDocumentId(documentSnapshot.getId());
+                                product.setDocumentId(documentSnapshot.getId());
                                 continueReadingList.add(product);
-                                if (product.getPercent() >= 100){
+                                if (product.getPercent() >= 100) {
                                     db.collection("continue_reading").document(product.getDocumentId()).delete()
                                             .addOnSuccessListener(aVoid -> {
                                             })
@@ -142,9 +150,9 @@ public class MainFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
                             }
                         }
 
-                        if (continueReadingList.size() > 0){
+                        if (continueReadingList.size() > 0) {
                             binding.continute.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             binding.continute.setVisibility(View.GONE);
                         }
 
@@ -160,7 +168,12 @@ public class MainFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
 
     @Override
     public void onItemLongClick(EBook eBook, int index) {
-        DetailEBookDialog detailEBookDialog = new DetailEBookDialog(eBook, index, eBookContinueReading);
-        detailEBookDialog.show(getChildFragmentManager(), detailEBookDialog.getTag());
+        Intent intent = new Intent(activity, DetailEBookDialog.class);
+        Log.d("AAAAAAAAAAA", eBook.getDocumentId() + "--------" + eBook.getId_book());
+        intent.putExtra("ebook", eBook);
+        intent.putExtra("index", index);
+        intent.putExtra("isReading", true);
+        intent.putExtra("list", (Serializable) eBookContinueReading);
+        startActivity(intent);
     }
 }

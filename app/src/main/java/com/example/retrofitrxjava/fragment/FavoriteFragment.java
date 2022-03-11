@@ -1,5 +1,6 @@
 package com.example.retrofitrxjava.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.retrofitrxjava.ItemOnclickListener;
@@ -12,6 +13,7 @@ import com.example.retrofitrxjava.model.ProductCategories;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,8 +68,11 @@ public class FavoriteFragment extends BaseFragment<FragmentFavoriteBinding> impl
 
     @Override
     public void onItemBookClick(EBook eBook, int position) {
-        DetailEBookDialog detailEBookDialog = new DetailEBookDialog(eBook, position, eBookList);
-        detailEBookDialog.show(getChildFragmentManager(), detailEBookDialog.getTag());
+        Intent intent = new Intent(activity, DetailEBookDialog.class);
+        intent.putExtra("ebook", eBook);
+        intent.putExtra("index", position);
+        intent.putExtra("list", (Serializable) eBookList);
+        startActivity(intent);
     }
 
     @Override

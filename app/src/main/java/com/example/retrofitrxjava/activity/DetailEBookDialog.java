@@ -1,12 +1,18 @@
 package com.example.retrofitrxjava.activity;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.retrofitrxjava.ItemOnclickListener;
 import com.example.retrofitrxjava.R;
+import com.example.retrofitrxjava.Utils;
 import com.example.retrofitrxjava.adapter.DetailImageAdapter;
 import com.example.retrofitrxjava.adapter.MutilAdt;
 import com.example.retrofitrxjava.databinding.DetailActivityBinding;
@@ -17,46 +23,65 @@ import com.example.retrofitrxjava.model.EBook;
 import com.example.retrofitrxjava.model.ProductCategories;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.paypal.pyplcheckout.pojo.To;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
 
+import org.json.JSONObject;
 import org.jsoup.helper.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailEBookDialog extends BDialogFragment<DetailActivityBinding> {
+public class DetailEBookDialog extends AppCompatAct<DetailActivityBinding> implements PaymentResultListener, ItemOnclickListener<EBook>, MutilAdt.ListItemListener{
 
     private EBook eBook;
-    private MutilAdt<EBook> adapterSimilar;
-    private List<EBook> eBookList = new ArrayList<>();
+    private MutilAdt<EBook> eBookAdapter;
+    private List<EBook> eBookList;
     private int position = 0;
     private DetailImageAdapter slideBook;
     private EBook eBookSave;
     private boolean isFavorite;
-
-    public DetailEBookDialog(EBook eBook, int position, List<EBook> eBookList) {
-        this.eBook = eBook;
-        this.eBookList = eBookList;
-        this.position = position;
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.detail_activity;
-    }
+    private Utils viewModel;
+    private boolean isReading;
 
     @Override
     protected void initLayout() {
-        if (eBook != null) {
-            binding.setItem(eBook);
+
+        Intent intent = getIntent();
+        if (intent != null){
+            eBook = (EBook) intent.getSerializableExtra("ebook");
+            position = intent.getIntExtra("index",0);
+            eBookList= (List<EBook>) intent.getSerializableExtra("list");
+            isReading = intent.getBooleanExtra("isReading",false);
         }
 
-        eBook = eBookList.get(position);
-        slideBook = new DetailImageAdapter(getContext(), eBookList);
-        binding.viewPager.setClipToPadding(false);
-        binding.viewPager.setPageMargin(12);
-        binding.viewPager.setAdapter(slideBook);
+        if (eBook != null) {
+            bd.setItem(eBook);
+        }
+        viewModel = new ViewModelProvider(this).get(Utils.class);
+        viewModel.getDataAndType("see", db, currentUser.getUid());
 
-        binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewModel.getBookMutableLiveData().observe(this, new Observer<List<EBook>>() {
+            @Override
+            public void onChanged(List<EBook> eBooks) {
+                if (eBooks != null && eBooks.size() > 0){
+                    eBookAdapter.setDt((ArrayList<EBook>) eBooks);
+                }
+            }
+        });
+
+        eBook = eBookList.get(position);
+
+        if (isReading){
+            bd.favorite.setVisibility(View.GONE);
+        }
+        slideBook = new DetailImageAdapter(this, eBookList);
+        bd.viewPager.setClipToPadding(false);
+        bd.viewPager.setPageMargin(12);
+        bd.viewPager.setAdapter(slideBook);
+
+        bd.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             public void onPageScrollStateChanged(int state) {
             }
 
@@ -65,21 +90,21 @@ public class DetailEBookDialog extends BDialogFragment<DetailActivityBinding> {
 
             public void onPageSelected(int position) {
                 eBook = eBookList.get(position);
-                binding.setItem(eBook);
+                bd.setItem(eBook);
                 // Check if this is the page you want.
             }
         });
 
-        binding.viewPager.setCurrentItem(position);
+        bd.viewPager.setCurrentItem(position);
 
-        binding.back.setOnClickListener(v -> dismiss());
+        bd.back.setOnClickListener(v -> finish());
 
-        binding.read.setOnClickListener(v -> {
+        bd.read.setOnClickListener(v -> {
             DialogPDFViewer dialogPDFViewer = new DialogPDFViewer(eBook, eBookSave);
-            dialogPDFViewer.show(getChildFragmentManager(), dialogPDFViewer.getTag());
+            dialogPDFViewer.show(getSupportFragmentManager(), dialogPDFViewer.getTag());
         });
 
-        binding.share.setOnClickListener(new View.OnClickListener() {
+        bd.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent sendIntent = new Intent();
@@ -91,12 +116,23 @@ public class DetailEBookDialog extends BDialogFragment<DetailActivityBinding> {
             }
         });
 
-        binding.favorite.setOnClickListener(new View.OnClickListener() {
+        bd.payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startPayment();
+            }
+        });
+
+        bd.favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addFavorite(eBook);
             }
         });
+
+        eBookAdapter = new MutilAdt<>(this, R.layout.item_trending_books);
+        bd.rclSimilar.setAdapter(eBookAdapter);
+        eBookAdapter.setListener(this);
 
         if (!StringUtil.isBlank(eBook.getId_book())) {
             db.collection("continue_reading").whereEqualTo("uid", currentUser.getUid()).
@@ -132,9 +168,9 @@ public class DetailEBookDialog extends BDialogFragment<DetailActivityBinding> {
                     });
         }
 
-        binding.comment.setOnClickListener(v -> {
+        bd.comment.setOnClickListener(v -> {
             BottomSheetComment bottomSheetComment = new BottomSheetComment(eBook, MainActivity.userModel);
-            bottomSheetComment.show(getChildFragmentManager(), bottomSheetComment.getTag());
+            bottomSheetComment.show(getSupportFragmentManager(), bottomSheetComment.getTag());
         });
 
         if (!eBook.isFavorite()) {
@@ -144,32 +180,82 @@ public class DetailEBookDialog extends BDialogFragment<DetailActivityBinding> {
                         EBook eBookFavorite = documentSnapshot.toObject(EBook.class);
                         if (eBookFavorite != null && eBook.getDocumentId().equalsIgnoreCase(eBookFavorite.getId_book())) {
                             isFavorite = true;
-                            binding.favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
+                            bd.favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
                             break;
                         }
                     }
                 }
             });
-        }else {
+        } else {
             isFavorite = true;
-            binding.favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
+            bd.favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
         }
     }
 
+    @Override
+    protected int getID() {
+        return R.layout.detail_activity;
+    }
+
     private void addFavorite(EBook eBook) {
+
         eBook.setId_book(eBook.getDocumentId());
         eBook.setUid(currentUser.getUid());
-        eBook.setFavorite(true);
 
-        if (!isFavorite){
-            binding.favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
+        if (!isFavorite) {
+            bd.favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
             db.collection("book_favorite").document().set(eBook);
             isFavorite = true;
-        }else {
+        } else {
             Snackbar snackbar = Snackbar
-                    .make(binding.main, "The product has been liked !", Snackbar.LENGTH_LONG);
+                    .make(bd.main, "The product has been liked !", Snackbar.LENGTH_LONG);
             snackbar.show();
         }
 
+    }
+
+    @Override
+    public void onItemBookClick(EBook eBook, int position) {
+
+    }
+
+    @Override
+    public void onRemove(EBook eBook, int position) {
+
+    }
+
+    public void startPayment() {
+        Checkout checkout = new Checkout();
+        checkout.setKeyID("rzp_test_bvPYonKyVPrUPM");
+        /**
+         * Pass your payment options to the Razorpay Checkout as a JSONObject
+         */
+        try {
+            JSONObject options = new JSONObject();
+
+            options.put("name", "Merchant Name");
+            options.put("description", "Reference No. #123456");
+            options.put("currency", "INR");
+            options.put("amount", "300");//pass amount in currency subunits
+            options.put("prefill.email", "phongluyen1998@example.com");
+            options.put("prefill.contact","0358844343");
+
+            checkout.open(this, options);
+
+        } catch(Exception e) {
+            Log.e("TAG", "Error in starting Razorpay Checkout", e);
+        }
+    }
+    @Override
+    public void onPaymentSuccess(String razorpayPaymentID) {
+        Toast.makeText(this, "Payment successfully done! " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void onPaymentError(int code, String response) {
+        try {
+            Toast.makeText(this, "Payment error please try again", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e("OnPaymentError", "Exception in onPaymentError", e);
+        }
     }
 }

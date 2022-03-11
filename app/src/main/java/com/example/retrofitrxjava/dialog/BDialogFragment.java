@@ -27,7 +27,7 @@ public abstract class BDialogFragment<BD extends ViewDataBinding> extends Dialog
 
     protected BD binding;
     protected ProgressDialog progressDialog;
-    private Activity activity;
+    protected Activity activity;
     protected FirebaseAuth mAuth;
     protected FirebaseUser currentUser;
     protected FirebaseFirestore db = FirebaseFirestore.getInstance();

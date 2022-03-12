@@ -23,4 +23,5 @@ public class ProductCategories implements Serializable {
     private String id_document;
     private String uid;
     private boolean isFavorite;
+    private String id_markets;
 }

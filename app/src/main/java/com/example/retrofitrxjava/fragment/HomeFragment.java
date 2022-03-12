@@ -62,7 +62,7 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
         Intent intent = activity.getIntent();
         showDialog();
         ArrayList<ProductCategories> productCategoriesList = new ArrayList<>();
-        db.collection("product_categories").whereEqualTo("type", "home_new").get().addOnCompleteListener(task -> {
+        db.collection("product_markets").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
                     ProductCategories product = documentSnapshot.toObject(ProductCategories.class);
@@ -149,7 +149,7 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
     @Override
     public void onItemMediaClick(Markets markets) {
         Intent intent = new Intent(getActivity(), CategoriesActivity.class);
-        intent.putExtra("status", markets.getStatus());
+        intent.putExtra("markets", markets);
         startActivity(intent);
     }
 

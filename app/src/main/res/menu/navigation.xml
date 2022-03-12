@@ -6,9 +6,9 @@
         android:title="Home" />
 
     <item
-        android:id="@+id/menu_cart"
-        android:icon="@drawable/ic_slice_2"
-        android:title="Card" />
+        android:id="@+id/bill"
+        android:icon="@drawable/ic_baseline_receipt_24"
+        android:title="Bill" />
 
     <item
         android:id="@+id/menu_favorite"

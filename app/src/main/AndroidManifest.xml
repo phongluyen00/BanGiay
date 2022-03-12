@@ -48,6 +48,7 @@
         <activity android:name=".DialogRegister" />
         <activity android:name=".activity.CategoriesActivity" />
         <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".fragment.CartFragment"/>
 
     </application>
 

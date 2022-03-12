@@ -49,7 +49,7 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
     protected AppDatabase appDatabase;
     protected UserModel userModel;
     protected FirebaseAuth mAuth;
-    FirebaseUser currentUser;
+    protected FirebaseUser currentUser;
     protected ProgressDialog progressDialog;
 
     @Override

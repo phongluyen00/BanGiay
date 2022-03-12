@@ -88,5 +88,6 @@ dependencies {
 
     implementation('com.paypal.checkout:android-sdk:0.2.0')
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.razorpay:checkout:1.6.12'
 
 }

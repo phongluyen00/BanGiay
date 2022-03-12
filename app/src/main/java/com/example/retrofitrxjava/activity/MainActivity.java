@@ -36,14 +36,15 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> {
     protected void initLayout() {
         loadFragment(HomeFragment.newInstance());
         setTitle("Home");
+        bd.card.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CartFragment.class);
+            startActivity(intent);
+        });
         bd.navigation.setOnNavigationItemSelectedListener(menuItem -> {
             setTitle(menuItem.getTitle());
             switch (menuItem.getItemId()) {
                 case R.id.menu_movies:
                     loadFragment(HomeFragment.newInstance());
-                    return true;
-                case R.id.menu_cart:
-                    loadFragment(CartFragment.newInstance());
                     return true;
                 case R.id.menu_favorite:
                     loadFragment(FavoriteFragment.newInstance());
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> {
         transaction.commit();
     }
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         bd.title.setText(title);
     }
 }

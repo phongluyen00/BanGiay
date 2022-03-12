@@ -1,47 +1,35 @@
 package com.example.retrofitrxjava.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.biometric.BiometricPrompt;
 
 import com.example.retrofitrxjava.ItemBuyListener;
 import com.example.retrofitrxjava.ItemDeleteCartListener;
 import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.R;
-import com.example.retrofitrxjava.activity.MainActivity;
+import com.example.retrofitrxjava.activity.AppCompatAct;
 import com.example.retrofitrxjava.activity.PaymentSuccessActivity;
-import com.example.retrofitrxjava.adapter.BannerAdapter;
 import com.example.retrofitrxjava.adapter.CartAdt;
 import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.databinding.ActivityCartBinding;
-import com.example.retrofitrxjava.fragment.BaseFragment;
-import com.example.retrofitrxjava.fragment.HomeFragment;
-import com.example.retrofitrxjava.model.Banner;
+import com.example.retrofitrxjava.dialog.BuyBottomSheet;
 import com.example.retrofitrxjava.model.ProductCategories;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartFragment extends BaseFragment<ActivityCartBinding> implements CartAdt.ListItemListener, ItemDeleteCartListener, ItemBuyListener {
+public class CartFragment extends AppCompatAct<ActivityCartBinding> implements CartAdt.ListItemListener, ItemDeleteCartListener, ItemBuyListener {
     private AppDatabase appDatabase;
     private List<ProductCategories> productCategoriesList = new ArrayList<>();
     private CartAdt<ProductCategories> cartAdapter;
 
-    public static CartFragment newInstance() {
-
-        Bundle args = new Bundle();
-        CartFragment fragment = new CartFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    protected void initAdapter() {
+    protected void initLayout() {
+        this.appDatabase = AppDatabase.getInstance(this);
+        bd.setListener(this);
+
         db.collection("cart").whereEqualTo("uid", currentUser.getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
@@ -52,26 +40,20 @@ public class CartFragment extends BaseFragment<ActivityCartBinding> implements C
                     }
                 }
 
-                cartAdapter = new CartAdt<>(activity, R.layout.item_cart);
-                binding.recycleCart.setAdapter(this.cartAdapter);
+                cartAdapter = new CartAdt<>(this, R.layout.item_cart);
+                bd.recycleCart.setAdapter(this.cartAdapter);
                 cartAdapter.setData(productCategoriesList);
                 setPriceTotal();
                 cartAdapter.setListener(this);
             }
         });
 
-
-    }
-
-    @Override
-    protected void initLiveData() {
-
-    }
-
-    @Override
-    protected void initFragment() {
-        this.appDatabase = AppDatabase.getInstance(activity);
-        binding.setListener(this);
+        bd.add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkOut();
+            }
+        });
     }
 
     @Override
@@ -91,15 +73,15 @@ public class CartFragment extends BaseFragment<ActivityCartBinding> implements C
 //        this.listArticle = appDatabase.getStudentDao().getAll(userModel.getIdUser());
 //        cartAdapter.setData(listArticle);
         setPriceTotal();
-        Toast.makeText(activity, "delete", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "delete", Toast.LENGTH_SHORT).show();
     }
 
     public void buy() {
 //        appDatabase.getStudentDao().deleteAll(userModel.getIdUser());
 //        this.listArticle = this.appDatabase.getStudentDao().getAll(userModel.getIdUser());
 //        cartAdapter.setData(listArticle);
-        Toast.makeText(activity, "Mua hàng thành công!", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(activity, PaymentSuccessActivity.class);
+        Toast.makeText(this, "Mua hàng thành công!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, PaymentSuccessActivity.class);
         startActivity(intent);
     }
 
@@ -113,13 +95,12 @@ public class CartFragment extends BaseFragment<ActivityCartBinding> implements C
 //        for (Product article : listArticle) {
 //            price += getPrice(article.getPrice()) * article.getCount();
 //        }
-        binding.setTotal(String.valueOf(price));
+        bd.setTotal(String.valueOf(price));
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        ((MainActivity) activity).setTitle("Cart");
+    private void checkOut() {
+        BuyBottomSheet buyBottomSheet = new BuyBottomSheet();
+        buyBottomSheet.show(getSupportFragmentManager(), buyBottomSheet.getTag());
     }
 
     public double getPrice(String price) {

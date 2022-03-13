@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.retrofitrxjava.ItemOnclickListener;
@@ -17,10 +18,15 @@ import com.example.retrofitrxjava.adapter.BannerAdapter;
 import com.example.retrofitrxjava.adapter.MutilAdt;
 import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.databinding.LayoutRecruitmentBinding;
+import com.example.retrofitrxjava.dialog.BaseBottomSheet;
+import com.example.retrofitrxjava.dialog.BuyBottomSheet;
 import com.example.retrofitrxjava.model.Banner;
 import com.example.retrofitrxjava.model.Markets;
 import com.example.retrofitrxjava.model.ProductCategories;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.razorpay.Checkout;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,7 +144,30 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
 //        product.setCount(1);
 //        product.setIdUserModel(userModel.getIdUser());
 //        appDatabase.getStudentDao().insertProduct(product);
+        BaseBottomSheet baseBottomSheet = new BuyBottomSheet(() -> startPayment(), userModel, 2000);
+        baseBottomSheet.show(getChildFragmentManager(),baseBottomSheet.getTag());
         Toast.makeText(activity, product.getPrice(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void startPayment() {
+        Checkout checkout = new Checkout();
+        checkout.setKeyID("rzp_test_bvPYonKyVPrUPM");
+        /**
+         * Pass your payment options to the Razorpay Checkout as a JSONObject
+         */
+        try {
+            JSONObject options = new JSONObject();
+            options.put("name", "Merchant Name");
+            options.put("description", "Payment");
+            options.put("currency", "INR");
+            options.put("amount", "300");//pass amount in currency subunits
+            options.put("prefill.email", currentUser.getEmail());
+            options.put("prefill.contact", MainActivity.userModel.getPhoneNumber());
+
+            checkout.open(activity, options);
+        } catch(Exception e) {
+            Log.e("TAG", "Error in starting Razorpay Checkout", e);
+        }
     }
 
     @Override

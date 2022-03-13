@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
@@ -23,19 +24,25 @@ import com.example.retrofitrxjava.fragment.AccountFragment;
 import com.example.retrofitrxjava.fragment.CartFragment;
 import com.example.retrofitrxjava.fragment.FavoriteFragment;
 import com.example.retrofitrxjava.fragment.HomeFragment;
+import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.razorpay.PaymentResultListener;
 
 import org.jsoup.helper.StringUtil;
 
-public class MainActivity extends AppCompatAct<ActivityMainBinding> {
+public class MainActivity extends AppCompatAct<ActivityMainBinding> implements PaymentResultListener {
 
     public static UserModel userModel;
+    private SetupViewModel setupViewModel;
 
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void initLayout() {
+        setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
+        setupViewModel.loadAccount(db,currentUser);
+
         loadFragment(HomeFragment.newInstance());
         setTitle("Home");
         bd.card.setOnClickListener(v -> {
@@ -74,5 +81,16 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> {
 
     public void setTitle(String title) {
         bd.title.setText(title);
+    }
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        Intent intent = new Intent(this, PaymentSuccessActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+
     }
 }

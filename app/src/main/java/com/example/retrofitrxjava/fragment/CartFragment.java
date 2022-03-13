@@ -36,6 +36,8 @@ public class CartFragment extends AppCompatAct<ActivityCartBinding> implements C
         this.appDatabase = AppDatabase.getInstance(this);
         bd.setListener(this);
 
+        bd.title.setText("Cart");
+        bd.back.setOnClickListener(v -> finish());
         db.collection("cart").whereEqualTo("uid", currentUser.getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {

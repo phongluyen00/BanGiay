@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.retrofitrxjava.Product;
@@ -22,6 +24,7 @@ import com.example.retrofitrxjava.activity.LoginActivity;
 import com.example.retrofitrxjava.activity.MainActivity;
 import com.example.retrofitrxjava.databinding.CustomLayoutBinding;
 import com.example.retrofitrxjava.databinding.FragmentAccountBinding;
+import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -35,6 +38,7 @@ import static android.app.Activity.RESULT_OK;
 public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
 
     private Uri imageUri;
+    private SetupViewModel setupViewModel;
 
     public static AccountFragment newInstance() {
         Bundle args = new Bundle();
@@ -56,18 +60,11 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
     @Override
     protected void initFragment() {
         userModel = new UserModel();
-        db.collection("account").document(currentUser.getUid()).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    userModel = document.toObject(UserModel.class);
-                }else {
-                    userModel.setDocumentId(document.getId());
-                    userModel.setEmail(currentUser.getEmail());
-                    userModel.setName(currentUser.getDisplayName());
-                    db.collection("account").document(currentUser.getUid()).set(userModel);
-                }
-                MainActivity.userModel = userModel;
+        setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
+        setupViewModel.loadAccount(db,currentUser);
+        setupViewModel.getUserModelMutableLiveData().observe(this, new Observer<UserModel>() {
+            @Override
+            public void onChanged(UserModel userModel) {
                 binding.setItem(userModel);
             }
         });

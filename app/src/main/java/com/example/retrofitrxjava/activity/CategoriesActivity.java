@@ -47,29 +47,11 @@ public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> 
             id_Markets = markets.getDocumentId();
             setupViewModel.getProductMarket(db,id_Markets);
         }
-        setupViewModel.getProductCategoriesList().observe(this, new Observer<List<ProductCategories>>() {
-            @Override
-            public void onChanged(List<ProductCategories> productCategories) {
-                if (productCategories != null && productCategories.size() > 0){
-                    loadData(productCategories);
-                }
+        setupViewModel.getProductCategoriesList().observe(this, productCategories -> {
+            if (productCategories != null && productCategories.size() > 0){
+                loadData(productCategories);
             }
         });
-//        db.collection("product_markets").whereEqualTo("id_markets", id_Markets).get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
-//                    ProductCategories product = documentSnapshot.toObject(ProductCategories.class);
-//                    if (product != null) {
-//                        product.setDocumentId(documentSnapshot.getId());
-//                        productCategoriesList.add(product);
-//                    }
-//                }
-//                categoriesAdt = new MutilAdt<>(this, R.layout.item_product);
-//                categoriesAdt.setListener(this);
-//                bd.rclCategories.setAdapter(categoriesAdt);
-//                categoriesAdt.setDt((ArrayList<ProductCategories>) productCategoriesList);
-//            }
-//        });
 
         bd.title.setText(markets.getTitle());
         bd.back.setOnClickListener(v -> finish());

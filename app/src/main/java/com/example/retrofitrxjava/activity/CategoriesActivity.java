@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.retrofitrxjava.ItemOnclickProductListener;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.adapter.MutilAdt;
@@ -13,6 +16,7 @@ import com.example.retrofitrxjava.dialog.BuyBottomSheet;
 import com.example.retrofitrxjava.model.Categories;
 import com.example.retrofitrxjava.model.Markets;
 import com.example.retrofitrxjava.model.ProductCategories;
+import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
@@ -30,29 +34,42 @@ public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> 
     private List<ProductCategories> productCategoriesList = new ArrayList<>();
     private Markets markets;
     private String id_Markets = "";
+    private SetupViewModel setupViewModel;
 
     @Override
     protected void initLayout() {
         setTitle("Categories");
+        setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
+
         if (getIntent() != null) {
             markets = (Markets) getIntent().getSerializableExtra("markets");
+            assert markets != null;
             id_Markets = markets.getDocumentId();
+            setupViewModel.getProductMarket(db,id_Markets);
         }
-        db.collection("product_markets").whereEqualTo("id_markets", id_Markets).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
-                    ProductCategories product = documentSnapshot.toObject(ProductCategories.class);
-                    if (product != null) {
-                        product.setDocumentId(documentSnapshot.getId());
-                        productCategoriesList.add(product);
-                    }
+        setupViewModel.getProductCategoriesList().observe(this, new Observer<List<ProductCategories>>() {
+            @Override
+            public void onChanged(List<ProductCategories> productCategories) {
+                if (productCategories != null && productCategories.size() > 0){
+                    loadData(productCategories);
                 }
-                categoriesAdt = new MutilAdt<>(this, R.layout.item_product);
-                categoriesAdt.setListener(this);
-                bd.rclCategories.setAdapter(categoriesAdt);
-                categoriesAdt.setDt((ArrayList<ProductCategories>) productCategoriesList);
             }
         });
+//        db.collection("product_markets").whereEqualTo("id_markets", id_Markets).get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+//                    ProductCategories product = documentSnapshot.toObject(ProductCategories.class);
+//                    if (product != null) {
+//                        product.setDocumentId(documentSnapshot.getId());
+//                        productCategoriesList.add(product);
+//                    }
+//                }
+//                categoriesAdt = new MutilAdt<>(this, R.layout.item_product);
+//                categoriesAdt.setListener(this);
+//                bd.rclCategories.setAdapter(categoriesAdt);
+//                categoriesAdt.setDt((ArrayList<ProductCategories>) productCategoriesList);
+//            }
+//        });
 
         bd.title.setText(markets.getTitle());
         bd.back.setOnClickListener(v -> finish());
@@ -96,6 +113,13 @@ public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> 
         } catch(Exception e) {
             Log.e("TAG", "Error in starting Razorpay Checkout", e);
         }
+    }
+
+    private void loadData(List<ProductCategories> productCategories){
+        categoriesAdt = new MutilAdt<>(this, R.layout.item_product);
+        categoriesAdt.setListener(this);
+        bd.rclCategories.setAdapter(categoriesAdt);
+        categoriesAdt.setDt((ArrayList<ProductCategories>) productCategories);
     }
 
     @Override

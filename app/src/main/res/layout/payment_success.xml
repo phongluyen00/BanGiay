@@ -4,15 +4,16 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#4B889F">
+        android:background="@drawable/background_success">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/icon_success"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="250dp"
+            android:layout_height="240dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="80dp"
-            app:srcCompat="@drawable/icon_success" />
+            android:layout_marginEnd="10dp"
+            app:srcCompat="@drawable/img_successss" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_name"
@@ -21,8 +22,8 @@
             android:layout_below="@id/icon_success"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:text="Payment Success"
-            android:textColor="@android:color/white"
+            android:text="Order success"
+            android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
 

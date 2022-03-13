@@ -67,6 +67,7 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
                     userModel.setName(currentUser.getDisplayName());
                     db.collection("account").document(currentUser.getUid()).set(userModel);
                 }
+                MainActivity.userModel = userModel;
                 binding.setItem(userModel);
             }
         });
@@ -82,11 +83,13 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
                         delete.delete().addOnSuccessListener(aVoid1 -> { });
                     }
                     userModel.setImage(uri.toString());
+                    MainActivity.userModel = userModel;
                     db.collection("account").document(currentUser.getUid()).set(userModel);
                     Toast.makeText(activity, "Save success", Toast.LENGTH_SHORT).show();
                     dismissDialog();
                 }));
             } else {
+                MainActivity.userModel = userModel;
                 db.collection("account").document(currentUser.getUid()).set(userModel);
                 Toast.makeText(activity, "Save success", Toast.LENGTH_SHORT).show();
             }

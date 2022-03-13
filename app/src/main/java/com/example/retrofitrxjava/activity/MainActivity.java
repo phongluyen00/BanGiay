@@ -31,6 +31,8 @@ import org.jsoup.helper.StringUtil;
 
 public class MainActivity extends AppCompatAct<ActivityMainBinding> {
 
+    public static UserModel userModel;
+
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void initLayout() {

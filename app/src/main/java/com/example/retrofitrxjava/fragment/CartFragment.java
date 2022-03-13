@@ -1,6 +1,7 @@
 package com.example.retrofitrxjava.fragment;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -9,6 +10,7 @@ import com.example.retrofitrxjava.ItemDeleteCartListener;
 import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.activity.AppCompatAct;
+import com.example.retrofitrxjava.activity.MainActivity;
 import com.example.retrofitrxjava.activity.PaymentSuccessActivity;
 import com.example.retrofitrxjava.adapter.CartAdt;
 import com.example.retrofitrxjava.database.AppDatabase;
@@ -16,11 +18,15 @@ import com.example.retrofitrxjava.databinding.ActivityCartBinding;
 import com.example.retrofitrxjava.dialog.BuyBottomSheet;
 import com.example.retrofitrxjava.model.ProductCategories;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartFragment extends AppCompatAct<ActivityCartBinding> implements CartAdt.ListItemListener, ItemDeleteCartListener, ItemBuyListener {
+public class CartFragment extends AppCompatAct<ActivityCartBinding> implements CartAdt.ListItemListener, ItemDeleteCartListener, ItemBuyListener, PaymentResultListener {
     private AppDatabase appDatabase;
     private List<ProductCategories> productCategoriesList = new ArrayList<>();
     private CartAdt<ProductCategories> cartAdapter;
@@ -99,11 +105,43 @@ public class CartFragment extends AppCompatAct<ActivityCartBinding> implements C
     }
 
     private void checkOut() {
-        BuyBottomSheet buyBottomSheet = new BuyBottomSheet();
+        BuyBottomSheet buyBottomSheet = new BuyBottomSheet(this::startPayment,userModel,15454);
         buyBottomSheet.show(getSupportFragmentManager(), buyBottomSheet.getTag());
     }
 
     public double getPrice(String price) {
         return Double.parseDouble(price);
+    }
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        Intent intent = new Intent(this, PaymentSuccessActivity.class);
+        startActivity(intent);
+    }
+
+    public void startPayment() {
+        Checkout checkout = new Checkout();
+        checkout.setKeyID("rzp_test_bvPYonKyVPrUPM");
+        /**
+         * Pass your payment options to the Razorpay Checkout as a JSONObject
+         */
+        try {
+            JSONObject options = new JSONObject();
+            options.put("name", "Merchant Name");
+            options.put("description", "Payment");
+            options.put("currency", "INR");
+            options.put("amount", "300");//pass amount in currency subunits
+            options.put("prefill.email", currentUser.getEmail());
+            options.put("prefill.contact", MainActivity.userModel.getPhoneNumber());
+
+            checkout.open(this, options);
+        } catch(Exception e) {
+            Log.e("TAG", "Error in starting Razorpay Checkout", e);
+        }
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+
     }
 }

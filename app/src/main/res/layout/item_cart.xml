@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="index"
+            type="int"/>
+
+        <variable
             name="item"
             type="com.example.retrofitrxjava.model.ProductCategories" />
 
@@ -86,7 +90,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:adjustViewBounds="true"
-            android:onClick="@{()->listener.onItemDeleteClick(item)}"
+            android:onClick="@{()->listener.onItemDeleteClick(item,index)}"
             android:padding="5dp"
             app:layout_constraintStart_toEndOf="@id/img_recruitment"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
@@ -99,7 +103,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:adjustViewBounds="true"
-            android:onClick="@{()->listener.onItemDeleteClick(item)}"
+            android:onClick="@{()->listener.onItemAddClick(item,index)}"
             android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="@id/img_delete"
             app:layout_constraintStart_toEndOf="@id/tv_count"

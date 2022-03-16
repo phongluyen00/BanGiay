@@ -1,18 +1,15 @@
-package com.example.retrofitrxjava.fragment;
+package com.example.retrofitrxjava.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.retrofitrxjava.ItemBuyListener;
 import com.example.retrofitrxjava.ItemDeleteCartListener;
-import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.R;
-import com.example.retrofitrxjava.activity.AppCompatAct;
-import com.example.retrofitrxjava.activity.MainActivity;
-import com.example.retrofitrxjava.activity.PaymentSuccessActivity;
 import com.example.retrofitrxjava.adapter.CartAdt;
+import com.example.retrofitrxjava.constanst.Constants;
 import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.databinding.ActivityCartBinding;
 import com.example.retrofitrxjava.dialog.BuyBottomSheet;
@@ -26,7 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartFragment extends AppCompatAct<ActivityCartBinding> implements CartAdt.ListItemListener, ItemDeleteCartListener, ItemBuyListener, PaymentResultListener {
+public class CartActivity extends AppCompatAct<ActivityCartBinding> implements CartAdt.ListItemListener, ItemDeleteCartListener<ProductCategories>, ItemBuyListener, PaymentResultListener {
     private AppDatabase appDatabase;
     private List<ProductCategories> productCategoriesList = new ArrayList<>();
     private CartAdt<ProductCategories> cartAdapter;
@@ -35,10 +32,23 @@ public class CartFragment extends AppCompatAct<ActivityCartBinding> implements C
     protected void initLayout() {
         this.appDatabase = AppDatabase.getInstance(this);
         bd.setListener(this);
-
         bd.title.setText("Cart");
         bd.back.setOnClickListener(v -> finish());
-        db.collection("cart").whereEqualTo("uid", currentUser.getUid()).get().addOnCompleteListener(task -> {
+        getAllCart();
+        initListener();
+    }
+
+    private void initListener() {
+        bd.add.setOnClickListener(v -> checkOut());
+    }
+
+    @Override
+    protected int getID() {
+        return R.layout.activity_cart;
+    }
+
+    private void getAllCart() {
+        db.collection(Constants.KEY_CART).whereEqualTo(Constants.KEY_UID, currentUser.getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
                     ProductCategories productCategories = documentSnapshot.toObject(ProductCategories.class);
@@ -55,39 +65,9 @@ public class CartFragment extends AppCompatAct<ActivityCartBinding> implements C
                 cartAdapter.setListener(this);
             }
         });
-
-        bd.add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkOut();
-            }
-        });
-    }
-
-    @Override
-    protected int getID() {
-        return R.layout.activity_cart;
-    }
-
-    @Override
-    public void onItemDeleteClick(Object o) {
-        Product article = (Product) o;
-        if (article.getCount() <= 1) {
-            appDatabase.getStudentDao().delete((Product) o);
-        } else {
-            article.setCount(article.getCount() - 1);
-            appDatabase.getStudentDao().update(article);
-        }
-//        this.listArticle = appDatabase.getStudentDao().getAll(userModel.getIdUser());
-//        cartAdapter.setData(listArticle);
-        setPriceTotal();
-        Toast.makeText(this, "delete", Toast.LENGTH_SHORT).show();
     }
 
     public void buy() {
-//        appDatabase.getStudentDao().deleteAll(userModel.getIdUser());
-//        this.listArticle = this.appDatabase.getStudentDao().getAll(userModel.getIdUser());
-//        cartAdapter.setData(listArticle);
         Toast.makeText(this, "Mua hàng thành công!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, PaymentSuccessActivity.class);
         startActivity(intent);
@@ -103,11 +83,12 @@ public class CartFragment extends AppCompatAct<ActivityCartBinding> implements C
 //        for (Product article : listArticle) {
 //            price += getPrice(article.getPrice()) * article.getCount();
 //        }
+
         bd.setTotal(String.valueOf(price));
     }
 
     private void checkOut() {
-        BuyBottomSheet buyBottomSheet = new BuyBottomSheet(this::startPayment,userModel,15454);
+        BuyBottomSheet buyBottomSheet = new BuyBottomSheet(this::startPayment, userModel, 15454);
         buyBottomSheet.show(getSupportFragmentManager(), buyBottomSheet.getTag());
     }
 
@@ -117,6 +98,9 @@ public class CartFragment extends AppCompatAct<ActivityCartBinding> implements C
 
     @Override
     public void onPaymentSuccess(String s) {
+        for (ProductCategories productCategories : productCategoriesList) {
+            updateCartBuy(productCategories);
+        }
         Intent intent = new Intent(this, PaymentSuccessActivity.class);
         startActivity(intent);
     }
@@ -137,7 +121,7 @@ public class CartFragment extends AppCompatAct<ActivityCartBinding> implements C
             options.put("prefill.contact", MainActivity.userModel.getPhoneNumber());
 
             checkout.open(this, options);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e("TAG", "Error in starting Razorpay Checkout", e);
         }
     }
@@ -145,5 +129,74 @@ public class CartFragment extends AppCompatAct<ActivityCartBinding> implements C
     @Override
     public void onPaymentError(int i, String s) {
 
+    }
+
+    @Override
+    public void onItemDeleteClick(ProductCategories productCategories, int index) {
+        updateItemCount(productCategories, index, true);
+    }
+
+    @Override
+    public void onItemAddClick(ProductCategories productCategories, int index) {
+        updateItemCount(productCategories, index, false);
+    }
+
+    private void updateItemCount(ProductCategories productCategories, int index, boolean isDelete) {
+        int count = productCategories.getCount();
+        if (isDelete) {
+            count--;
+            if (count == 0) {
+                AlertDialog.Builder b = new AlertDialog.Builder(this);
+                b.setMessage("Do you want to delete item?");
+                b.setPositiveButton("OK", (dialog, id) -> {
+                    deleteCart(productCategories, index);
+                });
+                b.setNegativeButton("Cancel", (dialog, id) -> dialog.dismiss());
+                AlertDialog al = b.create();
+                al.show();
+            }
+        } else {
+            count++;
+        }
+        if (count != 0) {
+            productCategories.setCount(count);
+            productCategoriesList.set(index, productCategories);
+            cartAdapter.notifyItemChanged(index);
+            updateCart(productCategories);
+        }
+    }
+
+    public void updateCart(ProductCategories productCategories) {
+        db.collection(Constants.KEY_CART).document(productCategories.getDocumentId())
+                .update(productCategories.toMapData())
+                .addOnCompleteListener(task -> {
+
+                })
+                .addOnFailureListener(e -> {
+
+                });
+    }
+
+    public void updateCartBuy(ProductCategories productCategories) {
+        db.collection(Constants.KEY_CART).document(productCategories.getDocumentId())
+                .update(Constants.KEY_STATUS, Constants.KEY_ITEM_PENDING)
+                .addOnCompleteListener(task -> {
+
+                })
+                .addOnFailureListener(e -> {
+
+                });
+    }
+
+    public void deleteCart(ProductCategories productCategories, int indext) {
+        db.collection(Constants.KEY_CART).document(productCategories.getDocumentId())
+                .delete()
+                .addOnCompleteListener(task -> {
+                    productCategoriesList.remove(indext);
+                    cartAdapter.notifyItemRemoved(indext);
+                })
+                .addOnFailureListener(e -> {
+
+                });
     }
 }

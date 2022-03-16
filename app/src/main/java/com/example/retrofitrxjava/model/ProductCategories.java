@@ -1,6 +1,8 @@
 package com.example.retrofitrxjava.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +24,18 @@ public class ProductCategories implements Serializable {
     private String description;
     private String id_document;
     private String uid;
+    private int status;
     private boolean isFavorite;
     private String id_markets;
+
+    public Map<String, Object> toMapData() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("count", count);
+        map.put("image", image);
+        map.put("price", price);
+        map.put("title", title);
+        map.put("uid", uid);
+
+        return map;
+    }
 }

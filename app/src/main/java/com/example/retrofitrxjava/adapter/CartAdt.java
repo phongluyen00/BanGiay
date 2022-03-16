@@ -55,6 +55,7 @@ public class CartAdt<T>
         T t = data.get(i);
         viewHolder.binding.setVariable(BR.item, t);
         viewHolder.binding.setVariable(BR.listener, listener);
+        viewHolder.binding.setVariable(BR.index,i);
         viewHolder.binding.executePendingBindings();
     }
 

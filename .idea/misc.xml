@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/project doing/BanGiay/app/src/main/res/layout/activity_cart.xml" value="0.22" />
+        <entry key="..\:/project doing/BanGiay/app/src/main/res/layout/item_cart.xml" value="0.1921875" />
+        <entry key="..\:/project doing/BanGiay/app/src/main/res/layout/payment_success.xml" value="0.1921875" />
+      </map>
+    </option>
+  </component>
   <component name="EntryPointsManager">
     <list size="1">
       <item index="0" class="java.lang.String" itemvalue="org.greenrobot.eventbus.Subscribe" />

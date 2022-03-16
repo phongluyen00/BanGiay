@@ -4930,7 +4930,7 @@ com.google.android.material.R$style: int Widget_AppCompat_CompoundButton_RadioBu
 com.google.android.material.R$styleable: int CardView_contentPaddingBottom
 com.google.protobuf.WireFormat$FieldType$4: WireFormat$FieldType$4(java.lang.String,int,com.google.protobuf.WireFormat$JavaType,int)
 androidx.recyclerview.widget.RecyclerView: android.widget.EdgeEffect mRightGlow
-com.example.retrofitrxjava.fragment.CartFragment: CartActivity()
+com.example.retrofitrxjava.activity.CartActivity: CartActivity()
 com.google.android.material.R$attr: int searchViewStyle
 com.google.android.material.R$attr: int tabUnboundedRipple
 androidx.appcompat.R$dimen: int abc_text_size_body_1_material
@@ -6960,7 +6960,7 @@ androidx.constraintlayout.solver.widgets.ConstraintAnchor$Type: <clinit>()
 com.google.android.material.R$color: int mtrl_btn_stroke_color_selector
 com.google.android.material.R$drawable: int design_fab_background
 com.squareup.okhttp.HttpUrl$Builder$ParseResult: <clinit>()
-com.example.retrofitrxjava.fragment.CartFragment
+com.example.retrofitrxjava.activity.CartActivity
 com.google.android.material.R$styleable: int CardView_contentPadding
 androidx.recyclerview.widget.RecyclerView: void addOnChildAttachStateChangeListener(androidx.recyclerview.widget.RecyclerView$OnChildAttachStateChangeListener)
 com.google.android.material.R$drawable: int abc_list_selector_background_transition_holo_light

@@ -166,6 +166,7 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
         if (count != 0) {
             productCategories.setCount(count);
             productCategoriesList.set(index, productCategories);
+            setPriceTotal();
             cartAdapter.notifyItemChanged(index);
             updateCart(productCategories);
         }

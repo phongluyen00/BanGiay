@@ -2,6 +2,7 @@ package com.example.retrofitrxjava.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.databinding.ActivityMainBinding;
+import com.example.retrofitrxjava.dialog.BottomSheetMarkets;
 import com.example.retrofitrxjava.fragment.AccountFragment;
 import com.example.retrofitrxjava.fragment.FavoriteFragment;
 import com.example.retrofitrxjava.fragment.HomeFragment;
@@ -31,6 +33,10 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> implements P
         setTitle("Home");
         bd.card.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CartActivity.class);
+            startActivity(intent);
+        });
+        bd.add.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ActivityAdd.class);
             startActivity(intent);
         });
         bd.navigation.setOnNavigationItemSelectedListener(menuItem -> {

@@ -28,7 +28,7 @@ import java.util.List;
 
 import static com.example.retrofitrxjava.fragment.HomeFragment.EXTRA_DATA;
 
-public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> implements MutilAdt.ListItemListener, ItemOnclickProductListener<ProductCategories> , PaymentResultListener {
+public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> implements MutilAdt.ListItemListener, ItemOnclickProductListener<ProductCategories>, PaymentResultListener {
 
     private MutilAdt<ProductCategories> categoriesAdt;
     private List<ProductCategories> productCategoriesList = new ArrayList<>();
@@ -39,16 +39,17 @@ public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> 
     @Override
     protected void initLayout() {
         setTitle("Categories");
+        userModel = MainActivity.userModel;
         setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
 
         if (getIntent() != null) {
             markets = (Markets) getIntent().getSerializableExtra("markets");
             assert markets != null;
             id_Markets = markets.getDocumentId();
-            setupViewModel.getProductMarket(db,id_Markets);
+            setupViewModel.getProductMarket(db, id_Markets);
         }
         setupViewModel.getProductCategoriesList().observe(this, productCategories -> {
-            if (productCategories != null && productCategories.size() > 0){
+            if (productCategories != null && productCategories.size() > 0) {
                 loadData(productCategories);
             }
         });
@@ -72,11 +73,16 @@ public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> 
 
     @Override
     public void onItemAddListener(ProductCategories productCategories) {
-        BaseBottomSheet baseBottomSheet = new BuyBottomSheet(() -> startPayment(), userModel, 2000);
-        baseBottomSheet.show(getSupportFragmentManager(),baseBottomSheet.getTag());
+        BaseBottomSheet baseBottomSheet = new BuyBottomSheet(new BuyBottomSheet.itemListener() {
+            @Override
+            public void onSubmit(double totalPrice) {
+                startPayment(totalPrice);
+            }
+        },  Double.parseDouble(productCategories.getPrice()));
+        baseBottomSheet.show(getSupportFragmentManager(), baseBottomSheet.getTag());
     }
 
-    private void startPayment() {
+    private void startPayment(double totalPrice) {
         Checkout checkout = new Checkout();
         checkout.setKeyID("rzp_test_bvPYonKyVPrUPM");
         /**
@@ -87,17 +93,17 @@ public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> 
             options.put("name", "Merchant Name");
             options.put("description", "Payment");
             options.put("currency", "INR");
-            options.put("amount", "300");//pass amount in currency subunits
+            options.put("amount", totalPrice * 0.90);//pass amount in currency subunits
             options.put("prefill.email", currentUser.getEmail());
             options.put("prefill.contact", MainActivity.userModel.getPhoneNumber());
 
             checkout.open(this, options);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e("TAG", "Error in starting Razorpay Checkout", e);
         }
     }
 
-    private void loadData(List<ProductCategories> productCategories){
+    private void loadData(List<ProductCategories> productCategories) {
         categoriesAdt = new MutilAdt<>(this, R.layout.item_product);
         categoriesAdt.setListener(this);
         bd.rclCategories.setAdapter(categoriesAdt);

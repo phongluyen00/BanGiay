@@ -3,7 +3,9 @@ package com.example.retrofitrxjava.activity;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.retrofitrxjava.R;
@@ -30,6 +32,24 @@ public class DetailActivity extends AppCompatAct<ActivityDetailTruyenBinding> {
             bd.setItem(productCategories);
         }
 
+
+        setupViewModel.getProductCart().observe(this, new Observer<ProductCategories>() {
+            @Override
+            public void onChanged(ProductCategories product) {
+                if (product == null) {
+                    productCategories.setId_document(productCategories.getDocumentId());
+                    productCategories.setUid(currentUser.getUid());
+                    productCategories.setCount(count);
+                    db.collection("cart").document().set(productCategories);
+                } else {
+                    product.setCount(product.getCount() + count);
+                    db.collection("cart").document(product.getDocumentId()).set(product);
+                }
+                Toast.makeText(DetailActivity.this, "Thêm thành công !" + count, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
         if (!productCategories.isFavorite()) {
             setupViewModel.getDocumentIdFavorite(db, currentUser, productCategories);
         } else {
@@ -38,7 +58,7 @@ public class DetailActivity extends AppCompatAct<ActivityDetailTruyenBinding> {
         }
 
         setupViewModel.getProductCategoriesMutableLiveData().observe(this, productCategories -> {
-            if (productCategories != null){
+            if (productCategories != null) {
                 isFavorite = true;
                 bd.favorite.setImageResource(R.drawable.ic_baseline_favorite_24_new);
             }
@@ -62,9 +82,7 @@ public class DetailActivity extends AppCompatAct<ActivityDetailTruyenBinding> {
 
         bd.add.setOnClickListener(v -> {
             if (count != 0) {
-                productCategories.setId_document(productCategories.getDocumentId());
-                productCategories.setUid(currentUser.getUid());
-                db.collection("cart").document().set(productCategories);
+                setupViewModel.checkProductExitsCart(db, currentUser, productCategories);
             } else {
                 Snackbar snackbar = Snackbar
                         .make(bd.mainContent, "You need to enter the quantity", Snackbar.LENGTH_LONG);

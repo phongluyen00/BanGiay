@@ -16,10 +16,8 @@ import lombok.Setter;
 public class ProductCategories implements Serializable {
     private String title;
     private String image;
-    private String type;
     private String documentId;
     private String price;
-    private String vote;
     private int count;
     private String description;
     private String id_document;
@@ -27,6 +25,14 @@ public class ProductCategories implements Serializable {
     private int status;
     private boolean isFavorite;
     private String id_markets;
+
+    public ProductCategories(String title, String image, String price, String description, String id_markets) {
+        this.title = title;
+        this.image = image;
+        this.price = price;
+        this.id_markets = id_markets;
+        this.description = description;
+    }
 
     public Map<String, Object> toMapData() {
         Map<String, Object> map = new HashMap<>();

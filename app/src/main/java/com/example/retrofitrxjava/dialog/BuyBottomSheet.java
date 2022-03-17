@@ -1,16 +1,9 @@
 package com.example.retrofitrxjava.dialog;
 
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.activity.MainActivity;
 import com.example.retrofitrxjava.databinding.BottomSheetBuyBinding;
-import com.razorpay.Checkout;
-
-import org.json.JSONObject;
 
 public class BuyBottomSheet extends BaseBottomSheet<BottomSheetBuyBinding> {
 
@@ -18,9 +11,9 @@ public class BuyBottomSheet extends BaseBottomSheet<BottomSheetBuyBinding> {
     private UserModel userModel;
     private double totalPrice;
 
-    public BuyBottomSheet(itemListener listener, UserModel userModel, double totalPrice) {
+    public BuyBottomSheet(itemListener listener, double totalPrice) {
         this.listener = listener;
-        this.userModel = userModel;
+        this.userModel = MainActivity.userModel;
         this.totalPrice = totalPrice;
     }
 
@@ -31,13 +24,15 @@ public class BuyBottomSheet extends BaseBottomSheet<BottomSheetBuyBinding> {
 
     @Override
     protected void initLayout() {
+        binding.setTotal(String.valueOf(totalPrice));
+        binding.setUser(userModel);
         binding.submit.setOnClickListener(v -> {
-            listener.onSubmit();
+            listener.onSubmit(totalPrice);
             dismiss();
         });
     }
 
-    public interface itemListener{
-        void onSubmit();
+    public interface itemListener {
+        void onSubmit(double totalPrice);
     }
 }

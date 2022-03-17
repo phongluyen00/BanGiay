@@ -80,15 +80,20 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
 
     public void setPriceTotal() {
         double price = 0;
-//        for (Product article : listArticle) {
-//            price += getPrice(article.getPrice()) * article.getCount();
-//        }
+        for (ProductCategories article : productCategoriesList) {
+            price += getPrice(article.getPrice()) * article.getCount();
+        }
 
         bd.setTotal(String.valueOf(price));
     }
 
     private void checkOut() {
-        BuyBottomSheet buyBottomSheet = new BuyBottomSheet(this::startPayment, userModel, 15454);
+        BuyBottomSheet buyBottomSheet = new BuyBottomSheet(new BuyBottomSheet.itemListener() {
+            @Override
+            public void onSubmit(double totalPrice) {
+                startPayment(totalPrice);
+            }
+        }, Double.parseDouble(bd.getTotal()));
         buyBottomSheet.show(getSupportFragmentManager(), buyBottomSheet.getTag());
     }
 
@@ -105,7 +110,7 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
         startActivity(intent);
     }
 
-    public void startPayment() {
+    public void startPayment(double total) {
         Checkout checkout = new Checkout();
         checkout.setKeyID("rzp_test_bvPYonKyVPrUPM");
         /**
@@ -116,7 +121,7 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
             options.put("name", "Merchant Name");
             options.put("description", "Payment");
             options.put("currency", "INR");
-            options.put("amount", "300");//pass amount in currency subunits
+            options.put("amount", total);//pass amount in currency subunits
             options.put("prefill.email", currentUser.getEmail());
             options.put("prefill.contact", MainActivity.userModel.getPhoneNumber());
 
@@ -164,6 +169,7 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
             cartAdapter.notifyItemChanged(index);
             updateCart(productCategories);
         }
+        setPriceTotal();
     }
 
     public void updateCart(ProductCategories productCategories) {

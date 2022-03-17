@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="user"
+            type="com.example.retrofitrxjava.UserModel" />
+
+        <variable
+            name="total"
+            type="String" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,7 +88,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
             android:gravity="end"
-            android:text="Địa chỉ"
+            android:text="@{user.address}"
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -102,7 +112,7 @@
             android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="0123456789"
+            android:text="@{user.phoneNumber}"
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edt_address" />
@@ -111,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="1500000đ"
+            android:text="@{total}"
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_payment" />

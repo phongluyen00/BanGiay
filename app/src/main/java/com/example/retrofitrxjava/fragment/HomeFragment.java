@@ -7,6 +7,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.retrofitrxjava.ItemOnclickListener;
 import com.example.retrofitrxjava.ItemOnclickProductListener;
 import com.example.retrofitrxjava.Product;
@@ -20,12 +23,17 @@ import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.databinding.LayoutRecruitmentBinding;
 import com.example.retrofitrxjava.dialog.BaseBottomSheet;
 import com.example.retrofitrxjava.dialog.BuyBottomSheet;
+import com.example.retrofitrxjava.event.UpdateMain;
 import com.example.retrofitrxjava.model.Banner;
 import com.example.retrofitrxjava.model.Markets;
 import com.example.retrofitrxjava.model.ProductCategories;
+import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.razorpay.Checkout;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -38,6 +46,7 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
     private MutilAdt<Markets> adapterProduct;
     private AppDatabase appDatabase;
     private MutilAdt<ProductCategories> categoriesAdt;
+    private SetupViewModel setupViewModel;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -48,13 +57,22 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
 
     @Override
     protected void initAdapter() {
-        getAllData(products -> {
-            adapterProduct = new MutilAdt<>(activity, R.layout.item_account);
-            adapterProduct.setDt((ArrayList<Markets>) products);
-            adapterProduct.setListener(this);
-            binding.rclMarket.setAdapter(adapterProduct);
-            dismissDialog();
+        EventBus.getDefault().register(this);
+        userModel = MainActivity.userModel;
+        setupViewModel.getMarket(db);
+        setupViewModel.getMarketsLiveData().observe(this, markets -> {
+            if (markets != null && markets.size() > 0) {
+                showListMarkets(markets);
+            }
         });
+    }
+
+    private void showListMarkets(List<Markets> markets) {
+        adapterProduct = new MutilAdt<>(activity, R.layout.item_account);
+        adapterProduct.setDt((ArrayList<Markets>) markets);
+        adapterProduct.setListener(this);
+        binding.rclMarket.setAdapter(adapterProduct);
+        dismissDialog();
     }
 
     @Override
@@ -64,25 +82,12 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
 
     @Override
     protected void initFragment() {
+        setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
         appDatabase = AppDatabase.getInstance(getActivity());
         Intent intent = activity.getIntent();
         showDialog();
-        ArrayList<ProductCategories> productCategoriesList = new ArrayList<>();
-        db.collection("product_markets").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
-                    ProductCategories product = documentSnapshot.toObject(ProductCategories.class);
-                    if (product != null) {
-                        product.setDocumentId(documentSnapshot.getId());
-                        productCategoriesList.add(product);
-                    }
-                }
-                categoriesAdt = new MutilAdt<>(activity,R.layout.item_product);
-                categoriesAdt.setListener(this);
-                binding.rvRecruitment.setAdapter(categoriesAdt);
-                categoriesAdt.setDt(productCategoriesList);
-            }
-        });
+        setupViewModel.getProductMarketHome(db);
+        setupViewModel.getProductMarkets().observe(this, productCategories -> showProductMarkets(productCategories));
 
         db.collection("banner").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -99,20 +104,13 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
             }
         });
 
-//        binding.circleIndicator.setViewPager(binding.viewpager);
-//        handler = new Handler();
-//        runnable = () -> {
-//            currentItem = binding.viewpager.getCurrentItem();
-//            currentItem++;
-//            if (currentItem >= Objects.requireNonNull(binding.viewpager.getAdapter()).getCount()) {
-//                currentItem = 0;
-//            }
-//            binding.viewpager.setCurrentItem(currentItem, true);
-//            handler.postDelayed(runnable, 4500);
-//
-//        };
-//        handler.postDelayed(runnable, 4500);
+    }
 
+    private void showProductMarkets(ArrayList<ProductCategories> productCategoriesList) {
+        categoriesAdt = new MutilAdt<>(activity, R.layout.item_product);
+        categoriesAdt.setListener(this);
+        binding.rvRecruitment.setAdapter(categoriesAdt);
+        categoriesAdt.setDt(productCategoriesList);
     }
 
     @Override
@@ -128,28 +126,21 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
         startActivity(intent);
     }
 
-    @Override
-    public void onItemAddListener(ProductCategories product) {
-//        List<Product> all = appDatabase.getStudentDao().getAll(userModel.getIdUser());
-//        if (all != null) {
-//            for (Product article1 : appDatabase.getStudentDao().getAll(userModel.getIdUser())) {
-//                if (TextUtils.equals(article1.getName(), product.getTitle())) {
-//                    article1.setCount(article1.getCount() + 1);
-//                    appDatabase.getStudentDao().update(article1);
-//                    Toast.makeText(activity, "Thêm giỏ hàng thành công!", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//            }
-//        }
-//        product.setCount(1);
-//        product.setIdUserModel(userModel.getIdUser());
-//        appDatabase.getStudentDao().insertProduct(product);
-        BaseBottomSheet baseBottomSheet = new BuyBottomSheet(() -> startPayment(), userModel, 2000);
-        baseBottomSheet.show(getChildFragmentManager(),baseBottomSheet.getTag());
-        Toast.makeText(activity, product.getPrice(), Toast.LENGTH_SHORT).show();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UpdateMain event) {
+        // Do something
+        if (event != null) {
+            setupViewModel.getProductMarketHome(db);
+        }
     }
 
-    private void startPayment() {
+    @Override
+    public void onItemAddListener(ProductCategories product) {
+        BaseBottomSheet baseBottomSheet = new BuyBottomSheet(this::startPayment, Double.parseDouble(product.getPrice()));
+        baseBottomSheet.show(getChildFragmentManager(), baseBottomSheet.getTag());
+    }
+
+    private void startPayment(double totalPrice) {
         Checkout checkout = new Checkout();
         checkout.setKeyID("rzp_test_bvPYonKyVPrUPM");
         /**
@@ -160,12 +151,12 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
             options.put("name", "Merchant Name");
             options.put("description", "Payment");
             options.put("currency", "INR");
-            options.put("amount", "300");//pass amount in currency subunits
+            options.put("amount", totalPrice * 0.90);//pass amount in currency subunits
             options.put("prefill.email", currentUser.getEmail());
             options.put("prefill.contact", MainActivity.userModel.getPhoneNumber());
 
             checkout.open(activity, options);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e("TAG", "Error in starting Razorpay Checkout", e);
         }
     }
@@ -173,6 +164,7 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

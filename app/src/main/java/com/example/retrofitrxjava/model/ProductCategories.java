@@ -38,4 +38,8 @@ public class ProductCategories implements Serializable {
 
         return map;
     }
+
+    public String totalPrice() {
+        return String.valueOf(Double.parseDouble(price) * count);
+    }
 }

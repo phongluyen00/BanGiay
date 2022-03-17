@@ -55,7 +55,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_price"
-            price="@{item.price}"
+            price="@{item.totalPrice()}"
             tools:text="$10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

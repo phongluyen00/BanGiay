@@ -13,6 +13,7 @@ import com.example.retrofitrxjava.databinding.ActivityMainBinding;
 import com.example.retrofitrxjava.fragment.AccountFragment;
 import com.example.retrofitrxjava.fragment.FavoriteFragment;
 import com.example.retrofitrxjava.fragment.HomeFragment;
+import com.example.retrofitrxjava.fragment.ManageOrderFragment;
 import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.razorpay.PaymentResultListener;
 
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> implements P
     @Override
     protected void initLayout() {
         setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
-        setupViewModel.loadAccount(db,currentUser);
+        setupViewModel.loadAccount(db, currentUser);
 
         loadFragment(HomeFragment.newInstance());
         setTitle("Home");
@@ -38,6 +39,9 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> implements P
             switch (menuItem.getItemId()) {
                 case R.id.menu_movies:
                     loadFragment(HomeFragment.newInstance());
+                    return true;
+                case R.id.bill:
+                    loadFragment(ManageOrderFragment.newInstance());
                     return true;
                 case R.id.menu_favorite:
                     loadFragment(FavoriteFragment.newInstance());

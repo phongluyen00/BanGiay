@@ -80,9 +80,9 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
 
     public void setPriceTotal() {
         double price = 0;
-//        for (Product article : listArticle) {
-//            price += getPrice(article.getPrice()) * article.getCount();
-//        }
+        for (ProductCategories article : productCategoriesList) {
+            price += getPrice(article.getPrice()) * article.getCount();
+        }
 
         bd.setTotal(String.valueOf(price));
     }
@@ -161,6 +161,7 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
         if (count != 0) {
             productCategories.setCount(count);
             productCategoriesList.set(index, productCategories);
+            setPriceTotal();
             cartAdapter.notifyItemChanged(index);
             updateCart(productCategories);
         }

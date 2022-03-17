@@ -2,30 +2,15 @@ package com.example.retrofitrxjava.activity;
 
 
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.R;
-import com.example.retrofitrxjava.adapter.BannerAdapter;
-import com.example.retrofitrxjava.adapter.MutilAdt;
 import com.example.retrofitrxjava.databinding.ActivityDetailTruyenBinding;
-import com.example.retrofitrxjava.fragment.CartFragment;
-import com.example.retrofitrxjava.fragment.HomeFragment;
-import com.example.retrofitrxjava.model.Banner;
 import com.example.retrofitrxjava.model.ProductCategories;
 import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.DocumentSnapshot;
-
-import org.jsoup.helper.StringUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.retrofitrxjava.fragment.HomeFragment.EXTRA_DATA;
 

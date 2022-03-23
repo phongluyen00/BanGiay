@@ -137,7 +137,9 @@ public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> 
 
     @Override
     public void onEditProduct(ProductCategories productCategories, int position) {
-
+        Intent intent = new Intent(this, ActivityAdd.class);
+        intent.putExtra(EXTRA_DATA, productCategories);
+        startActivity(intent);
     }
 
     @Override
@@ -150,7 +152,6 @@ public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> 
     public void onClickProduct(ProductCategories productCategories) {
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(EXTRA_DATA, productCategories);
-//        intent.putExtra("idUser", userModel.getIdUser());
         startActivity(intent);
     }
 }

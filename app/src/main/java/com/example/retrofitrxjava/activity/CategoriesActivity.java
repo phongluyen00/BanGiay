@@ -3,10 +3,12 @@ package com.example.retrofitrxjava.activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.retrofitrxjava.ItemListener;
 import com.example.retrofitrxjava.ItemOnclickProductListener;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.adapter.MutilAdt;
@@ -28,7 +30,7 @@ import java.util.List;
 
 import static com.example.retrofitrxjava.fragment.HomeFragment.EXTRA_DATA;
 
-public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> implements MutilAdt.ListItemListener, ItemOnclickProductListener<ProductCategories>, PaymentResultListener {
+public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> implements ItemListener<ProductCategories>, MutilAdt.ListItemListener, ItemOnclickProductListener<ProductCategories>, PaymentResultListener {
 
     private MutilAdt<ProductCategories> categoriesAdt;
     private List<ProductCategories> productCategoriesList = new ArrayList<>();
@@ -50,7 +52,19 @@ public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> 
         }
         setupViewModel.getProductCategoriesList().observe(this, productCategories -> {
             if (productCategories != null && productCategories.size() > 0) {
+                productCategoriesList.addAll(productCategories);
                 loadData(productCategories);
+            }
+        });
+
+        setupViewModel.getDeleteProduct().observe(this, new Observer<List<ProductCategories>>() {
+            @Override
+            public void onChanged(List<ProductCategories> productCategoriesList) {
+                dismissDialog();
+                if (productCategoriesList != null){
+                    categoriesAdt.setDt((ArrayList<ProductCategories>) productCategoriesList);
+                    Toast.makeText(CategoriesActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -78,7 +92,7 @@ public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> 
             public void onSubmit(double totalPrice) {
                 startPayment(totalPrice);
             }
-        },  Double.parseDouble(productCategories.getPrice()));
+        }, Double.parseDouble(productCategories.getPrice()));
         baseBottomSheet.show(getSupportFragmentManager(), baseBottomSheet.getTag());
     }
 
@@ -104,7 +118,7 @@ public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> 
     }
 
     private void loadData(List<ProductCategories> productCategories) {
-        categoriesAdt = new MutilAdt<>(this, R.layout.item_product);
+        categoriesAdt = new MutilAdt<>(this, userModel.getPermission() == 1 ? R.layout.item_product_admin : R.layout.item_product);
         categoriesAdt.setListener(this);
         bd.rclCategories.setAdapter(categoriesAdt);
         categoriesAdt.setDt((ArrayList<ProductCategories>) productCategories);
@@ -119,5 +133,24 @@ public class CategoriesActivity extends AppCompatAct<ActivityCategoriesBinding> 
     @Override
     public void onPaymentError(int i, String s) {
 
+    }
+
+    @Override
+    public void onEditProduct(ProductCategories productCategories, int position) {
+
+    }
+
+    @Override
+    public void onDeleteProduct(ProductCategories productCategories, int position) {
+        showDialog();
+        setupViewModel.deleteProduct(this, db, productCategories, productCategoriesList);
+    }
+
+    @Override
+    public void onClickProduct(ProductCategories productCategories) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(EXTRA_DATA, productCategories);
+//        intent.putExtra("idUser", userModel.getIdUser());
+        startActivity(intent);
     }
 }

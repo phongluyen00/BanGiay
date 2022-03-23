@@ -33,17 +33,17 @@ public class UserModel {
     //    @ColumnInfo
     private String address;
 
-    private String money;
     private String image;
     private String documentId;
+    private int permission;
 
-    public UserModel(String name, String email, String password, String phoneNumber, String address, String money) {
+    public UserModel(String name, String email, String password, String phoneNumber, String address, int permission) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.money = money;
+        this.permission = permission;
     }
 
     public String getPhoneNumber() {
@@ -54,7 +54,7 @@ public class UserModel {
         return address == null ? "New member" : address;
     }
 
-    public String getMoney() {
-        return money == null ? "1000" : money;
+    public int getPermission() {
+        return permission;
     }
 }

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
@@ -138,6 +139,15 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
             appCompatTextView.setText("");
         }else {
             appCompatTextView.setText(textHtml(text));
+        }
+    }
+
+    @BindingAdapter("setTextHtmledt")
+    public static void setTextHtmledt(AppCompatEditText appCompatEditText, String text){
+        if (StringUtil.isBlank(text)){
+            appCompatEditText.setText("");
+        }else {
+            appCompatEditText.setText(textHtml(text));
         }
     }
 

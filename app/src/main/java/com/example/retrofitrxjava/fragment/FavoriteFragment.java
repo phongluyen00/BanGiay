@@ -78,7 +78,6 @@ public class FavoriteFragment extends BaseFragment<FragmentFavoriteBinding> impl
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity) activity).setTitle("Favorite");
     }
 
     @Override

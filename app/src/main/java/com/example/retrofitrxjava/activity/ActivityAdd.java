@@ -24,6 +24,8 @@ import com.google.firebase.storage.StorageReference;
 import org.greenrobot.eventbus.EventBus;
 import org.jsoup.helper.StringUtil;
 
+import static com.example.retrofitrxjava.fragment.HomeFragment.EXTRA_DATA;
+
 public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
 
     private Uri imageUri;
@@ -34,6 +36,12 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
     protected void initLayout() {
         setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
         setupViewModel.getMarket(db);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            productCategories = (ProductCategories) intent.getSerializableExtra(EXTRA_DATA);
+            bd.setItem(productCategories);
+        }
         bd.icon.setOnClickListener(v -> {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");

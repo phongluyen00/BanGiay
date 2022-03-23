@@ -1,17 +1,23 @@
 package com.example.retrofitrxjava.viewmodel;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.activity.MainActivity;
-import com.example.retrofitrxjava.adapter.MutilAdt;
+import com.example.retrofitrxjava.activity.MainActivityAdmin;
 import com.example.retrofitrxjava.model.Markets;
 import com.example.retrofitrxjava.model.ProductCategories;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import org.jsoup.helper.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +30,11 @@ public class SetupViewModel extends ViewModel {
     private MutableLiveData<ProductCategories> productCart = new MutableLiveData<>();
     private MutableLiveData<List<Markets>> marketsLiveData = new MutableLiveData<>();
     private MutableLiveData<ArrayList<ProductCategories>> productMarkets = new MutableLiveData<>();
+    private MutableLiveData<List<ProductCategories>> deleteProduct = new MutableLiveData<>();
+
+    public MutableLiveData<List<ProductCategories>> getDeleteProduct() {
+        return deleteProduct;
+    }
 
     public MutableLiveData<List<Markets>> getMarketsLiveData() {
         return marketsLiveData;
@@ -63,6 +74,7 @@ public class SetupViewModel extends ViewModel {
                     db.collection("account").document(firebaseUser.getUid()).set(userModel);
                 }
                 MainActivity.userModel = userModel;
+                MainActivityAdmin.userModel = userModel;
                 userModelMutableLiveData.setValue(userModel);
             }
         });
@@ -125,7 +137,7 @@ public class SetupViewModel extends ViewModel {
         });
     }
 
-    public void getProductMarketHome(FirebaseFirestore db){
+    public void getProductMarketHome(FirebaseFirestore db) {
         ArrayList<ProductCategories> productCategoriesList = new ArrayList<>();
         db.collection("product_markets").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -138,6 +150,21 @@ public class SetupViewModel extends ViewModel {
                 }
                 productMarkets.postValue(productCategoriesList);
             }
+        });
+    }
+
+    public void deleteProduct(Context context, FirebaseFirestore db, ProductCategories productCategories, List<ProductCategories> productCategoriesList) {
+        db.collection("product_markets").document(productCategories.getDocumentId()).delete().addOnSuccessListener(aVoid -> {
+            if (!StringUtil.isBlank(productCategories.getImage())) {
+                StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(productCategories.getImage());
+                storageReference.delete().addOnSuccessListener(aVoid1 -> {
+                });
+            }
+            productCategoriesList.remove(productCategories);
+            deleteProduct.postValue(productCategoriesList);
+        }).addOnFailureListener(command -> {
+            deleteProduct.postValue(null);
+            Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
         });
     }
 }

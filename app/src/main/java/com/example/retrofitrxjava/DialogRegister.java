@@ -1,17 +1,9 @@
 package com.example.retrofitrxjava;
 
-import android.content.Intent;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.example.retrofitrxjava.activity.AppCompatAct;
-import com.example.retrofitrxjava.activity.LoginActivity;
 import com.example.retrofitrxjava.databinding.DialogRegisterBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 
 public class DialogRegister extends AppCompatAct<DialogRegisterBinding> {
 
@@ -27,7 +19,7 @@ public class DialogRegister extends AppCompatAct<DialogRegisterBinding> {
                 return;
             }
             showDialog();
-            userModel = new UserModel(getText(bd.tvName), getText(bd.edtEmail), getText(bd.etPassword), getText(bd.edtPhone), getText(bd.edtAddress),"1000");
+            userModel = new UserModel(getText(bd.tvName), getText(bd.edtEmail), getText(bd.etPassword), getText(bd.edtPhone), getText(bd.edtAddress),0);
             createAccount(userModel);
         });
 

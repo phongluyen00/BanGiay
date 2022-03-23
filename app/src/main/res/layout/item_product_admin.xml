@@ -9,8 +9,12 @@
             type="com.example.retrofitrxjava.model.ProductCategories" />
 
         <variable
+            name="index"
+            type="int" />
+
+        <variable
             name="listener"
-            type="com.example.retrofitrxjava.ItemOnclickProductListener" />
+            type="com.example.retrofitrxjava.ItemListener" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,7 +30,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{()->listener.onItemProductClick(item)}"
+            android:onClick="@{()->listener.onClickProduct(item)}"
             android:padding="4dp">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -44,6 +48,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/price"
                 price="@{item.price}"
+                android:padding="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -71,18 +76,21 @@
                 tools:text="1212121121212" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@id/price"
+                android:onClick="@{(v)-> listener.onEditProduct(item,index)}"
                 android:src="@drawable/ic_baseline_edit_24"
                 app:layout_constraintEnd_toStartOf="@+id/img_delete"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:padding="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:onClick="@{(v)-> listener.onDeleteProduct(item,index)}"
                 android:id="@+id/img_delete"
-                android:padding="10dp"
-                app:layout_constraintTop_toTopOf="parent"
+                android:padding="5dp"
+                app:layout_constraintTop_toTopOf="@id/price"
                 android:src="@drawable/ic_baseline_delete_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="wrap_content"

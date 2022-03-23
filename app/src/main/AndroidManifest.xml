@@ -50,6 +50,7 @@
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.CartActivity"/>
         <activity android:name=".activity.ActivityAdd"/>
+        <activity android:name=".activity.MainActivityAdmin"/>
 
     </application>
 

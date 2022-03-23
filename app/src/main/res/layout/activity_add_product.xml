@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.example.retrofitrxjava.model.ProductCategories" />
+    </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -34,68 +41,95 @@
                 android:textSize="18sp" />
         </RelativeLayout>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/icon"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:layout_below="@+id/toolbar"
-            android:src="@drawable/image_avata" />
+            android:layout_height="match_parent"
+            android:layout_above="@id/submit"
+            android:layout_below="@+id/toolbar">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/tv_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/icon"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/rounded_border_edittext_login"
-            android:hint="Tên sản phẩm"
-            android:padding="10dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_name"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:inputType="number"
-            android:background="@drawable/rounded_border_edittext_login"
-            android:hint="Gía tiền"
-            android:padding="10dp" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:src="@drawable/image_avata" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/price"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:background="@drawable/rounded_border_edittext_login"
-            android:hint="Mô tả"
-            android:padding="10dp" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/icon"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/rounded_border_edittext_login"
+                    android:hint="Tên sản phẩm"
+                    android:padding="10dp"
+                    android:text="@{item.title}" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/the_loai"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/description"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/rounded_border_edittext_login"
-            android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-            android:padding="10dp"
-            android:text="Thể loại" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_name"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/rounded_border_edittext_login"
+                    android:ellipsize="end"
+                    android:hint="Gía tiền"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:text="@{item.price}" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/description"
+                    setTextHtmledt="@{item.description}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/price"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/rounded_border_edittext_login"
+                    android:hint="Mô tả"
+                    android:padding="10dp"
+                    android:textColor="#454545"
+                    android:textSize="12sp"
+                    tools:text="Sản phẩm khá là ok nhé mấy cưng Sản phẩm khá là ok nhé mấy cưng Sản phẩm khá là ok nhé mấy cưng" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/price"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:hint="Mô tả"
+                    android:maxLines="2"
+                    android:padding="10dp"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/the_loai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/description"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/rounded_border_edittext_login"
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    android:ellipsize="end"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:text="@{item.id_markets}" />
+            </RelativeLayout>
+        </ScrollView>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/submit"
@@ -103,12 +137,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/rounded_border_edittext_login"
             android:backgroundTint="#00B7FF"
             android:gravity="center"
             android:padding="10dp"
             android:text="Hoàn Thành"
-            android:layout_marginBottom="16dp"
             android:textColor="@android:color/white" />
 
     </RelativeLayout>

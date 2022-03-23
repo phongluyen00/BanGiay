@@ -53,6 +53,6 @@ public class ManageOrderFragment extends BaseFragment<FragmentManageOrderBinding
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity) activity).setViewToolbarFragmentManager(getString(R.string.myPurchaseLabel));
+        ((MainActivity) activity).setTitle(getString(R.string.myPurchaseLabel));
     }
 }

@@ -203,6 +203,5 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity) activity).setTitle("Thông tin cá nhân");
     }
 }

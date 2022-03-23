@@ -8,12 +8,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.retrofitrxjava.DialogRegister;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.databinding.LayoutActivityLoginViewBinding;
+import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -34,17 +37,17 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
     private static final int RC_SIGN_IN = 1331;
     public static final String clientKey = "AXZ0Pd6_JmCUCzpgtOUBnnsdfsVHBvAUlX1QdY9D7d28oXMI6VyRByt27dgKWv08thEBclxNB8FTdBo9";
     public static final int PAYPAL_REQUEST_CODE = 123;
+    private SetupViewModel setupViewModel;
 
     @Override
     protected void initLayout() {
+        setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
         this.appDatabase = AppDatabase.getInstance(this);
         this.userModel = new UserModel();
         this.bd.setUser(userModel);
 
         if (currentUser != null){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            setupViewModel.loadAccount(db,currentUser);
         }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -57,6 +60,7 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
         bd.btRegister.setOnClickListener(this);
         bd.btRequestLogin.setOnClickListener(this);
         bd.loginGoogle.setOnClickListener(v -> signIn());
+        switchView();
 
         bd.loginFacebook.setOnClickListener(v -> getPayment());
         bd.forgot.setOnClickListener(v -> mAuth.sendPasswordResetEmail(getText(bd.etAccount))
@@ -103,8 +107,8 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
                 showDialog();
                 mAuth.signInWithEmailAndPassword(getText(bd.etAccount),getText(bd.etPassword)).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        Toast.makeText(LoginActivity.this, "Login success", Toast.LENGTH_SHORT).show();
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        setupViewModel.loadAccount(db, user);
                     } else {
                         Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                     }
@@ -115,6 +119,22 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
         }
+    }
+
+    private void switchView(){
+        setupViewModel.getUserModelMutableLiveData().observe(this, new Observer<UserModel>() {
+            @Override
+            public void onChanged(UserModel userModel) {
+                if (userModel != null){
+                    if (userModel.getPermission() == 1){
+                        startActivity(new Intent(LoginActivity.this, MainActivityAdmin.class));
+                    }else {
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
@@ -158,8 +178,7 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
 
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            setupViewModel.loadAccount(db,currentUser);
         }
     }
 

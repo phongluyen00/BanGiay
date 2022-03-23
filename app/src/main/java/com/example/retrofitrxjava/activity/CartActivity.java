@@ -48,7 +48,9 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
     }
 
     private void getAllCart() {
-        db.collection(Constants.KEY_CART).whereEqualTo(Constants.KEY_UID, currentUser.getUid()).get().addOnCompleteListener(task -> {
+        db.collection(Constants.KEY_CART).whereEqualTo(Constants.KEY_UID, currentUser.getUid())
+                .whereEqualTo(Constants.KEY_STATUS, Constants.KEY_ITEM_CART)
+                .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
                     ProductCategories productCategories = documentSnapshot.toObject(ProductCategories.class);

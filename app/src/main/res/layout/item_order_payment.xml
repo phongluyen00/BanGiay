@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="index"
+            type="int"/>
+
+        <variable
+            name="item"
+            type="com.example.retrofitrxjava.model.ProductCategories" />
+
+        <variable
+            name="listener"
+            type="com.example.retrofitrxjava.ItemDeleteCartListener" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_recruitment"
+            thumb="@{item.image}"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:singleLine="true"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text="@{item.title}"
+            app:layout_constraintEnd_toEndOf="@id/tv_price"
+            app:layout_constraintEnd_toStartOf="@id/tv_price"
+            app:layout_constraintLeft_toRightOf="@id/img_recruitment"
+            app:layout_constraintStart_toEndOf="@id/img_recruitment"
+            app:layout_constraintTop_toTopOf="@id/img_recruitment"
+            tools:text="âsassassssssssss" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_price"
+            price="@{item.totalPrice()}"
+            tools:text="$10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:maxLines="2"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/img_recruitment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/img_recruitment" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:text='@{"" +item.count}'
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintStart_toEndOf="@id/img_recruitment"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:text='30' />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

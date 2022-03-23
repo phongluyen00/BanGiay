@@ -47,5 +47,6 @@
     <string name="tn">Thiếu nhi</string>
     <string name="tt">Truyện tranh</string>
     <string name="vnd">%s VNĐ</string>
+    <string name="myPurchaseLabel">My Purchase</string>
 
 </resources>

@@ -2,8 +2,10 @@ package com.example.retrofitrxjava.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,11 +13,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.databinding.ActivityMainBinding;
-import com.example.retrofitrxjava.dialog.BottomSheetMarkets;
 import com.example.retrofitrxjava.fragment.AccountFragment;
 import com.example.retrofitrxjava.fragment.FavoriteFragment;
 import com.example.retrofitrxjava.fragment.HomeFragment;
-import com.example.retrofitrxjava.fragment.ManageOrderFragment;
+import com.example.retrofitrxjava.fragment.managerOrderFragment.ManageOrderFragment;
 import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.razorpay.PaymentResultListener;
 
@@ -75,6 +76,20 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> implements P
 
     public void setTitle(String title) {
         bd.title.setText(title);
+        bd.add.setVisibility(View.VISIBLE);
+        bd.card.setVisibility(View.VISIBLE);
+        bd.title.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        bd.title.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+    }
+
+    public void setViewToolbarFragmentManager(String title) {
+        bd.title.setText(title);
+        bd.title.setTextColor(ContextCompat.getColor(this, R.color.black));
+        Drawable img = getResources().getDrawable(R.drawable.ic_back_black);
+        img.setBounds(120, 0, 120, 0);
+        bd.title.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+        bd.add.setVisibility(View.GONE);
+        bd.card.setVisibility(View.GONE);
     }
 
     @Override

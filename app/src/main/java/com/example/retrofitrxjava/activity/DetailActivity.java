@@ -26,6 +26,7 @@ public class DetailActivity extends AppCompatAct<ActivityDetailTruyenBinding> {
     @Override
     protected void initLayout() {
         Intent intent = getIntent();
+        userModel = MainActivity.userModel;
         setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
         if (intent != null) {
             productCategories = (ProductCategories) intent.getSerializableExtra(EXTRA_DATA);
@@ -63,6 +64,8 @@ public class DetailActivity extends AppCompatAct<ActivityDetailTruyenBinding> {
                 bd.favorite.setImageResource(R.drawable.ic_baseline_favorite_24_new);
             }
         });
+
+        bd.favorite.setVisibility(userModel.getPermission() == 1 ? View.GONE : View.VISIBLE);
 
         bd.favorite.setOnClickListener(v -> addFavorite(productCategories));
 

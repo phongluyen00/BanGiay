@@ -1,6 +1,7 @@
 package com.example.retrofitrxjava.viewmodel;
 
 import android.content.Context;
+import android.net.Uri;
 import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
@@ -9,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.activity.MainActivity;
 import com.example.retrofitrxjava.activity.MainActivityAdmin;
+import com.example.retrofitrxjava.event.UpdateMain;
 import com.example.retrofitrxjava.model.Markets;
 import com.example.retrofitrxjava.model.ProductCategories;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jsoup.helper.StringUtil;
 
 import java.util.ArrayList;
@@ -166,5 +169,25 @@ public class SetupViewModel extends ViewModel {
             deleteProduct.postValue(null);
             Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    public void deleteImage(ProductCategories productCategories) {
+        StorageReference delete = FirebaseStorage.getInstance().getReferenceFromUrl(productCategories.getImage());
+        delete.delete().addOnSuccessListener(aVoid1 -> {
+        });
+    }
+
+    public void updateProduct(Context context, FirebaseFirestore db, Uri imageUri, ProductCategories productCategories, String path,  listener listener) {
+        StorageReference storageReferenc = FirebaseStorage.getInstance().getReference().child("imageProduct").child(System.currentTimeMillis() + "." + path);
+        storageReferenc.putFile(imageUri).addOnCompleteListener(task -> storageReferenc.getDownloadUrl().addOnSuccessListener(uri -> {
+            db.collection("product_markets").document(productCategories.getDocumentId()).set(productCategories);
+            Toast.makeText(context, "Thay đổi thành công !", Toast.LENGTH_SHORT).show();
+            listener.updateSuccess();
+            EventBus.getDefault().post(new UpdateMain());
+        }));
+    }
+
+    public interface listener{
+        void updateSuccess();
     }
 }

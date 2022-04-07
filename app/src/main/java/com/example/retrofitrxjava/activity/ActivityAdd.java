@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.databinding.ActivityAddProductBinding;
 import com.example.retrofitrxjava.dialog.BottomSheetMarkets;
@@ -24,6 +25,8 @@ import com.google.firebase.storage.StorageReference;
 import org.greenrobot.eventbus.EventBus;
 import org.jsoup.helper.StringUtil;
 
+import java.util.Objects;
+
 import static com.example.retrofitrxjava.fragment.HomeFragment.EXTRA_DATA;
 
 public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
@@ -31,6 +34,7 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
     private Uri imageUri;
     private ProductCategories productCategories = new ProductCategories();
     private SetupViewModel setupViewModel;
+    private boolean isEdit;
 
     @Override
     protected void initLayout() {
@@ -40,6 +44,7 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
         Intent intent = getIntent();
         if (intent != null) {
             productCategories = (ProductCategories) intent.getSerializableExtra(EXTRA_DATA);
+            isEdit = intent.getBooleanExtra("edit", false);
             bd.setItem(productCategories);
         }
         bd.icon.setOnClickListener(v -> {
@@ -61,24 +66,48 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
         bd.submit.setOnClickListener(v -> {
             if (imageUri != null) {
                 showDialog();
-                StorageReference storageReferenc = FirebaseStorage.getInstance().getReference().child("imageProduct").child(System.currentTimeMillis() + "." + getFileEx(imageUri));
-                storageReferenc.putFile(imageUri).addOnCompleteListener(task -> storageReferenc.getDownloadUrl().addOnSuccessListener(uri -> {
-//                    if (!StringUtil.isBlank(productCategories.getImage())) {
-//                        StorageReference delete = FirebaseStorage.getInstance().getReferenceFromUrl(userModel.getImage());
-//                        delete.delete().addOnSuccessListener(aVoid1 -> {
-//                        });
-//                    }
-                    productCategories = new ProductCategories(bd.tvName.getText().toString(), uri.toString(),
-                            bd.price.getText().toString(), bd.description.getText().toString(), bd.theLoai.getText().toString());
-                    db.collection("product_markets").document().set(productCategories);
-                    Toast.makeText(this, "Tạo mới sản phẩm thành công", Toast.LENGTH_SHORT).show();
+                if (isEdit) {
+                    if (productCategories != null && !StringUtil.isBlank(productCategories.getImage()) && productCategories.getImage().contains("imageProduct")) {
+                        setupViewModel.deleteImage(productCategories);
+                    }
+                    setupViewModel.updateProduct(this, db, imageUri, productCategories, getFileEx(imageUri), new SetupViewModel.listener() {
+                        @Override
+                        public void updateSuccess() {
+                            dismissDialog();
+                            finish();
+                        }
+                    });
+
+                } else {
+                    StorageReference storageReferenc = FirebaseStorage.getInstance().getReference().child("imageProduct").child(System.currentTimeMillis() + "." + getFileEx(imageUri));
+                    storageReferenc.putFile(imageUri).addOnCompleteListener(task -> storageReferenc.getDownloadUrl().addOnSuccessListener(uri -> {
+                        productCategories = new ProductCategories(bd.tvName.getText().toString(), uri.toString(),
+                                bd.price.getText().toString(), bd.description.getText().toString(), bd.theLoai.getText().toString());
+                        db.collection("product_markets").document().set(productCategories);
+                        Toast.makeText(this, "Tạo mới sản phẩm thành công", Toast.LENGTH_SHORT).show();
+                        dismissDialog();
+                        finish();
+                        EventBus.getDefault().post(new UpdateMain());
+                    }));
+                }
+                finish();
+                dismissDialog();
+            } else {
+                if (isEdit) {
+                    String id = productCategories.getDocumentId();
+                    productCategories = new ProductCategories(Objects.requireNonNull(bd.tvName.getText()).toString(), productCategories.getImage() ,
+                            Objects.requireNonNull(bd.price.getText()).toString(), Objects.requireNonNull(bd.description.getText()).toString(), bd.theLoai.getText().toString());
+                    db.collection("product_markets").document(id).set(productCategories);
+                    Toast.makeText(this, "Thay đổi thành công !", Toast.LENGTH_SHORT).show();
                     dismissDialog();
                     finish();
                     EventBus.getDefault().post(new UpdateMain());
-                }));
-            } else {
-                Toast.makeText(this, "Nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(this, "Nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
+                }
             }
+
         });
     }
 

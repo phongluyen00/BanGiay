@@ -201,6 +201,7 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
     public void onEditProduct(ProductCategories productCategories, int position) {
         Intent intent = new Intent(activity, ActivityAdd.class);
         intent.putExtra(EXTRA_DATA, productCategories);
+        intent.putExtra("edit", true);
         startActivity(intent);
     }
 

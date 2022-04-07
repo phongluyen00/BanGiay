@@ -55,6 +55,7 @@
                     android:id="@+id/icon"
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
+                    thumb="@{item.image}"
                     android:src="@drawable/image_avata" />
 
                 <androidx.appcompat.widget.AppCompatEditText

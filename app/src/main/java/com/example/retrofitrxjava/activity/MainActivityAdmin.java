@@ -2,7 +2,9 @@ package com.example.retrofitrxjava.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.view.View;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -40,7 +42,7 @@ public class MainActivityAdmin extends AppCompatAct<ActivityMainAdminBinding> im
                     loadFragment(HomeFragment.newInstance());
                     return true;
                 case R.id.bill:
-                    loadFragment(ManageOrderFragment.newInstance());
+                    loadFragment(ManageOrderFragment.newInstance(true));
                     return true;
                 case R.id.menu_account:
                     loadFragment(AccountFragment.newInstance());
@@ -48,6 +50,13 @@ public class MainActivityAdmin extends AppCompatAct<ActivityMainAdminBinding> im
             }
             return false;
         });
+    }
+
+    public void setTitle(String title) {
+        bd.title.setText(title);
+//        bd.add.setVisibility(View.VISIBLE);
+        bd.title.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        bd.title.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
     }
 
     @Override
@@ -61,10 +70,6 @@ public class MainActivityAdmin extends AppCompatAct<ActivityMainAdminBinding> im
         transaction.replace(R.id.frame_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
-    }
-
-    public void setTitle(String title) {
-        bd.title.setText(title);
     }
 
     @Override

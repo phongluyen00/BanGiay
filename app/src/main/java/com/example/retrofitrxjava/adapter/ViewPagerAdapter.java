@@ -11,21 +11,31 @@ import com.example.retrofitrxjava.fragment.managerOrderFragment.PayOrderFragment
 import com.example.retrofitrxjava.fragment.managerOrderFragment.ReceiveOrderFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
-    private static final int CARD_ITEM_SIZE = 3;
-    public ViewPagerAdapter(@NonNull ManageOrderFragment fragmentActivity) {
+    private static final int CARD_ITEM_SIZE = 4;
+    private Boolean isTypeAdmin;
+
+    public ViewPagerAdapter(@NonNull ManageOrderFragment fragmentActivity, Boolean isTypeAdmin) {
         super(fragmentActivity);
+        this.isTypeAdmin = isTypeAdmin;
     }
-    @NonNull @Override public Fragment createFragment(int position) {
-        switch (position)
-        {
-            case 0: return new PayOrderFragment();
-            case 1: return new ReceiveOrderFragment();
-            case 2: return new CompletedOrderFragment();
-            default: return new CancelOrderFragment();
+
+    @NonNull
+    @Override
+    public Fragment createFragment(int position) {
+        switch (position) {
+            case 0:
+                return PayOrderFragment.newInstance(isTypeAdmin);
+            case 1:
+                return ReceiveOrderFragment.newInstance(isTypeAdmin);
+            case 2:
+                return CompletedOrderFragment.newInstance(isTypeAdmin);
+            default:
+                return CancelOrderFragment.newInstance(isTypeAdmin);
         }
     }
 
-    @Override public int getItemCount() {
+    @Override
+    public int getItemCount() {
         return CARD_ITEM_SIZE;
     }
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:id="@+id/view_admin"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/ic_baseline_edit_24"
+            android:padding="10dp"
+            android:text="Edit profile" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/ic_baseline_add_24"
+            android:padding="10dp"
+            android:text="Add product" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/ic_slice_2"
+            android:padding="10dp"
+            android:drawableTint="#040404"
+            android:text="Your Order" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/ic_baseline_receipt_24"
+            android:padding="10dp"
+            android:drawableTint="#040404"
+            android:text="Statistic" />
+    </LinearLayout>
+</layout>

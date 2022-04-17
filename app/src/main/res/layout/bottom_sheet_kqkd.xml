@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Báo cáo kết quả kinh doanh"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_bh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/ban"
+            android:layout_alignBottom="@id/ban"
+            android:text="Bán hàng" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_gvbh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/result_gvbh"
+            android:layout_alignBottom="@+id/result_gvbh"
+            android:text="Giá vốn hàng bán" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_th"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/result_th"
+            android:layout_alignBottom="@+id/result_th"
+            android:text="Trả hàng" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/ban"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:layout_toEndOf="@+id/tv_bh"
+            android:gravity="end"
+            android:text="20.000.000"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/result_gvbh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ban"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:layout_toEndOf="@+id/tv_gvbh"
+            android:gravity="end"
+            android:text="10.000.000"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/result_th"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/result_gvbh"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:layout_toEndOf="@+id/tv_gvbh"
+            android:gravity="end"
+            android:text="1.000.000"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_gvth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/gvth"
+            android:layout_alignBottom="@+id/gvth"
+            android:text="Giá vốn trả hàng " />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/gvth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/result_th"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:layout_toEndOf="@+id/tv_gvth"
+            android:gravity="end"
+            android:text="300.000"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_total"
+            android:layout_alignTop="@+id/result_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/result_total"
+            android:text="Tổng" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/result_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gvth"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="18sp"
+            android:layout_toEndOf="@+id/tv_total"
+            android:gravity="end"
+            android:text="9.300.000"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+</layout>

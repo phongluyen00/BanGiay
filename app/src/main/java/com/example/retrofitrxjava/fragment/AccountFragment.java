@@ -20,10 +20,13 @@ import com.bumptech.glide.Glide;
 import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
+import com.example.retrofitrxjava.activity.ActivityAdd;
 import com.example.retrofitrxjava.activity.LoginActivity;
 import com.example.retrofitrxjava.activity.MainActivity;
+import com.example.retrofitrxjava.activity.MainActivityAdmin;
 import com.example.retrofitrxjava.databinding.CustomLayoutBinding;
 import com.example.retrofitrxjava.databinding.FragmentAccountBinding;
+import com.example.retrofitrxjava.dialog.BottomSheetEditAdmin;
 import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -59,15 +62,26 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
 
     @Override
     protected void initFragment() {
-        userModel = new UserModel();
         setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
-        setupViewModel.loadAccount(db,currentUser);
+        userModel = new UserModel();
+        if (MainActivity.userModel != null){
+            userModel = MainActivity.userModel;
+            binding.setItem(userModel);
+        }else {
+            setupViewModel.loadAccount(db,currentUser);
+        }
+
+        if (userModel != null){
+            binding.include.viewAdmin.setVisibility(userModel.isAdmin() ? View.VISIBLE : View.GONE);
+            binding.viewUser.setVisibility(userModel.isAdmin() ? View.GONE : View.VISIBLE);
+        }
         setupViewModel.getUserModelMutableLiveData().observe(this, new Observer<UserModel>() {
             @Override
             public void onChanged(UserModel userModel) {
                 binding.setItem(userModel);
             }
         });
+
 
         binding.save.setOnClickListener(v -> {
             userModel = binding.getItem();
@@ -93,6 +107,21 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
 
         });
 
+        binding.include.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BottomSheetEditAdmin bottomSheetEditAdmin = new BottomSheetEditAdmin();
+                bottomSheetEditAdmin.show(getChildFragmentManager(),bottomSheetEditAdmin.getTag());
+            }
+        });
+
+        binding.include.add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ActivityAdd.class);
+                startActivity(intent);
+            }
+        });
         binding.camera.setOnClickListener(v -> {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");

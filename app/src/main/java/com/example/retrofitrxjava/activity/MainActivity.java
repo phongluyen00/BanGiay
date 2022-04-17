@@ -17,13 +17,17 @@ import com.example.retrofitrxjava.fragment.AccountFragment;
 import com.example.retrofitrxjava.fragment.FavoriteFragment;
 import com.example.retrofitrxjava.fragment.HomeFragment;
 import com.example.retrofitrxjava.fragment.managerOrderFragment.ManageOrderFragment;
+import com.example.retrofitrxjava.model.ProductCategories;
 import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.razorpay.PaymentResultListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatAct<ActivityMainBinding> implements PaymentResultListener {
 
     public static UserModel userModel;
     private SetupViewModel setupViewModel;
+    public static ArrayList<ProductCategories> productCategoriesList = new ArrayList<>();
 
     @SuppressLint("NonConstantResourceId")
     @Override

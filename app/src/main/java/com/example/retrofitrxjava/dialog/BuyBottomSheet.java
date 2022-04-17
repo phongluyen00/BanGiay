@@ -27,7 +27,7 @@ public class BuyBottomSheet extends BaseBottomSheet<BottomSheetBuyBinding> {
         binding.setTotal(String.valueOf(totalPrice));
         binding.setUser(userModel);
         binding.submit.setOnClickListener(v -> {
-            listener.onSubmit(totalPrice);
+            listener.onSubmit(1000);
             dismiss();
         });
     }

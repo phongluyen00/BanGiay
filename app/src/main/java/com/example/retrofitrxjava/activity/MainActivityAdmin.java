@@ -12,16 +12,21 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.databinding.ActivityMainAdminBinding;
+import com.example.retrofitrxjava.dialog.BottomSheetSearch;
 import com.example.retrofitrxjava.fragment.AccountFragment;
 import com.example.retrofitrxjava.fragment.HomeFragment;
 import com.example.retrofitrxjava.fragment.managerOrderFragment.ManageOrderFragment;
+import com.example.retrofitrxjava.model.ProductCategories;
 import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.razorpay.PaymentResultListener;
+
+import java.util.ArrayList;
 
 public class MainActivityAdmin extends AppCompatAct<ActivityMainAdminBinding> implements PaymentResultListener {
 
     public static UserModel userModel;
     private SetupViewModel setupViewModel;
+    public static ArrayList<ProductCategories> productCategoriesList = new ArrayList<>();
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -49,6 +54,11 @@ public class MainActivityAdmin extends AppCompatAct<ActivityMainAdminBinding> im
                     return true;
             }
             return false;
+        });
+
+        bd.searchBar.setOnClickListener(view -> {
+            BottomSheetSearch bottomSheetSearch = new BottomSheetSearch(productCategoriesList);
+            bottomSheetSearch.show(getSupportFragmentManager(), bottomSheetSearch.getTag());
         });
     }
 

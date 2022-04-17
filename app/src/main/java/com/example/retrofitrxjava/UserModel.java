@@ -57,4 +57,8 @@ public class UserModel {
     public int getPermission() {
         return permission;
     }
+
+    public boolean isAdmin() {
+        return permission == 1;
+    }
 }

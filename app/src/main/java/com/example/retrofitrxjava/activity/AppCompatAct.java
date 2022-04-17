@@ -82,17 +82,23 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
         });
     }
 
-    protected static String formatNumber(double price) {
-//        DecimalFormat formatter = new DecimalFormat("###,###,###");
-//        String formattedNumber = formatter.format(price);
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setGroupingSeparator(',');
-        String pattern = "$#,##0.###";
-        DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
-        BigDecimal bigDecimal = new BigDecimal(price);
+//    protected static String formatNumber(double price) {
+////        DecimalFormat formatter = new DecimalFormat("###,###,###");
+////        String formattedNumber = formatter.format(price);
+//        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+//        symbols.setGroupingSeparator(',');
+//        String pattern = "$#,##0.###";
+//        DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+//        BigDecimal bigDecimal = new BigDecimal(price);
+//
+//        String bigDecimalConvertedValue = decimalFormat.format(bigDecimal);
+//        return bigDecimalConvertedValue;
+//    }
 
-        String bigDecimalConvertedValue = decimalFormat.format(bigDecimal);
-        return bigDecimalConvertedValue;
+    protected static String formatNumber(double price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###");
+        String formattedNumber = formatter.format(price);
+        return formattedNumber + " vnd";
     }
 
     @BindingAdapter("thumb")

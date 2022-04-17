@@ -149,6 +149,8 @@ public class SetupViewModel extends ViewModel {
                     if (product != null) {
                         product.setDocumentId(documentSnapshot.getId());
                         productCategoriesList.add(product);
+                        MainActivityAdmin.productCategoriesList = productCategoriesList;
+                        MainActivity.productCategoriesList = productCategoriesList;
                     }
                 }
                 productMarkets.postValue(productCategoriesList);

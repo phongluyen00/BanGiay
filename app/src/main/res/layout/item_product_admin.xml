@@ -50,14 +50,14 @@
                 price="@{item.price}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:ellipsize="end"
+                android:layout_marginTop="-4dp"
                 android:maxLines="2"
-                android:padding="10dp"
+                android:padding="6dp"
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@id/img_recruitment"
-                app:layout_constraintTop_toBottomOf="@id/img_recruitment"
+                app:layout_constraintTop_toBottomOf="@id/img_delete"
                 tools:text="21212" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -70,42 +70,45 @@
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:lines="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/img_recruitment"
                 app:layout_constraintTop_toBottomOf="@id/price"
                 tools:text="1212121121212" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/icon_add"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:onClick="@{(v)-> listener.onAddProduct(item)}"
                 android:padding="5dp"
                 android:src="@drawable/ic_baseline_add_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/icon_edit"
-                app:layout_constraintTop_toTopOf="@id/price" />
+                app:layout_constraintTop_toTopOf="@id/img_delete" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/icon_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:onClick="@{(v)-> listener.onEditProduct(item,index)}"
                 android:padding="5dp"
                 android:src="@drawable/ic_baseline_edit_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/img_delete"
-                app:layout_constraintTop_toTopOf="@id/price" />
+                app:layout_constraintTop_toTopOf="@id/img_delete" />
 
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
                 android:onClick="@{(v)-> listener.onDeleteProduct(item,index)}"
                 android:padding="5dp"
                 android:src="@drawable/ic_baseline_delete_24"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/price" />
+                app:layout_constraintTop_toBottomOf="@+id/img_recruitment" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

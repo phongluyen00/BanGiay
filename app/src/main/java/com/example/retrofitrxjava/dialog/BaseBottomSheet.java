@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
+import com.example.retrofitrxjava.UserModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,6 +22,7 @@ public abstract class BaseBottomSheet<BD extends ViewDataBinding> extends Bottom
     protected FirebaseUser firebaseUser;
     protected FirebaseAuth firebaseAuth;
     protected FirebaseFirestore db = FirebaseFirestore.getInstance();
+    protected UserModel userModel;
 
     @Nullable
     @Override

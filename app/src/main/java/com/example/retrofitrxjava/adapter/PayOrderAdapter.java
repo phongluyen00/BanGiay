@@ -2,6 +2,7 @@ package com.example.retrofitrxjava.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -9,21 +10,33 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.retrofitrxjava.BR;
 import com.example.retrofitrxjava.databinding.ItemOrderPaymentBinding;
+import com.example.retrofitrxjava.databinding.ItemOrderPaymentTestBinding;
+import com.example.retrofitrxjava.model.Bill;
 import com.example.retrofitrxjava.model.ProductCategories;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHolder> {
-    private List<ProductCategories> listData;
+    private List<Bill> listData;
     private Context context;
+    private Boolean isShowCancel = false;
+    private ListItemListener callback;
 
     public PayOrderAdapter(Context context) {
         listData = new ArrayList<>();
         this.context = context;
     }
 
-    public void setList(List<ProductCategories> listData) {
+    public void setCallback(ListItemListener callback) {
+        this.callback = callback;
+    }
+
+    public void setShowCancel(Boolean showCancel) {
+        isShowCancel = showCancel;
+    }
+
+    public void setList(List<Bill> listData) {
         if (this.listData == null) {
             this.listData = new ArrayList<>();
         }
@@ -32,6 +45,11 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
         }
         this.listData = listData;
         notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+        listData.remove(position);
+        notifyItemChanged(position);
     }
 
 
@@ -44,7 +62,7 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ProductCategories item = listData.get(position);
+        Bill item = listData.get(position);
         holder.bindView(item);
     }
 
@@ -62,11 +80,35 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
             this.itemCartBinding = itemCartBinding;
         }
 
-        void bindView(ProductCategories item) {
-            itemCartBinding.setVariable(BR.item, item);
-            itemCartBinding.tvTitle.setText(item.getTitle());
-            itemCartBinding.tvPrice.setText(item.getPrice());
-            itemCartBinding.tvCount.setText(String.valueOf(item.getCount()));
+        void bindView(Bill item) {
+            itemCartBinding.setVariable(BR.item, item.getProductCategoriesList().get(0));
+            for (int i = 1; i < item.getProductCategoriesList().size(); i++) {
+                ItemOrderPaymentTestBinding layout1 = ItemOrderPaymentTestBinding.inflate(LayoutInflater.from(context), itemCartBinding.viewItemOrderChild, false);
+                layout1.setVariable(BR.item, item.getProductCategoriesList().get(i));
+
+                itemCartBinding.viewItemOrderChild.addView(layout1.getRoot());
+            }
+            itemCartBinding.tvCancelOrder.setVisibility(isShowCancel ? View.VISIBLE : View.GONE);
+            itemCartBinding.tvTotalOrder.setText(String.valueOf(setPriceTotal(item)));
+            itemCartBinding.tvCancelOrder.setOnClickListener(v -> {
+                callback.clickCancelOrder(item, getAdapterPosition());
+            });
         }
+    }
+
+    public double setPriceTotal(Bill item) {
+        double price = 0;
+        for (ProductCategories article : item.getProductCategoriesList()) {
+            price += getPrice(article.getPrice()) * article.getCount();
+        }
+        return price;
+    }
+
+    public double getPrice(String price) {
+        return Double.parseDouble(price);
+    }
+
+    public interface ListItemListener {
+        void clickCancelOrder(Bill item, int position);
     }
 }

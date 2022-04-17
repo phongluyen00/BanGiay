@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> implements P
                     loadFragment(HomeFragment.newInstance());
                     return true;
                 case R.id.bill:
-                    loadFragment(ManageOrderFragment.newInstance());
+                    loadFragment(ManageOrderFragment.newInstance(false));
                     return true;
                 case R.id.menu_favorite:
                     loadFragment(FavoriteFragment.newInstance());

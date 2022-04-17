@@ -16,4 +16,20 @@ public class Markets implements Serializable {
     private String title;
     private String status;
     private String documentId;
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
 }

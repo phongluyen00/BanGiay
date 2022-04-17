@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/LuyenPhong/Desktop/Programs/book/CalendarKMA/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.1915" />
+        <entry key="..\:/Users/LuyenPhong/Desktop/Programs/book/CalendarKMA/app/src/main/res/layout/activity_add_product.xml" value="0.1" />
         <entry key="..\:/Users/LuyenPhong/Desktop/Programs/book/CalendarKMA/app/src/main/res/layout/custom_layout.xml" value="0.19293478260869565" />
+        <entry key="..\:/Users/LuyenPhong/Desktop/Programs/book/CalendarKMA/app/src/main/res/layout/item_product_admin.xml" value="0.264" />
         <entry key="..\:/project doing/BanGiay/app/src/main/res/layout/activity_cart.xml" value="0.22" />
         <entry key="..\:/project doing/BanGiay/app/src/main/res/layout/item_cart.xml" value="0.1921875" />
         <entry key="..\:/project doing/BanGiay/app/src/main/res/layout/payment_success.xml" value="0.1921875" />

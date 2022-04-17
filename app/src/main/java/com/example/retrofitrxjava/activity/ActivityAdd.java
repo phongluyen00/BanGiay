@@ -3,6 +3,7 @@ package com.example.retrofitrxjava.activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
@@ -64,6 +65,7 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
             bottomSheetMarkets.show(getSupportFragmentManager(), bottomSheetMarkets.getTag());
         });
         bd.submit.setOnClickListener(v -> {
+            String price = giaBan(Long.parseLong(Objects.requireNonNull(bd.price.getText()).toString().trim()), Long.parseLong(Objects.requireNonNull(bd.lai.getText()).toString().trim()));
             if (imageUri != null) {
                 showDialog();
                 if (isEdit) {
@@ -82,7 +84,7 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
                     StorageReference storageReferenc = FirebaseStorage.getInstance().getReference().child("imageProduct").child(System.currentTimeMillis() + "." + getFileEx(imageUri));
                     storageReferenc.putFile(imageUri).addOnCompleteListener(task -> storageReferenc.getDownloadUrl().addOnSuccessListener(uri -> {
                         productCategories = new ProductCategories(bd.tvName.getText().toString(), uri.toString(),
-                                bd.price.getText().toString(), bd.description.getText().toString(), bd.theLoai.getText().toString());
+                                price, bd.description.getText().toString(), bd.theLoai.getText().toString());
                         db.collection("product_markets").document().set(productCategories);
                         Toast.makeText(this, "Tạo mới sản phẩm thành công", Toast.LENGTH_SHORT).show();
                         dismissDialog();
@@ -95,8 +97,8 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
             } else {
                 if (isEdit) {
                     String id = productCategories.getDocumentId();
-                    productCategories = new ProductCategories(Objects.requireNonNull(bd.tvName.getText()).toString(), productCategories.getImage() ,
-                            Objects.requireNonNull(bd.price.getText()).toString(), Objects.requireNonNull(bd.description.getText()).toString(), bd.theLoai.getText().toString());
+                    productCategories = new ProductCategories(Objects.requireNonNull(bd.tvName.getText()).toString(), productCategories.getImage(),
+                            price, Objects.requireNonNull(bd.description.getText()).toString(), bd.theLoai.getText().toString());
                     db.collection("product_markets").document(id).set(productCategories);
                     Toast.makeText(this, "Thay đổi thành công !", Toast.LENGTH_SHORT).show();
                     dismissDialog();
@@ -137,5 +139,10 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
     @Override
     protected int getID() {
         return R.layout.activity_add_product;
+    }
+
+    private String giaBan(long giagoc, long phantram) {
+        long giaban = (giagoc * phantram) / 100;
+        return String.valueOf(giagoc + giaban);
     }
 }

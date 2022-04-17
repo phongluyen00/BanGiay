@@ -25,6 +25,7 @@ public class ProductCategories implements Serializable {
     private int status;
     private boolean isFavorite;
     private String id_markets;
+    private String quantity;
 
     public ProductCategories(String title, String image, String price, String description, String id_markets) {
         this.title = title;
@@ -43,6 +44,50 @@ public class ProductCategories implements Serializable {
         map.put("uid", uid);
 
         return map;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getId_document() {
+        return id_document;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public String getId_markets() {
+        return id_markets;
     }
 
     public String totalPrice() {

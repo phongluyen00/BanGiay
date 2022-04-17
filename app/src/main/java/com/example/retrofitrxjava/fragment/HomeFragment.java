@@ -218,6 +218,14 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
         intent.putExtra(EXTRA_DATA, productCategories);
         startActivity(intent);
     }
+
+    @Override
+    public void onAddProduct(ProductCategories productCategories) {
+        long quantity = Long.parseLong(productCategories.getQuantity()) + 1;
+        productCategories.setQuantity(String.valueOf(quantity));
+        db.collection("product_markets").document(productCategories.getDocumentId()).set(productCategories);
+        Toast.makeText(activity, "Thêm số lượng thành công", Toast.LENGTH_SHORT).show();
+    }
 }
 
 

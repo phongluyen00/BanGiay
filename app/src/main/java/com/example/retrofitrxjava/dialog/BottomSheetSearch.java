@@ -1,5 +1,7 @@
 package com.example.retrofitrxjava.dialog;
 
+import androidx.appcompat.widget.SearchView;
+
 import com.example.retrofitrxjava.ItemListener;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
@@ -32,6 +34,19 @@ public class BottomSheetSearch extends BaseBottomSheet<BottomSheetSearchBinding>
         categoriesAdt.setListener(this);
         categoriesAdt.setDt((ArrayList<ProductCategories>) categories);
         binding.rclProduct.setAdapter(categoriesAdt);
+
+        binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                categoriesAdt.setDt((ArrayList<ProductCategories>) getListSearch(newText,categories));
+                return true;
+            }
+        });
     }
 
     @Override

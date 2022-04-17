@@ -11,10 +11,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
 import com.example.retrofitrxjava.UserModel;
+import com.example.retrofitrxjava.model.ProductCategories;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseBottomSheet<BD extends ViewDataBinding> extends BottomSheetDialogFragment {
 
@@ -32,6 +36,16 @@ public abstract class BaseBottomSheet<BD extends ViewDataBinding> extends Bottom
         firebaseUser =  firebaseAuth.getCurrentUser();
         initLayout();
         return binding.getRoot();
+    }
+
+    public List<ProductCategories> getListSearch(String textQuery, List<ProductCategories> lst) {
+        List<ProductCategories> lstSearch = new ArrayList<>();
+        for (ProductCategories model : lst) {
+            if (model.getTitle().toLowerCase().contains(textQuery.toLowerCase())) {
+                lstSearch.add(model);
+            }
+        }
+        return lstSearch;
     }
 
     protected abstract int layoutId();

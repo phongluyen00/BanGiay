@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.databinding.ActivityMainBinding;
+import com.example.retrofitrxjava.dialog.BottomSheetSearch;
 import com.example.retrofitrxjava.fragment.AccountFragment;
 import com.example.retrofitrxjava.fragment.FavoriteFragment;
 import com.example.retrofitrxjava.fragment.HomeFragment;
@@ -58,6 +59,11 @@ public class MainActivity extends AppCompatAct<ActivityMainBinding> implements P
                     return true;
             }
             return false;
+        });
+
+        bd.searchBar.setOnClickListener(view -> {
+            BottomSheetSearch bottomSheetSearch = new BottomSheetSearch(productCategoriesList);
+            bottomSheetSearch.show(getSupportFragmentManager(), bottomSheetSearch.getTag());
         });
     }
 

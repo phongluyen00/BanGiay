@@ -13,7 +13,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
-            android:text="Tìm kiếm sản phẩm" />
+            android:text="Tìm kiếm sản phẩm"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search"
@@ -27,10 +29,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/search"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
-            />
+            app:spanCount="2" />
 
     </RelativeLayout>
 </layout>

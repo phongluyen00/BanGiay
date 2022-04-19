@@ -37,6 +37,7 @@
             android:text="Your Order" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/statistic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="15dp"

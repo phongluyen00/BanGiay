@@ -43,6 +43,7 @@
                     android:layout_alignEnd="@+id/img"
                     android:layout_alignBottom="@+id/img"
                     android:padding="15dp"
+                    android:visibility="@{item.admin ? View.GONE : View.VISIBLE}"
                     android:src="@drawable/ic_baseline_photo_camera_24" />
 
                 <TextView
@@ -83,10 +84,12 @@
             </RelativeLayout>
 
             <include
+                android:visibility="@{item.admin ? View.VISIBLE : View.GONE}"
                 android:id="@+id/include"
                 layout="@layout/layout_account_admin"/>
 
         <LinearLayout
+            android:visibility="@{item.admin ? View.GONE : View.VISIBLE}"
             android:id="@+id/view_user"
             android:orientation="vertical"
             android:layout_width="match_parent"

@@ -27,6 +27,7 @@ import com.example.retrofitrxjava.activity.MainActivityAdmin;
 import com.example.retrofitrxjava.databinding.CustomLayoutBinding;
 import com.example.retrofitrxjava.databinding.FragmentAccountBinding;
 import com.example.retrofitrxjava.dialog.BottomSheetEditAdmin;
+import com.example.retrofitrxjava.dialog.BottomSheetStatistic;
 import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -71,17 +72,12 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
             setupViewModel.loadAccount(db,currentUser);
         }
 
-        if (userModel != null){
-            binding.include.viewAdmin.setVisibility(userModel.isAdmin() ? View.VISIBLE : View.GONE);
-            binding.viewUser.setVisibility(userModel.isAdmin() ? View.GONE : View.VISIBLE);
-        }
         setupViewModel.getUserModelMutableLiveData().observe(this, new Observer<UserModel>() {
             @Override
             public void onChanged(UserModel userModel) {
                 binding.setItem(userModel);
             }
         });
-
 
         binding.save.setOnClickListener(v -> {
             userModel = binding.getItem();
@@ -105,6 +101,14 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
                 Toast.makeText(activity, "Save success", Toast.LENGTH_SHORT).show();
             }
 
+        });
+
+        binding.include.statistic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BottomSheetStatistic bottomSheetStatistic = new BottomSheetStatistic();
+                bottomSheetStatistic.show(getChildFragmentManager(),bottomSheetStatistic.getTag());
+            }
         });
 
         binding.include.edit.setOnClickListener(new View.OnClickListener() {

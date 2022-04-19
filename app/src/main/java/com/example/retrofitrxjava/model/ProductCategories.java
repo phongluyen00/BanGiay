@@ -22,6 +22,7 @@ public class ProductCategories implements Serializable {
     private String description;
     private String id_document;
     private String uid;
+    private String idBill;
     private int status;
     private boolean isFavorite;
     private String id_markets;
@@ -39,6 +40,7 @@ public class ProductCategories implements Serializable {
         Map<String, Object> map = new HashMap<>();
         map.put("count", count);
         map.put("image", image);
+        map.put("idBill", idBill);
         map.put("price", price);
         map.put("title", title);
         map.put("uid", uid);
@@ -78,12 +80,12 @@ public class ProductCategories implements Serializable {
         return uid;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
     public boolean isFavorite() {
         return isFavorite;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     public String getId_markets() {

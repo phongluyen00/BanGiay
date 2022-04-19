@@ -1,8 +1,10 @@
 package com.example.retrofitrxjava.fragment.managerOrderFragment;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
+
 import com.example.retrofitrxjava.ItemFavoriteListener;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.adapter.MutilAdt;
@@ -38,10 +40,17 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("hadtt", "onResume: ");
+    }
+
+    @Override
     protected void initAdapter() {
         listBills = new ArrayList<>();
         adapter = new PayOrderAdapter(getContext());
         adapter.setCallback(this);
+        adapter.setTypeAdmin(isTypeAdmin);
         binding.recycleCart.setAdapter(adapter);
         adapter.setShowCancel(true);
         if (isTypeAdmin) {
@@ -154,8 +163,6 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
 
 
     public void updateBill(Bill bill, int position) {
-        bill.setStatus(Constants.KEY_ITEM_CANCEL);
-        bill.setTimeUpdate(System.currentTimeMillis());
         db.collection(Constants.KEY_BILL).document(bill.getBillId())
                 .update(bill.toMapData())
                 .addOnCompleteListener(task -> {
@@ -168,6 +175,15 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
 
     @Override
     public void clickCancelOrder(Bill item, int position) {
+        item.setStatus(Constants.KEY_ITEM_CANCEL);
+        item.setTimeUpdate(System.currentTimeMillis());
+        updateBill(item, position);
+    }
+
+    @Override
+    public void clickItemAcceptOrder(Bill item, int position) {
+        item.setStatus(Constants.KEY_ITEM_RECEIVE);
+        item.setTimeUpdate(System.currentTimeMillis());
         updateBill(item, position);
     }
 }

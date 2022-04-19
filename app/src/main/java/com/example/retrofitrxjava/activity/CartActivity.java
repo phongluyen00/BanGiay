@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.retrofitrxjava.ItemBuyListener;
 import com.example.retrofitrxjava.ItemDeleteCartListener;
 import com.example.retrofitrxjava.R;
@@ -13,7 +15,10 @@ import com.example.retrofitrxjava.constanst.Constants;
 import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.databinding.ActivityCartBinding;
 import com.example.retrofitrxjava.dialog.BuyBottomSheet;
+import com.example.retrofitrxjava.model.Bill;
 import com.example.retrofitrxjava.model.ProductCategories;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
@@ -90,13 +95,26 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
     }
 
     private void checkOut() {
-        BuyBottomSheet buyBottomSheet = new BuyBottomSheet(new BuyBottomSheet.itemListener() {
-            @Override
-            public void onSubmit(double totalPrice) {
-                startPayment(totalPrice);
-            }
-        }, Double.parseDouble(bd.getTotal()));
+        BuyBottomSheet buyBottomSheet = new BuyBottomSheet(totalPrice -> startPayment(totalPrice), Double.parseDouble(bd.getTotal()));
         buyBottomSheet.show(getSupportFragmentManager(), buyBottomSheet.getTag());
+    }
+
+    private void createBill() {
+        String billId = "Bill_" + System.currentTimeMillis();
+        Bill bill = new Bill();
+        bill.setStatus(Constants.KEY_ITEM_PENDING);
+        bill.setTime(System.currentTimeMillis());
+        bill.setBillId(billId);
+        bill.setUid(currentUser.getUid());
+        db.collection(Constants.KEY_BILL).document(billId).set(bill).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                for (ProductCategories productCategories : productCategoriesList) {
+                    productCategories.setIdBill(billId);
+                    updateCartBuy(productCategories);
+                }
+            }
+        });
     }
 
     public double getPrice(String price) {
@@ -105,9 +123,7 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
 
     @Override
     public void onPaymentSuccess(String s) {
-        for (ProductCategories productCategories : productCategoriesList) {
-            updateCartBuy(productCategories);
-        }
+        createBill();
         Intent intent = new Intent(this, PaymentSuccessActivity.class);
         startActivity(intent);
     }
@@ -187,8 +203,9 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
     }
 
     public void updateCartBuy(ProductCategories productCategories) {
+        productCategories.setStatus(Constants.KEY_ITEM_PENDING);
         db.collection(Constants.KEY_CART).document(productCategories.getDocumentId())
-                .update(Constants.KEY_STATUS, Constants.KEY_ITEM_PENDING)
+                .update(productCategories.toMapData())
                 .addOnCompleteListener(task -> {
 
                 })

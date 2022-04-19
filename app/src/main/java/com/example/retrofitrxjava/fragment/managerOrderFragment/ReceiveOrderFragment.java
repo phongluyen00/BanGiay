@@ -1,6 +1,7 @@
 package com.example.retrofitrxjava.fragment.managerOrderFragment;
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 
 import com.example.retrofitrxjava.ItemFavoriteListener;
@@ -17,7 +18,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReceiveOrderFragment extends BaseFragment<FragmentPayOrderBinding> implements MutilAdt.ListItemListener, ItemFavoriteListener<ProductCategories> {
+public class ReceiveOrderFragment extends BaseFragment<FragmentPayOrderBinding> implements MutilAdt.ListItemListener, ItemFavoriteListener<ProductCategories>, PayOrderAdapter.ListItemListener {
 
     private PayOrderAdapter adapter;
     private List<Bill> listBills;
@@ -41,6 +42,8 @@ public class ReceiveOrderFragment extends BaseFragment<FragmentPayOrderBinding> 
     protected void initAdapter() {
         listBills = new ArrayList<>();
         adapter = new PayOrderAdapter(getContext());
+        adapter.setTypeAdmin(isTypeAdmin);
+        adapter.setCallback(this);
         binding.recycleCart.setAdapter(adapter);
         if (isTypeAdmin) {
             getAllBillAdmin();
@@ -113,8 +116,7 @@ public class ReceiveOrderFragment extends BaseFragment<FragmentPayOrderBinding> 
     }
 
     private void getAllCartAdmin(String idBill, int position) {
-        db.collection(Constants.KEY_CART).whereEqualTo(Constants.KEY_UID, currentUser.getUid())
-                .whereEqualTo(Constants.KEY_ID_BILL, idBill)
+        db.collection(Constants.KEY_CART).whereEqualTo(Constants.KEY_ID_BILL, idBill)
                 .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<ProductCategories> listProductCategories = new ArrayList<>();
@@ -135,7 +137,6 @@ public class ReceiveOrderFragment extends BaseFragment<FragmentPayOrderBinding> 
 
     private void getAllBillAdmin() {
         db.collection(Constants.KEY_BILL)
-                .whereEqualTo(Constants.KEY_UID, currentUser.getUid())
                 .whereEqualTo(Constants.KEY_STATUS, Constants.KEY_ITEM_RECEIVE)
                 .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -149,5 +150,28 @@ public class ReceiveOrderFragment extends BaseFragment<FragmentPayOrderBinding> 
         }).addOnFailureListener(e -> {
 
         });
+    }
+
+    @Override
+    public void clickCancelOrder(Bill item, int position) {
+
+    }
+
+    @Override
+    public void clickItemAcceptOrder(Bill item, int position) {
+        item.setStatus(Constants.KEY_ITEM_COMPLETED);
+        item.setTimeUpdate(System.currentTimeMillis());
+        updateBill(item, position);
+    }
+
+    public void updateBill(Bill bill, int position) {
+        db.collection(Constants.KEY_BILL).document(bill.getBillId())
+                .update(bill.toMapData())
+                .addOnCompleteListener(task -> {
+                    adapter.removeItem(position);
+                })
+                .addOnFailureListener(e -> {
+
+                });
     }
 }

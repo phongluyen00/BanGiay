@@ -22,6 +22,11 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
     private Context context;
     private Boolean isShowCancel = false;
     private ListItemListener callback;
+    private boolean isTypeAdmin;
+
+    public void setTypeAdmin(boolean typeAdmin) {
+        isTypeAdmin = typeAdmin;
+    }
 
     public PayOrderAdapter(Context context) {
         listData = new ArrayList<>();
@@ -88,8 +93,10 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
 
                 itemCartBinding.viewItemOrderChild.addView(layout1.getRoot());
             }
+            itemCartBinding.tvAccept.setVisibility(isTypeAdmin ? View.VISIBLE : View.GONE);
             itemCartBinding.tvCancelOrder.setVisibility(isShowCancel ? View.VISIBLE : View.GONE);
             itemCartBinding.tvTotalOrder.setText(String.valueOf(setPriceTotal(item)));
+            itemCartBinding.tvAccept.setOnClickListener(v -> callback.clickItemAcceptOrder(item, getAdapterPosition()));
             itemCartBinding.tvCancelOrder.setOnClickListener(v -> {
                 callback.clickCancelOrder(item, getAdapterPosition());
             });
@@ -110,5 +117,7 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
 
     public interface ListItemListener {
         void clickCancelOrder(Bill item, int position);
+
+        void clickItemAcceptOrder(Bill item, int position);
     }
 }

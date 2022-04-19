@@ -106,17 +106,38 @@
             app:layout_constraintTop_toTopOf="@id/img_recruitment"
             tools:text="$10" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvCancelOrder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:maxLines="2"
-            android:gravity="right"
-            android:paddingEnd="20dp"
-            android:text="Cancel"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
+   <androidx.appcompat.widget.LinearLayoutCompat
+       android:layout_width="match_parent"
+       android:orientation="horizontal"
+       android:layout_height="wrap_content">
+
+       <androidx.appcompat.widget.AppCompatTextView
+           android:id="@+id/tvCancelOrder"
+           android:layout_width="0dp"
+           android:layout_weight="1"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="10dp"
+           android:maxLines="2"
+           android:gravity="center"
+           android:paddingEnd="20dp"
+           android:text="Cancel"
+           android:textColor="@android:color/black"
+           android:textSize="14sp" />
+
+       <androidx.appcompat.widget.AppCompatTextView
+           android:id="@+id/tvAccept"
+           android:layout_width="0dp"
+           android:layout_weight="1"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="10dp"
+           android:maxLines="2"
+           android:gravity="center"
+           android:paddingEnd="20dp"
+           android:visibility="gone"
+           android:text="Accept Receive"
+           android:textColor="@android:color/black"
+           android:textSize="14sp" />
+   </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

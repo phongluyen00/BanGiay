@@ -17,7 +17,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompletedOrderFragment extends BaseFragment<FragmentPayOrderBinding> implements MutilAdt.ListItemListener, ItemFavoriteListener<ProductCategories> {
+public class CompletedOrderFragment extends BaseFragment<FragmentPayOrderBinding> implements MutilAdt.ListItemListener, ItemFavoriteListener<ProductCategories>, PayOrderAdapter.ListItemListener {
 
     private PayOrderAdapter adapter;
     private List<Bill> listBills;
@@ -41,6 +41,7 @@ public class CompletedOrderFragment extends BaseFragment<FragmentPayOrderBinding
     protected void initAdapter() {
         listBills = new ArrayList<>();
         adapter = new PayOrderAdapter(getContext());
+        adapter.setCallback(this);
         binding.recycleCart.setAdapter(adapter);
         if (isTypeAdmin) {
             getAllBillAdmin();
@@ -113,8 +114,7 @@ public class CompletedOrderFragment extends BaseFragment<FragmentPayOrderBinding
     }
 
     private void getAllCartAdmin(String idBill, int position) {
-        db.collection(Constants.KEY_CART).whereEqualTo(Constants.KEY_UID, currentUser.getUid())
-                .whereEqualTo(Constants.KEY_ID_BILL, idBill)
+        db.collection(Constants.KEY_CART).whereEqualTo(Constants.KEY_ID_BILL, idBill)
                 .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<ProductCategories> listProductCategories = new ArrayList<>();
@@ -135,7 +135,6 @@ public class CompletedOrderFragment extends BaseFragment<FragmentPayOrderBinding
 
     private void getAllBillAdmin() {
         db.collection(Constants.KEY_BILL)
-                .whereEqualTo(Constants.KEY_UID, currentUser.getUid())
                 .whereEqualTo(Constants.KEY_STATUS, Constants.KEY_ITEM_COMPLETED)
                 .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -149,5 +148,15 @@ public class CompletedOrderFragment extends BaseFragment<FragmentPayOrderBinding
         }).addOnFailureListener(e -> {
 
         });
+    }
+
+    @Override
+    public void clickCancelOrder(Bill item, int position) {
+
+    }
+
+    @Override
+    public void clickItemAcceptOrder(Bill item, int position) {
+
     }
 }

@@ -1,7 +1,6 @@
 package com.example.retrofitrxjava.activity;
 
 import android.content.Intent;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -16,14 +15,11 @@ import com.example.retrofitrxjava.Utils;
 import com.example.retrofitrxjava.adapter.DetailImageAdapter;
 import com.example.retrofitrxjava.adapter.MutilAdt;
 import com.example.retrofitrxjava.databinding.DetailActivityBinding;
-import com.example.retrofitrxjava.dialog.BDialogFragment;
 import com.example.retrofitrxjava.dialog.BottomSheetComment;
 import com.example.retrofitrxjava.dialog.DialogPDFViewer;
 import com.example.retrofitrxjava.model.EBook;
-import com.example.retrofitrxjava.model.ProductCategories;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.paypal.pyplcheckout.pojo.To;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
@@ -197,8 +193,11 @@ public class DetailEBookDialog extends AppCompatAct<DetailActivityBinding> imple
         return R.layout.detail_activity;
     }
 
+    /**
+     * Khi chọn yêu thích thì check đã yêu thích chưa để ko cho yêu thíc n
+     * @param eBook
+     */
     private void addFavorite(EBook eBook) {
-
         eBook.setId_book(eBook.getDocumentId());
         eBook.setUid(currentUser.getUid());
 
@@ -224,6 +223,11 @@ public class DetailEBookDialog extends AppCompatAct<DetailActivityBinding> imple
 
     }
 
+
+    /**
+     * Thanh toán truyền lên thông tin người dùng và sản phẩm
+     * test thành công nhập success@rarzorpay
+     */
     public void startPayment() {
         Checkout checkout = new Checkout();
         checkout.setKeyID("rzp_test_bvPYonKyVPrUPM");
@@ -233,12 +237,12 @@ public class DetailEBookDialog extends AppCompatAct<DetailActivityBinding> imple
         try {
             JSONObject options = new JSONObject();
 
-            options.put("name", "Merchant Name");
-            options.put("description", "Reference No. #123456");
+            options.put("name", MainActivity.userModel.getName());
+            options.put("description", "Payment book");
             options.put("currency", "INR");
-            options.put("amount", "300");//pass amount in currency subunits
-            options.put("prefill.email", "phongluyen1998@example.com");
-            options.put("prefill.contact","0358844343");
+            options.put("amount",eBook.getPrice());//pass amount in currency subunits
+            options.put("prefill.email", MainActivity.userModel.getEmail());
+            options.put("prefill.contact",MainActivity.userModel.getPhoneNumber());
 
             checkout.open(this, options);
 
@@ -246,10 +250,20 @@ public class DetailEBookDialog extends AppCompatAct<DetailActivityBinding> imple
             Log.e("TAG", "Error in starting Razorpay Checkout", e);
         }
     }
+
+    /**
+     * Thành công thì sang màn hình thành công
+     * khi thành công trả về mã giao dịch
+     * @param razorpayPaymentID
+     */
     @Override
     public void onPaymentSuccess(String razorpayPaymentID) {
-        Toast.makeText(this, "Payment successfully done! " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, PaymentSuccessActivity.class);
+        PaymentSuccessActivity.total = Long.parseLong(eBook.getPrice());
+        startActivity(intent);
     }
+
+
     @Override
     public void onPaymentError(int code, String response) {
         try {

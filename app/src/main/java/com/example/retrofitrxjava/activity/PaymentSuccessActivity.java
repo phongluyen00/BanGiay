@@ -1,19 +1,20 @@
 package com.example.retrofitrxjava.activity;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.databinding.PaymentSuccessBinding;
 
 public class PaymentSuccessActivity extends AppCompatAct<PaymentSuccessBinding>{
+
+    public static long total;
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void initLayout() {
-        bd.openHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        bd.tvTotal.setText(total + "$");
+        bd.openHome.setOnClickListener(v -> finish());
     }
 
     @Override

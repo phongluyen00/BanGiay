@@ -23,6 +23,7 @@ import java.util.List;
 public class SearchFragment extends BaseFragment<FragmentSearchBinding> implements ItemOnclickListener<EBook>,MutilAdt.ListItemListener {
 
     private List<EBook> eBookArrayList = new ArrayList<>();
+    private List<EBook> eBookListPush = new ArrayList<>();
     private MutilAdt<EBook> eBookAdapter;
 
     public static SearchFragment newInstance() {
@@ -61,6 +62,11 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() != 0){
+                    eBookListPush = (ArrayList<EBook>) getListSearchUser(s.toString(), eBookArrayList);
+                }else {
+                    eBookListPush = eBookArrayList;
+                }
                 eBookAdapter.setDt((ArrayList<EBook>) getListSearchUser(s.toString(), eBookArrayList));
             }
 
@@ -82,7 +88,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
         Log.d("AAAAAAAAAAA", eBook.getDocumentId() + "--------" + eBook.getId_book());
         intent.putExtra("ebook", eBook);
         intent.putExtra("index", position);
-        intent.putExtra("list", (Serializable) eBookArrayList);
+        intent.putExtra("list", (Serializable) eBookListPush);
         startActivity(intent);
     }
 

@@ -76,11 +76,13 @@ public class DialogPDFViewer extends BDialogFragment<DialogPdfViewerBinding> {
             eBook.setUid(currentUser.getUid());
             eBook.setId_book(eBook.getDocumentId());
             if (binding.save.getText().equals("Đọc xong")) {
-                db.collection("continue_reading").document(eBookSave.getDocumentId()).delete()
-                        .addOnSuccessListener(aVoid -> {
-                        })
-                        .addOnFailureListener(e -> {
-                        });
+                if (eBookSave.getDocumentId() != null){
+                    db.collection("continue_reading").document(eBookSave.getDocumentId()).delete()
+                            .addOnSuccessListener(aVoid -> {
+                            })
+                            .addOnFailureListener(e -> {
+                            });
+                }
             }else {
                 if (eBookSave != null) {
                     eBookSave.setUid(currentUser.getUid());

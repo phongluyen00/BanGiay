@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
         this.userModel = new UserModel();
         this.bd.setUser(userModel);
 
-        if (currentUser != null){
+        if (currentUser != null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -59,17 +59,26 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
         bd.loginGoogle.setOnClickListener(v -> signIn());
 
 //        bd.loginFacebook.setOnClickListener(v -> getPayment());
-        bd.forgot.setOnClickListener(v -> mAuth.sendPasswordResetEmail(getText(bd.etAccount))
-                .addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Send password resetEmail success", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Send password resetEmail failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }));
+        bd.forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!StringUtil.isBlank(getText(bd.etAccount))){
+                    mAuth.sendPasswordResetEmail(getText(bd.etAccount))
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(LoginActivity.this, "Send password resetEmail success", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "Send password resetEmail failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                }else {
+                    Toast.makeText(LoginActivity.this, "Nhập email", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void getPayment() {
@@ -96,12 +105,12 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
                 break;
             case R.id.btRequestLogin:
                 hideKeyboard(this);
-                if (StringUtil.isBlank(getText(bd.etAccount)) || StringUtil.isBlank(getText(bd.etPassword)) || getText(bd.etPassword).length() < 7){
+                if (StringUtil.isBlank(getText(bd.etAccount)) || StringUtil.isBlank(getText(bd.etPassword)) || getText(bd.etPassword).length() < 7) {
                     Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 showDialog();
-                mAuth.signInWithEmailAndPassword(getText(bd.etAccount),getText(bd.etPassword)).addOnCompleteListener(task -> {
+                mAuth.signInWithEmailAndPassword(getText(bd.etAccount), getText(bd.etPassword)).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         Toast.makeText(LoginActivity.this, "Login success", Toast.LENGTH_SHORT).show();
@@ -157,7 +166,7 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
     }
 
     private void updateUI(FirebaseUser currentUser) {
-        if (currentUser != null){
+        if (currentUser != null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }

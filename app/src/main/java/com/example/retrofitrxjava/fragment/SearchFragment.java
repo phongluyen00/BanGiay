@@ -22,7 +22,7 @@ import java.util.List;
 
 public class SearchFragment extends BaseFragment<FragmentSearchBinding> implements ItemOnclickListener<EBook>,MutilAdt.ListItemListener {
 
-    private List<EBook> eBookArrayList = new ArrayList<>();
+    private final List<EBook> eBookArrayList = new ArrayList<>();
     private List<EBook> eBookListPush = new ArrayList<>();
     private MutilAdt<EBook> eBookAdapter;
 
@@ -51,6 +51,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
             eBookAdapter = new MutilAdt<>(activity, R.layout.item_search);
             binding.rclAll.setAdapter(eBookAdapter);
             eBookAdapter.setDt((ArrayList<EBook>) eBookArrayList);
+            eBookListPush.clear();
+            eBookListPush.addAll(eBookArrayList);
             eBookAdapter.setListener(this);
         });
 

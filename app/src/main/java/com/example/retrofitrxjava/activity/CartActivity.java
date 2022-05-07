@@ -95,7 +95,6 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
     }
 
     private void checkOut() {
-        createBill();
         BuyBottomSheet buyBottomSheet = new BuyBottomSheet(totalPrice -> startPayment(totalPrice), Double.parseDouble(bd.getTotal()));
         buyBottomSheet.show(getSupportFragmentManager(), buyBottomSheet.getTag());
     }

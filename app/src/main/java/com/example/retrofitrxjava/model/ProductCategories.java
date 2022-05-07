@@ -18,6 +18,7 @@ public class ProductCategories implements Serializable {
     private String image;
     private String documentId;
     private String price;
+    private String priceDefault;
     private int count;
     private String description;
     private String id_document;
@@ -45,6 +46,7 @@ public class ProductCategories implements Serializable {
         map.put("price", price);
         map.put("title", title);
         map.put("status", status);
+        map.put("priceDefault", priceDefault);
         map.put("timeUpdate", timeUpdate);
         map.put("uid", uid);
         return map;

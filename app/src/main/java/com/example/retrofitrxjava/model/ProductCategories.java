@@ -27,6 +27,7 @@ public class ProductCategories implements Serializable {
     private boolean isFavorite;
     private String id_markets;
     private String quantity;
+    private Long timeUpdate;
 
     public ProductCategories(String title, String image, String price, String description, String id_markets) {
         this.title = title;
@@ -43,8 +44,9 @@ public class ProductCategories implements Serializable {
         map.put("idBill", idBill);
         map.put("price", price);
         map.put("title", title);
+        map.put("status", status);
+        map.put("timeUpdate", timeUpdate);
         map.put("uid", uid);
-
         return map;
     }
 

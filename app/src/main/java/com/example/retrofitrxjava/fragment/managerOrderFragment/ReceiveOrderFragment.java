@@ -148,7 +148,6 @@ public class ReceiveOrderFragment extends BaseFragment<FragmentPayOrderBinding> 
                 }
             }
         }).addOnFailureListener(e -> {
-
         });
     }
 
@@ -169,9 +168,24 @@ public class ReceiveOrderFragment extends BaseFragment<FragmentPayOrderBinding> 
                 .update(bill.toMapData())
                 .addOnCompleteListener(task -> {
                     adapter.removeItem(position);
+                    for (ProductCategories productCategories : bill.getProductCategoriesList()) {
+                        updateCartBuy(productCategories);
+                    }
                 })
                 .addOnFailureListener(e -> {
 
                 });
     }
+    public void updateCartBuy(ProductCategories productCategories) {
+        productCategories.setStatus(Constants.KEY_ITEM_COMPLETED);
+        db.collection(Constants.KEY_CART).document(productCategories.getDocumentId())
+                .update(productCategories.toMapData())
+                .addOnCompleteListener(task -> {
+
+                })
+                .addOnFailureListener(e -> {
+
+                });
+    }
+
 }

@@ -9,6 +9,7 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvProfitRevenueReport"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"

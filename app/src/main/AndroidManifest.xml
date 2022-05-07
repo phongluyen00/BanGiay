@@ -51,6 +51,7 @@
         <activity android:name=".activity.CartActivity"/>
         <activity android:name=".activity.ActivityAdd"/>
         <activity android:name=".activity.MainActivityAdmin"/>
+        <activity android:name=".activity.ProfitRevenueReportActivity"/>
 
     </application>
 

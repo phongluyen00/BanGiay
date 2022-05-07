@@ -88,13 +88,14 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
     public void setPriceTotal() {
         double price = 0;
         for (ProductCategories article : productCategoriesList) {
-            price += getPrice(article.getPrice()) * article.getCount();
+            price += (getPrice(article.getPrice()) * article.getCount());
         }
 
         bd.setTotal(String.valueOf(price));
     }
 
     private void checkOut() {
+        createBill();
         BuyBottomSheet buyBottomSheet = new BuyBottomSheet(totalPrice -> startPayment(totalPrice), Double.parseDouble(bd.getTotal()));
         buyBottomSheet.show(getSupportFragmentManager(), buyBottomSheet.getTag());
     }
@@ -105,7 +106,13 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
         bill.setStatus(Constants.KEY_ITEM_PENDING);
         bill.setTime(System.currentTimeMillis());
         bill.setBillId(billId);
+        bill.setTotalBill(bd.getTotal());
         bill.setUid(currentUser.getUid());
+        List<String> listProductId= new ArrayList<>();
+        for (ProductCategories productCategories : productCategoriesList) {
+            listProductId.add(productCategories.getDocumentId());
+        }
+        bill.setList_id_order(listProductId);
         db.collection(Constants.KEY_BILL).document(billId).set(bill).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -123,7 +130,6 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
 
     @Override
     public void onPaymentSuccess(String s) {
-        createBill();
         Intent intent = new Intent(this, PaymentSuccessActivity.class);
         startActivity(intent);
     }
@@ -204,6 +210,7 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
 
     public void updateCartBuy(ProductCategories productCategories) {
         productCategories.setStatus(Constants.KEY_ITEM_PENDING);
+        productCategories.setTimeUpdate(System.currentTimeMillis());
         db.collection(Constants.KEY_CART).document(productCategories.getDocumentId())
                 .update(productCategories.toMapData())
                 .addOnCompleteListener(task -> {

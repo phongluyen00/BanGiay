@@ -24,6 +24,7 @@ public class Bill {
     private Long timeUpdate;
     private int status;
     private String uid;
+    private String totalBill;
 
     public Map<String, Object> toMapData() {
         Map<String, Object> map = new HashMap<>();
@@ -33,6 +34,7 @@ public class Bill {
         map.put("timeUpdate", timeUpdate);
         map.put("status", status);
         map.put("uid", uid);
+        map.put("totalBill", totalBill);
         return map;
     }
 }

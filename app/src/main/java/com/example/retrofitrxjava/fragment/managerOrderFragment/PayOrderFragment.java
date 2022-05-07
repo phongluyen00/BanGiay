@@ -42,7 +42,6 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("hadtt", "onResume: ");
     }
 
     @Override
@@ -167,6 +166,21 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
                 .update(bill.toMapData())
                 .addOnCompleteListener(task -> {
                     adapter.removeItem(position);
+                    for (ProductCategories productCategories : bill.getProductCategoriesList()) {
+                        updateCartBuy(productCategories);
+                    }
+                })
+                .addOnFailureListener(e -> {
+
+                });
+    }
+
+    public void updateCartBuy(ProductCategories productCategories) {
+        productCategories.setStatus(Constants.KEY_ITEM_RECEIVE);
+        db.collection(Constants.KEY_CART).document(productCategories.getDocumentId())
+                .update(productCategories.toMapData())
+                .addOnCompleteListener(task -> {
+
                 })
                 .addOnFailureListener(e -> {
 

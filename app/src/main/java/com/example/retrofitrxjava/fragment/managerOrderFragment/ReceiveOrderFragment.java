@@ -153,31 +153,34 @@ public class ReceiveOrderFragment extends BaseFragment<FragmentPayOrderBinding> 
 
     @Override
     public void clickCancelOrder(Bill item, int position) {
-
+        item.setStatus(Constants.KEY_ITEM_CANCEL);
+        item.setTimeUpdate(System.currentTimeMillis());
+        updateBill(item, position, true);
     }
 
     @Override
     public void clickItemAcceptOrder(Bill item, int position) {
         item.setStatus(Constants.KEY_ITEM_COMPLETED);
         item.setTimeUpdate(System.currentTimeMillis());
-        updateBill(item, position);
+        updateBill(item, position, false);
     }
 
-    public void updateBill(Bill bill, int position) {
+    public void updateBill(Bill bill, int position, boolean isCancel) {
         db.collection(Constants.KEY_BILL).document(bill.getBillId())
                 .update(bill.toMapData())
                 .addOnCompleteListener(task -> {
                     adapter.removeItem(position);
                     for (ProductCategories productCategories : bill.getProductCategoriesList()) {
-                        updateCartBuy(productCategories);
+                        updateCartBuy(productCategories, isCancel);
                     }
                 })
                 .addOnFailureListener(e -> {
 
                 });
     }
-    public void updateCartBuy(ProductCategories productCategories) {
-        productCategories.setStatus(Constants.KEY_ITEM_COMPLETED);
+
+    public void updateCartBuy(ProductCategories productCategories, boolean isCancel) {
+        productCategories.setStatus(isCancel ? Constants.KEY_ITEM_CANCEL : Constants.KEY_ITEM_COMPLETED);
         db.collection(Constants.KEY_CART).document(productCategories.getDocumentId())
                 .update(productCategories.toMapData())
                 .addOnCompleteListener(task -> {

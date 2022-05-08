@@ -95,6 +95,7 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
     }
 
     private void checkOut() {
+        createBill();
         BuyBottomSheet buyBottomSheet = new BuyBottomSheet(totalPrice -> startPayment(totalPrice), Double.parseDouble(bd.getTotal()));
         buyBottomSheet.show(getSupportFragmentManager(), buyBottomSheet.getTag());
     }
@@ -129,6 +130,7 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
 
     @Override
     public void onPaymentSuccess(String s) {
+        createBill();
         Intent intent = new Intent(this, PaymentSuccessActivity.class);
         startActivity(intent);
     }

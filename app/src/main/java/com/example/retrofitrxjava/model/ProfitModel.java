@@ -17,6 +17,7 @@ public class ProfitModel {
     private String profit;
     private String marketId;
     private String revenue;
+    private long date;
 
     public ProfitModel(String nameProduct, String profit, String revenue) {
         this.nameProduct = nameProduct;

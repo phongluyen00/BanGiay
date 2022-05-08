@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.activity.MainActivity;
 import com.example.retrofitrxjava.activity.MainActivityAdmin;
+import com.example.retrofitrxjava.constanst.Constants;
 import com.example.retrofitrxjava.event.UpdateMain;
 import com.example.retrofitrxjava.model.Markets;
 import com.example.retrofitrxjava.model.ProductCategories;
@@ -95,17 +96,21 @@ public class SetupViewModel extends ViewModel {
     }
 
     public void checkProductExitsCart(FirebaseFirestore db, FirebaseUser currentUser, ProductCategories productCategories) {
-        db.collection("cart").whereEqualTo("uid", currentUser.getUid()).whereEqualTo("id_document", productCategories.getDocumentId()).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                ProductCategories product = null;
-                for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
-                    product = documentSnapshot.toObject(ProductCategories.class);
-                    product.setDocumentId(documentSnapshot.getId());
-                    break;
-                }
-                productCart.postValue(product);
-            }
-        });
+        db.collection("cart")
+                .whereEqualTo("uid", currentUser.getUid())
+                .whereEqualTo(Constants.KEY_STATUS, Constants.KEY_ITEM_CART)
+                .whereEqualTo("id_document", productCategories.getDocumentId()).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ProductCategories product = null;
+                        for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+                            product = documentSnapshot.toObject(ProductCategories.class);
+                            product.setDocumentId(documentSnapshot.getId());
+                            break;
+                        }
+                        productCart.postValue(product);
+                    }
+                });
     }
 
     public void getProductMarket(FirebaseFirestore db, String id_Markets) {
@@ -179,7 +184,7 @@ public class SetupViewModel extends ViewModel {
         });
     }
 
-    public void updateProduct(Context context, FirebaseFirestore db, Uri imageUri, ProductCategories productCategories, String path,  listener listener) {
+    public void updateProduct(Context context, FirebaseFirestore db, Uri imageUri, ProductCategories productCategories, String path, listener listener) {
         StorageReference storageReferenc = FirebaseStorage.getInstance().getReference().child("imageProduct").child(System.currentTimeMillis() + "." + path);
         storageReferenc.putFile(imageUri).addOnCompleteListener(task -> storageReferenc.getDownloadUrl().addOnSuccessListener(uri -> {
             db.collection("product_markets").document(productCategories.getDocumentId()).set(productCategories);
@@ -189,7 +194,7 @@ public class SetupViewModel extends ViewModel {
         }));
     }
 
-    public interface listener{
+    public interface listener {
         void updateSuccess();
     }
 }

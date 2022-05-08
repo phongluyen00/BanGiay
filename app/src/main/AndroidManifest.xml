@@ -52,6 +52,7 @@
         <activity android:name=".activity.ActivityAdd"/>
         <activity android:name=".activity.MainActivityAdmin"/>
         <activity android:name=".activity.ProfitRevenueReportActivity"/>
+        <activity android:name=".activity.BusinessReportActivity" />
 
     </application>
 

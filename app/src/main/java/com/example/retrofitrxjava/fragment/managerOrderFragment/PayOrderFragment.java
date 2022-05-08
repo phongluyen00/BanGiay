@@ -1,7 +1,6 @@
 package com.example.retrofitrxjava.fragment.managerOrderFragment;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -161,13 +160,13 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
     }
 
 
-    public void updateBill(Bill bill, int position) {
+    public void updateBill(Bill bill, int position, boolean isClickCancel) {
         db.collection(Constants.KEY_BILL).document(bill.getBillId())
                 .update(bill.toMapData())
                 .addOnCompleteListener(task -> {
                     adapter.removeItem(position);
                     for (ProductCategories productCategories : bill.getProductCategoriesList()) {
-                        updateCartBuy(productCategories);
+                        updateCartBuy(productCategories, isClickCancel);
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -175,8 +174,8 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
                 });
     }
 
-    public void updateCartBuy(ProductCategories productCategories) {
-        productCategories.setStatus(Constants.KEY_ITEM_RECEIVE);
+    public void updateCartBuy(ProductCategories productCategories, boolean isClickCancel) {
+        productCategories.setStatus(!isClickCancel ? Constants.KEY_ITEM_RECEIVE : Constants.KEY_ITEM_CANCEL);
         db.collection(Constants.KEY_CART).document(productCategories.getDocumentId())
                 .update(productCategories.toMapData())
                 .addOnCompleteListener(task -> {
@@ -191,13 +190,13 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
     public void clickCancelOrder(Bill item, int position) {
         item.setStatus(Constants.KEY_ITEM_CANCEL);
         item.setTimeUpdate(System.currentTimeMillis());
-        updateBill(item, position);
+        updateBill(item, position, true);
     }
 
     @Override
     public void clickItemAcceptOrder(Bill item, int position) {
         item.setStatus(Constants.KEY_ITEM_RECEIVE);
         item.setTimeUpdate(System.currentTimeMillis());
-        updateBill(item, position);
+        updateBill(item, position, false);
     }
 }

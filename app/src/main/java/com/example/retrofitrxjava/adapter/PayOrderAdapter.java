@@ -54,7 +54,7 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
 
     public void removeItem(int position) {
         listData.remove(position);
-        notifyItemChanged(position);
+        notifyDataSetChanged();
     }
 
 
@@ -86,27 +86,29 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
         }
 
         void bindView(Bill item) {
-            itemCartBinding.setVariable(BR.item, item.getProductCategoriesList().get(0));
-            for (int i = 1; i < item.getProductCategoriesList().size(); i++) {
-                ItemOrderPaymentTestBinding layout1 = ItemOrderPaymentTestBinding.inflate(LayoutInflater.from(context), itemCartBinding.viewItemOrderChild, false);
-                layout1.setVariable(BR.item, item.getProductCategoriesList().get(i));
+            if (item.getProductCategoriesList() != null) {
+                itemCartBinding.setVariable(BR.item, item.getProductCategoriesList().get(0));
+                for (int i = 1; i < item.getProductCategoriesList().size(); i++) {
+                    ItemOrderPaymentTestBinding layout1 = ItemOrderPaymentTestBinding.inflate(LayoutInflater.from(context), itemCartBinding.viewItemOrderChild, false);
+                    layout1.setVariable(BR.item, item.getProductCategoriesList().get(i));
 
-                itemCartBinding.viewItemOrderChild.addView(layout1.getRoot());
+                    itemCartBinding.viewItemOrderChild.addView(layout1.getRoot());
+                }
             }
             itemCartBinding.tvAccept.setVisibility(isTypeAdmin ? View.VISIBLE : View.GONE);
             itemCartBinding.tvCancelOrder.setVisibility(isShowCancel ? View.VISIBLE : View.GONE);
             itemCartBinding.tvTotalOrder.setText(String.valueOf(setPriceTotal(item)));
             itemCartBinding.tvAccept.setOnClickListener(v -> callback.clickItemAcceptOrder(item, getAdapterPosition()));
-            itemCartBinding.tvCancelOrder.setOnClickListener(v -> {
-                callback.clickCancelOrder(item, getAdapterPosition());
-            });
+            itemCartBinding.tvCancelOrder.setOnClickListener(v -> callback.clickCancelOrder(item, getAdapterPosition()));
         }
     }
 
     public double setPriceTotal(Bill item) {
         double price = 0;
-        for (ProductCategories article : item.getProductCategoriesList()) {
-            price += getPrice(article.getPrice()) * article.getCount();
+        if (item.getProductCategoriesList() != null) {
+            for (ProductCategories article : item.getProductCategoriesList()) {
+                price += getPrice(article.getPrice()) * article.getCount();
+            }
         }
         return price;
     }

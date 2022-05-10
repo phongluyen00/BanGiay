@@ -75,6 +75,7 @@
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toEndOf="@id/guideline"
                 android:textSize="14sp"
+                price="@{item.totalPrice()}"
                 app:layout_constraintBottom_toBottomOf="@id/img_recruitment"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/img_recruitment"

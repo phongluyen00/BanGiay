@@ -24,6 +24,7 @@ import com.example.retrofitrxjava.activity.ActivityAdd;
 import com.example.retrofitrxjava.activity.LoginActivity;
 import com.example.retrofitrxjava.activity.MainActivity;
 import com.example.retrofitrxjava.activity.MainActivityAdmin;
+import com.example.retrofitrxjava.activity.MyProductActivity;
 import com.example.retrofitrxjava.databinding.CustomLayoutBinding;
 import com.example.retrofitrxjava.databinding.FragmentAccountBinding;
 import com.example.retrofitrxjava.dialog.BottomSheetEditAdmin;
@@ -116,6 +117,14 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
             public void onClick(View view) {
                 BottomSheetEditAdmin bottomSheetEditAdmin = new BottomSheetEditAdmin();
                 bottomSheetEditAdmin.show(getChildFragmentManager(),bottomSheetEditAdmin.getTag());
+            }
+        });
+
+        binding.include.myproduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, MyProductActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -214,7 +223,7 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
             this.imageUri = imageUri;
             Glide.with(this)
                     .load(imageUri)
-                    .error(R.drawable.ic_baseline_warning_24)
+                    .error(R.drawable.placeholder)
                     .into(binding.img);
 
         } else {

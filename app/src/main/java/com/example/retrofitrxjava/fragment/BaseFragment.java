@@ -20,12 +20,9 @@ import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.activity.AppCompatAct;
-import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.model.Markets;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,7 +44,6 @@ public abstract class BaseFragment<BD extends ViewDataBinding> extends Fragment 
     protected UserModel userModel;
     protected FirebaseFirestore db = FirebaseFirestore.getInstance();
     protected FirebaseAuth mAuth;
-    protected AppDatabase appDatabase;
     protected FirebaseUser currentUser;
     protected ProgressDialog progressDialog;
 
@@ -67,7 +63,6 @@ public abstract class BaseFragment<BD extends ViewDataBinding> extends Fragment 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        appDatabase = AppDatabase.getInstance(activity);
         mAuth = FirebaseAuth.getInstance();
         currentUser =  mAuth.getCurrentUser();
         progressDialog = new ProgressDialog(activity);

@@ -2,8 +2,6 @@ package com.example.retrofitrxjava.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,16 +11,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.retrofitrxjava.ItemListener;
 import com.example.retrofitrxjava.ItemOnclickListener;
 import com.example.retrofitrxjava.ItemOnclickProductListener;
-import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.activity.ActivityAdd;
 import com.example.retrofitrxjava.activity.CategoriesActivity;
 import com.example.retrofitrxjava.activity.DetailActivity;
 import com.example.retrofitrxjava.activity.MainActivity;
-import com.example.retrofitrxjava.activity.MainActivityAdmin;
 import com.example.retrofitrxjava.adapter.BannerAdapter;
 import com.example.retrofitrxjava.adapter.MutilAdt;
-import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.databinding.LayoutRecruitmentBinding;
 import com.example.retrofitrxjava.dialog.BaseBottomSheet;
 import com.example.retrofitrxjava.dialog.BuyBottomSheet;
@@ -32,25 +27,20 @@ import com.example.retrofitrxjava.model.Markets;
 import com.example.retrofitrxjava.model.ProductCategories;
 import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.razorpay.Checkout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
-import org.jsoup.helper.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> implements ItemOnclickProductListener<ProductCategories>, ItemOnclickListener<Markets>, MutilAdt.ListItemListener, ItemListener<ProductCategories> {
 
     public static final String EXTRA_DATA = "extra_data";
     private MutilAdt<Markets> adapterProduct;
-    private AppDatabase appDatabase;
     private MutilAdt<ProductCategories> categoriesAdt;
     private SetupViewModel setupViewModel;
     private List<ProductCategories> categories = new ArrayList<>();
@@ -99,7 +89,6 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
     @Override
     protected void initFragment() {
         setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
-        appDatabase = AppDatabase.getInstance(getActivity());
         Intent intent = activity.getIntent();
         showDialog();
         setupViewModel.getProductMarketHome(db);
@@ -154,6 +143,7 @@ public class HomeFragment extends BaseFragment<LayoutRecruitmentBinding> impleme
 
     @Override
     public void onItemAddListener(ProductCategories product) {
+        MainActivity.productCategoriesBuy = product;
         BaseBottomSheet baseBottomSheet = new BuyBottomSheet(this::startPayment, Double.parseDouble(product.getPrice()));
         baseBottomSheet.show(getChildFragmentManager(), baseBottomSheet.getTag());
     }

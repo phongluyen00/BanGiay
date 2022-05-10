@@ -25,7 +25,6 @@ import androidx.databinding.ViewDataBinding;
 import com.bumptech.glide.Glide;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
-import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.model.Markets;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,9 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jsoup.helper.StringUtil;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -47,7 +44,6 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
     protected BiometricPrompt biometricPrompt;
     protected BiometricPrompt.PromptInfo promptInfo;
     protected FirebaseFirestore db = FirebaseFirestore.getInstance();
-    protected AppDatabase appDatabase;
     protected UserModel userModel;
     protected FirebaseAuth mAuth;
     protected FirebaseUser currentUser;
@@ -58,7 +54,6 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
         super.onCreate(savedInstanceState);
         bd = DataBindingUtil.setContentView(this, getID());
         executor = ContextCompat.getMainExecutor(this);
-        appDatabase = AppDatabase.getInstance(this);
         mAuth = FirebaseAuth.getInstance();
         currentUser =  mAuth.getCurrentUser();
         progressDialog = new ProgressDialog(this);
@@ -101,11 +96,17 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
         return formattedNumber + " vnd";
     }
 
+    protected static String formatPrice(double price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###");
+        String formattedNumber = formatter.format(price);
+        return formattedNumber + "";
+    }
+
     @BindingAdapter("thumb")
     public static void setThumb(ImageView im, String img) {
         Glide.with(im)
                 .load(img)
-                .error(R.drawable.image_avata)
+                .error(R.drawable.placeholder)
                 .into(im);
     }
 
@@ -119,7 +120,7 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
             tv.setText("");
             return;
         }
-        tv.setText(formatNumber(Double.parseDouble(price)));
+        tv.setText(formatPrice(Double.parseDouble(price)));
     }
 
     protected void showDialog() {

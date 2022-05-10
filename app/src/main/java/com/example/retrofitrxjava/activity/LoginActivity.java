@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.retrofitrxjava.DialogRegister;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
-import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.databinding.LayoutActivityLoginViewBinding;
 import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -42,7 +41,6 @@ public class LoginActivity extends AppCompatAct<LayoutActivityLoginViewBinding> 
     @Override
     protected void initLayout() {
         setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
-        this.appDatabase = AppDatabase.getInstance(this);
         this.userModel = new UserModel();
         this.bd.setUser(userModel);
 

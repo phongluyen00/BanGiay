@@ -49,8 +49,8 @@ public class BusinessReportActivity extends AppCompatAct<BottomSheetKqkdBinding>
                         * listProductCategory.getCount();
             }
         }
-        bd.tvBh.setText(String.valueOf(price));
-        bd.resultGvbh.setText(String.valueOf(priceDefaultTotal));
+        bd.ban.setText(formatPrice(price));
+        bd.resultGvbh.setText(formatPrice(priceDefaultTotal));
     }
 
     private void getProfit() {
@@ -61,7 +61,7 @@ public class BusinessReportActivity extends AppCompatAct<BottomSheetKqkdBinding>
                         * listProductCategory.getCount();
             }
         }
-        bd.resultTotal.setText(String.valueOf(profit));
+        bd.resultTotal.setText(formatPrice(profit));
     }
 
     private void getResultTh() {

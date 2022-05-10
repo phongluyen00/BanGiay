@@ -53,10 +53,10 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/icon"
+                    thumb="@{item.image}"
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
-                    thumb="@{item.image}"
-                    android:src="@drawable/image_avata" />
+                    android:src="@drawable/placeholder" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/tv_name"
@@ -108,35 +108,36 @@
                     setTextHtmledt="@{item.description}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
                     android:layout_below="@id/lai"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/rounded_border_edittext_login"
                     android:hint="Mô tả"
                     android:padding="10dp"
-                    android:textColor="#454545"
-                    android:textSize="12sp"
-                    tools:text="Sản phẩm khá là ok nhé mấy cưng Sản phẩm khá là ok nhé mấy cưng Sản phẩm khá là ok nhé mấy cưng" />
+                    android:textColor="#A449494A"
+                    tools:text="Sản phẩm khá là ok nhé mấy cưng" />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/quantity"
+                    setTextHtmledt="@{item.description}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/price"
+                    android:layout_below="@id/description"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:ellipsize="end"
-                    android:hint="Mô tả"
-                    android:maxLines="2"
+                    android:background="@drawable/rounded_border_edittext_login"
+                    android:hint="Số lượng"
+                    android:inputType="number"
                     android:padding="10dp"
-                    android:visibility="gone" />
+                    android:textColor="#A449494A" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/the_loai"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/description"
+                    android:layout_below="@id/quantity"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="16dp"

@@ -21,13 +21,14 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
+        android:padding="10dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp">
+            >
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_recruitment"
@@ -35,6 +36,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:adjustViewBounds="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,19 +59,26 @@
                 app:layout_constraintTop_toTopOf="@id/img_recruitment"
                 tools:text="âsassassssssssss" />
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.7"
+                android:layout_height="wrap_content"/>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_price"
-                price="@{item.totalPrice()}"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:maxLines="2"
                 android:textColor="@android:color/black"
+                app:layout_constraintStart_toEndOf="@id/guideline"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@id/img_recruitment"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/img_recruitment"
-                tools:text="$10" />
+                tools:text="$10ddddddddsddddd" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_count"
@@ -97,10 +106,10 @@
             android:id="@+id/tvTotalOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:maxLines="2"
             android:textColor="@android:color/black"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/img_recruitment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/img_recruitment"
@@ -116,10 +125,8 @@
            android:layout_width="0dp"
            android:layout_weight="1"
            android:layout_height="wrap_content"
-           android:layout_marginStart="10dp"
            android:maxLines="2"
            android:gravity="center"
-           android:paddingEnd="20dp"
            android:text="Cancel"
            android:textColor="@android:color/black"
            android:textSize="14sp" />
@@ -134,6 +141,7 @@
            android:gravity="center"
            android:paddingEnd="20dp"
            android:visibility="gone"
+           tools:visibility="visible"
            android:text="Accept Receive"
            android:textColor="@android:color/black"
            android:textSize="14sp" />

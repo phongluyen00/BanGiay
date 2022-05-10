@@ -12,7 +12,6 @@ import com.example.retrofitrxjava.ItemDeleteCartListener;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.adapter.CartAdt;
 import com.example.retrofitrxjava.constanst.Constants;
-import com.example.retrofitrxjava.database.AppDatabase;
 import com.example.retrofitrxjava.databinding.ActivityCartBinding;
 import com.example.retrofitrxjava.dialog.BuyBottomSheet;
 import com.example.retrofitrxjava.model.Bill;
@@ -29,13 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartActivity extends AppCompatAct<ActivityCartBinding> implements CartAdt.ListItemListener, ItemDeleteCartListener<ProductCategories>, ItemBuyListener, PaymentResultListener {
-    private AppDatabase appDatabase;
     private List<ProductCategories> productCategoriesList = new ArrayList<>();
     private CartAdt<ProductCategories> cartAdapter;
 
     @Override
     protected void initLayout() {
-        this.appDatabase = AppDatabase.getInstance(this);
         bd.setListener(this);
         bd.title.setText("Cart");
         bd.back.setOnClickListener(v -> finish());

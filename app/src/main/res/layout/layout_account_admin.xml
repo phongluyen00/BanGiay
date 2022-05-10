@@ -28,13 +28,14 @@
             android:text="Add product" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/myproduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="15dp"
-            android:drawableStart="@drawable/ic_slice_2"
+            android:drawableStart="@drawable/ic_baseline_business_center_24"
             android:padding="10dp"
             android:drawableTint="#040404"
-            android:text="Your Order" />
+            android:text="My product" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/statistic"

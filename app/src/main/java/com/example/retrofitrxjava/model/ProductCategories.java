@@ -38,6 +38,16 @@ public class ProductCategories implements Serializable {
         this.description = description;
     }
 
+    public ProductCategories(String title, String image, String price, String description, String id_markets, String priceDefault, String quantity) {
+        this.title = title;
+        this.image = image;
+        this.price = price;
+        this.id_markets = id_markets;
+        this.description = description;
+        this.priceDefault = priceDefault;
+        this.quantity = quantity;
+    }
+
     public Map<String, Object> toMapData() {
         Map<String, Object> map = new HashMap<>();
         map.put("count", count);

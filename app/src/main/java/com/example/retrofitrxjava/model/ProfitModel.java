@@ -24,4 +24,18 @@ public class ProfitModel {
         this.profit = profit;
         this.revenue = revenue;
     }
+
+    public String getRevenue() {
+        if (revenue == null) {
+            revenue = "";
+        }
+        return revenue;
+    }
+
+    public String getProfit() {
+        if (profit == null) {
+            profit = "";
+        }
+        return profit;
+    }
 }

@@ -65,6 +65,10 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
             bottomSheetMarkets.show(getSupportFragmentManager(), bottomSheetMarkets.getTag());
         });
         bd.submit.setOnClickListener(v -> {
+            if (!validate()){
+                Toast.makeText(this, "Nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
+                return;
+            }
             String price = giaBan(Long.parseLong(Objects.requireNonNull(bd.price.getText()).toString().trim()), Long.parseLong(Objects.requireNonNull(bd.lai.getText()).toString().trim()));
             if (imageUri != null) {
                 showDialog();
@@ -83,8 +87,13 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
                 } else {
                     StorageReference storageReferenc = FirebaseStorage.getInstance().getReference().child("imageProduct").child(System.currentTimeMillis() + "." + getFileEx(imageUri));
                     storageReferenc.putFile(imageUri).addOnCompleteListener(task -> storageReferenc.getDownloadUrl().addOnSuccessListener(uri -> {
-                        productCategories = new ProductCategories(bd.tvName.getText().toString(), uri.toString(),
-                                price, bd.description.getText().toString(), bd.theLoai.getText().toString());
+                        productCategories = new ProductCategories(bd.tvName.getText().toString(),
+                                uri.toString(),
+                                price,
+                                Objects.requireNonNull(bd.description.getText()).toString(),
+                                bd.theLoai.getText().toString(),
+                                bd.price.getText().toString().trim(),
+                                Objects.requireNonNull(bd.quantity.getText()).toString().trim());
                         db.collection("product_markets").document().set(productCategories);
                         Toast.makeText(this, "Tạo mới sản phẩm thành công", Toast.LENGTH_SHORT).show();
                         dismissDialog();
@@ -98,7 +107,7 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
                 if (isEdit) {
                     String id = productCategories.getDocumentId();
                     productCategories = new ProductCategories(Objects.requireNonNull(bd.tvName.getText()).toString(), productCategories.getImage(),
-                            price, Objects.requireNonNull(bd.description.getText()).toString(), bd.theLoai.getText().toString());
+                            price, Objects.requireNonNull(bd.description.getText()).toString(), bd.theLoai.getText().toString(), Objects.requireNonNull(bd.price.getText()).toString().trim(), Objects.requireNonNull(bd.quantity.getText()).toString().trim());
                     db.collection("product_markets").document(id).set(productCategories);
                     Toast.makeText(this, "Thay đổi thành công !", Toast.LENGTH_SHORT).show();
                     dismissDialog();
@@ -128,12 +137,22 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
             this.imageUri = imageUri;
             Glide.with(this)
                     .load(imageUri)
-                    .error(R.drawable.ic_baseline_warning_24)
+                    .error(R.drawable.placeholder)
                     .into(bd.icon);
 
         } else {
             Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private boolean validate() {
+        if (StringUtil.isBlank(bd.tvName.getText().toString()) || StringUtil.isBlank(bd.price.getText().toString()) ||
+                StringUtil.isBlank(bd.lai.getText().toString()) || StringUtil.isBlank(bd.description.getText().toString()) ||
+                StringUtil.isBlank(bd.quantity.getText().toString()) || StringUtil.isBlank(bd.theLoai.getText().toString())){
+            return false;
+        }
+        return true;
+
     }
 
     @Override

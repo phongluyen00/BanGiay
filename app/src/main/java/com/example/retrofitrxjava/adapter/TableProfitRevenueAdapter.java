@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.retrofitrxjava.databinding.ItemTableBinding;
 import com.example.retrofitrxjava.model.ProfitModel;
 
+import org.jsoup.helper.StringUtil;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,10 +64,16 @@ public class TableProfitRevenueAdapter extends RecyclerView.Adapter<TableProfitR
         }
 
         void bindView(ProfitModel item) {
-            itemCartBinding.tvProfit.setText(item.getProfit());
-            itemCartBinding.tvRevenue.setText(item.getRevenue());
+            itemCartBinding.tvProfit.setText(StringUtil.isBlank(item.getProfit()) ? "" : formatPrice(Double.parseDouble(item.getProfit())));
+            itemCartBinding.tvRevenue.setText(StringUtil.isBlank(item.getRevenue()) ? "" : formatPrice(Double.parseDouble(item.getRevenue())));
             itemCartBinding.tvMarketProduct.setText(item.getNameProduct());
         }
+    }
+
+    protected static String formatPrice(double price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###");
+        String formattedNumber = formatter.format(price);
+        return formattedNumber + "";
     }
 
 }

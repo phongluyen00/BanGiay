@@ -26,6 +26,7 @@ import com.razorpay.PaymentResultListener;
 import org.json.JSONObject;
 import org.jsoup.helper.StringUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class DetailEBookDialog extends AppCompatAct<DetailActivityBinding> imple
     private boolean isFavorite;
     private Utils viewModel;
     private boolean isReading;
+    private List<EBook> ebookSemi = new ArrayList<>();
 
     @Override
     protected void initLayout() {
@@ -62,6 +64,8 @@ public class DetailEBookDialog extends AppCompatAct<DetailActivityBinding> imple
             @Override
             public void onChanged(List<EBook> eBooks) {
                 if (eBooks != null && eBooks.size() > 0){
+                    ebookSemi.clear();
+                    ebookSemi.addAll(eBooks);
                     eBookAdapter.setDt((ArrayList<EBook>) eBooks);
                 }
             }
@@ -100,6 +104,7 @@ public class DetailEBookDialog extends AppCompatAct<DetailActivityBinding> imple
             dialogPDFViewer.show(getSupportFragmentManager(), dialogPDFViewer.getTag());
         });
 
+        // chia serduwx liệu
         bd.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,6 +169,7 @@ public class DetailEBookDialog extends AppCompatAct<DetailActivityBinding> imple
                     });
         }
 
+        // đẩy comment lên
         bd.comment.setOnClickListener(v -> {
             BottomSheetComment bottomSheetComment = new BottomSheetComment(eBook, MainActivity.userModel);
             bottomSheetComment.show(getSupportFragmentManager(), bottomSheetComment.getTag());
@@ -213,9 +219,19 @@ public class DetailEBookDialog extends AppCompatAct<DetailActivityBinding> imple
 
     }
 
+    /**
+     * click vào item
+     * @param eBook
+     * @param position
+     */
     @Override
     public void onItemBookClick(EBook eBook, int position) {
-
+        Intent intent = new Intent(this, DetailEBookDialog.class);
+        Log.d("AAAAAAAAAAA", eBook.getDocumentId());
+        intent.putExtra("ebook", eBook);
+        intent.putExtra("index", position);
+        intent.putExtra("list", (Serializable) ebookSemi);
+        startActivity(intent);
     }
 
     @Override

@@ -27,6 +27,7 @@ public class DetailActivity extends AppCompatAct<ActivityDetailTruyenBinding> {
     protected void initLayout() {
         Intent intent = getIntent();
         userModel = MainActivity.userModel;
+        bd.setAccount(userModel);
         setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
         if (intent != null) {
             productCategories = (ProductCategories) intent.getSerializableExtra(EXTRA_DATA);

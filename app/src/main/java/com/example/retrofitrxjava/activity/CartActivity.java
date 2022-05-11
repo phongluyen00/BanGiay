@@ -1,5 +1,6 @@
 package com.example.retrofitrxjava.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.util.Log;
@@ -219,12 +220,15 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
                 });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void deleteCart(ProductCategories productCategories, int indext) {
         db.collection(Constants.KEY_CART).document(productCategories.getDocumentId())
                 .delete()
                 .addOnCompleteListener(task -> {
                     productCategoriesList.remove(indext);
                     cartAdapter.notifyItemRemoved(indext);
+                    cartAdapter.setData(productCategoriesList);
+                    setPriceTotal();
                 })
                 .addOnFailureListener(e -> {
 

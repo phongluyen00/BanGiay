@@ -5,6 +5,11 @@
 
     <data>
 
+        <import type="android.view.View"/>
+        <variable
+            name="account"
+            type="com.example.retrofitrxjava.UserModel" />
+
         <variable
             name="item"
             type="com.example.retrofitrxjava.model.ProductCategories" />
@@ -107,6 +112,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:visibility="@{account.admin ? View.GONE : View.VISIBLE }"
                 android:id="@+id/ic_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,6 +125,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/count"
+                android:visibility="@{account.admin ? View.GONE : View.VISIBLE }"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -135,6 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:src="@drawable/ic__add"
+                android:visibility="@{account.admin ? View.GONE : View.VISIBLE }"
                 app:layout_constraintBottom_toBottomOf="@id/ic_delete"
                 app:layout_constraintStart_toEndOf="@id/count"
                 app:layout_constraintTop_toTopOf="@id/ic_delete" />
@@ -145,6 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/ic_rectangle_6"
+                android:visibility="@{account.admin ? View.GONE : View.VISIBLE }"
                 android:backgroundTint="#4CAD73"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:gravity="center"

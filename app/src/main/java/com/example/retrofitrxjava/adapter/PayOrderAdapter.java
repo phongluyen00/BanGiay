@@ -90,7 +90,7 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
         }
 
         void bindView(Bill item) {
-            if (item.getProductCategoriesList() != null) {
+            if (item.getProductCategoriesList() != null && item.getProductCategoriesList().size() > 0 && item.getProductCategoriesList().get(0) != null) {
                 itemCartBinding.setVariable(BR.item, item.getProductCategoriesList().get(0));
                 for (int i = 1; i < item.getProductCategoriesList().size(); i++) {
                     ItemOrderPaymentTestBinding layout1 = ItemOrderPaymentTestBinding.inflate(LayoutInflater.from(context), itemCartBinding.viewItemOrderChild, false);

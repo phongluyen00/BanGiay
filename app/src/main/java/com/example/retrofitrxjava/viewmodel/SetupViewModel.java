@@ -107,6 +107,8 @@ public class SetupViewModel extends ViewModel {
             if (task.isSuccessful()) {
                 for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
                     ModelManager productCategories = documentSnapshot.toObject(ModelManager.class);
+                    assert productCategories != null;
+                    productCategories.setDocumentId(documentSnapshot.getId());
                     modelManagers.add(productCategories);
                 }
                 listModelManagerMutableLiveData.postValue(modelManagers);

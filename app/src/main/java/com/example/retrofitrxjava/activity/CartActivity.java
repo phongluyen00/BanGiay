@@ -52,10 +52,10 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
         setupViewModel.getListModelManagerMutableLiveData().observe(this, modelManagers -> {
             if (modelManagers.size() > 0) {
                 for (ModelManager modelManager : modelManagers) {
-                    if (modelManager.getCode() == Constants.CODE_632) {
+                    if (modelManager.getCode().equalsIgnoreCase(Constants.CODE_511)) {
                         objManager511 = modelManager;
                     }
-                    if (modelManager.getCode().equalsIgnoreCase(Constants.CODE_1331)) {
+                    if (modelManager.getCode().equalsIgnoreCase(Constants.CODE_3331)) {
                         objManager3331 = modelManager;
                     }
                 }
@@ -102,7 +102,7 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
     }
 
     public void setPriceTotal() {
-        double price = 0;
+        long price = 0;
         for (ProductCategories article : productCategoriesList) {
             price += (getPrice(article.getPrice()) * article.getCount());
         }
@@ -140,16 +140,20 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
         });
 
         // update 511,3331
-        if (objManager511 != null && objManager3331 != null){
+        if (objManager511 != null && objManager3331 != null) {
             long price511 = Long.parseLong(objManager511.getHave()) + Long.parseLong(bd.getTotal().replaceAll(",", ""));
-            setupViewModel.updateDataManager(db, Constants.DOCUMENT_511, Constants.COLLECTION_HAVE, String.valueOf(price511));
-            long price3331 = Long.parseLong(objManager3331.getHave()) + (price511 * 10) / 100;
-            setupViewModel.updateDataManager(db, Constants.DOCUMENT_3331, Constants.COLLECTION_HAVE, String.valueOf(price3331));
+            setupViewModel.updateDataManager(db, objManager511.getDocumentId(), Constants.COLLECTION_HAVE, String.valueOf(price511));
+            long price3331 = Long.parseLong(objManager3331.getHave()) + (getTotal() * 10) / 100;
+            setupViewModel.updateDataManager(db, objManager3331.getDocumentId(), Constants.COLLECTION_HAVE, String.valueOf(price3331));
         }
     }
 
+    private long getTotal(){
+        return Long.parseLong(bd.getTotal().replaceAll(",", ""));
+    }
+
     public double getPrice(String price) {
-        return Double.parseDouble(price);
+        return Long.parseLong(price);
     }
 
     @Override

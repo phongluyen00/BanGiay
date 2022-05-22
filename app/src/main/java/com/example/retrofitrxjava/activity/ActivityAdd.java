@@ -114,11 +114,11 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
                         if (objManager1331 != null && objManager112 != null && objManager632 != null){
                             long price1331 = Long.parseLong(value1331(Long.parseLong(Objects.requireNonNull(bd.price.getText()).toString().trim())))
                                     + Long.parseLong(objManager1331.getIn_debt());
-                            setupViewModel.updateDataManager(db, Constants.DOCUMENT_1331, Constants.COLLECTION_IN_DEBT, String.valueOf(price1331));
+                            setupViewModel.updateDataManager(db, objManager1331.getDocumentId(), Constants.COLLECTION_IN_DEBT, String.valueOf(price1331));
                             long price632 = Long.parseLong(objManager632.getIn_debt()) + Long.parseLong(bd.price.getText().toString());
-                            setupViewModel.updateDataManager(db, Constants.DOCUMENT_632, Constants.COLLECTION_IN_DEBT, String.valueOf(price632));
-                            long price112 = price632 + price1331;
-                            setupViewModel.updateDataManager(db, Constants.DOCUMENT_112, Constants.COLLECTION_IN_DEBT, String.valueOf(price112));
+                            setupViewModel.updateDataManager(db, objManager632.getDocumentId(), Constants.COLLECTION_IN_DEBT, String.valueOf(price632));
+                            long price112 = price632 + price1331 + Long.parseLong(objManager112.getIn_debt());
+                            setupViewModel.updateDataManager(db, objManager112.getDocumentId(), Constants.COLLECTION_IN_DEBT, String.valueOf(price112));
                         }
                         dismissDialog();
                         finish();

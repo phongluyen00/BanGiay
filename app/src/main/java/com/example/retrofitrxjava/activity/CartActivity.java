@@ -7,9 +7,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 
 import com.example.retrofitrxjava.ItemBuyListener;
 import com.example.retrofitrxjava.ItemDeleteCartListener;
+import com.example.retrofitrxjava.ModelManager;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.adapter.CartAdt;
 import com.example.retrofitrxjava.constanst.Constants;
@@ -31,18 +33,34 @@ import java.util.List;
 public class CartActivity extends AppCompatAct<ActivityCartBinding> implements CartAdt.ListItemListener, ItemDeleteCartListener<ProductCategories>, ItemBuyListener, PaymentResultListener {
     private List<ProductCategories> productCategoriesList = new ArrayList<>();
     private CartAdt<ProductCategories> cartAdapter;
+    private ModelManager objManager511;
+    private ModelManager objManager3331;
 
     @Override
     protected void initLayout() {
         bd.setListener(this);
         bd.title.setText("Cart");
         bd.back.setOnClickListener(v -> finish());
+
+        setupViewModel.loadManager(db, currentUser);
         getAllCart();
         initListener();
     }
 
     private void initListener() {
         bd.add.setOnClickListener(v -> checkOut());
+        setupViewModel.getListModelManagerMutableLiveData().observe(this, modelManagers -> {
+            if (modelManagers.size() > 0) {
+                for (ModelManager modelManager : modelManagers) {
+                    if (modelManager.getCode() == Constants.CODE_632) {
+                        objManager511 = modelManager;
+                    }
+                    if (modelManager.getCode().equalsIgnoreCase(Constants.CODE_1331)) {
+                        objManager3331 = modelManager;
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -106,7 +124,7 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
         bill.setBillId(billId);
         bill.setTotalBill(bd.getTotal());
         bill.setUid(currentUser.getUid());
-        List<String> listProductId= new ArrayList<>();
+        List<String> listProductId = new ArrayList<>();
         for (ProductCategories productCategories : productCategoriesList) {
             listProductId.add(productCategories.getDocumentId());
         }
@@ -120,6 +138,14 @@ public class CartActivity extends AppCompatAct<ActivityCartBinding> implements C
                 }
             }
         });
+
+        // update 511,3331
+        if (objManager511 != null && objManager3331 != null){
+            long price511 = Long.parseLong(objManager511.getHave()) + Long.parseLong(bd.getTotal().replaceAll(",", ""));
+            setupViewModel.updateDataManager(db, Constants.DOCUMENT_511, Constants.COLLECTION_HAVE, String.valueOf(price511));
+            long price3331 = Long.parseLong(objManager3331.getHave()) + (price511 * 10) / 100;
+            setupViewModel.updateDataManager(db, Constants.DOCUMENT_3331, Constants.COLLECTION_HAVE, String.valueOf(price3331));
+        }
     }
 
     public double getPrice(String price) {

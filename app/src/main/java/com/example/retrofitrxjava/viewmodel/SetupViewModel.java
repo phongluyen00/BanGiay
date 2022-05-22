@@ -1,12 +1,17 @@
 package com.example.retrofitrxjava.viewmodel;
 
+import static com.example.retrofitrxjava.constanst.Constants.CODE_1331;
+import static com.example.retrofitrxjava.constanst.Constants.COLLECTION_HAVE;
+
 import android.content.Context;
 import android.net.Uri;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.retrofitrxjava.ModelManager;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.activity.MainActivity;
 import com.example.retrofitrxjava.activity.MainActivityAdmin;
@@ -14,9 +19,15 @@ import com.example.retrofitrxjava.constanst.Constants;
 import com.example.retrofitrxjava.event.UpdateMain;
 import com.example.retrofitrxjava.model.Markets;
 import com.example.retrofitrxjava.model.ProductCategories;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -29,6 +40,7 @@ import java.util.List;
 public class SetupViewModel extends ViewModel {
 
     private MutableLiveData<UserModel> userModelMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<ModelManager>> listModelManagerMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<ProductCategories> productCategoriesMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<List<ProductCategories>> productCategoriesList = new MutableLiveData<>();
     private MutableLiveData<ProductCategories> productCart = new MutableLiveData<>();
@@ -64,6 +76,10 @@ public class SetupViewModel extends ViewModel {
         return productMarkets;
     }
 
+    public MutableLiveData<List<ModelManager>> getListModelManagerMutableLiveData() {
+        return listModelManagerMutableLiveData;
+    }
+
     public void loadAccount(FirebaseFirestore db, FirebaseUser firebaseUser) {
         db.collection("account").document(firebaseUser.getUid()).get().addOnCompleteListener(task -> {
             UserModel userModel = new UserModel();
@@ -80,6 +96,20 @@ public class SetupViewModel extends ViewModel {
                 MainActivity.userModel = userModel;
                 MainActivityAdmin.userModel = userModel;
                 userModelMutableLiveData.setValue(userModel);
+            }
+        });
+    }
+
+    public void loadManager(FirebaseFirestore db, FirebaseUser firebaseUser) {
+        List<ModelManager> modelManagers = new ArrayList<>();
+        db.collection(Constants.COLLECTION_MANAGER)
+                .get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+                    ModelManager productCategories = documentSnapshot.toObject(ModelManager.class);
+                    modelManagers.add(productCategories);
+                }
+                listModelManagerMutableLiveData.postValue(modelManagers);
             }
         });
     }
@@ -192,6 +222,44 @@ public class SetupViewModel extends ViewModel {
             listener.updateSuccess();
             EventBus.getDefault().post(new UpdateMain());
         }));
+    }
+
+    private MutableLiveData<ModelManager> modelManagerMutableLiveData = new MutableLiveData<>();
+
+    public MutableLiveData<ModelManager> getModelManagerMutableLiveData() {
+        return modelManagerMutableLiveData;
+    }
+
+    public void readDataManager(FirebaseFirestore db) {
+        db.collection(Constants.COLLECTION_MANAGER)
+                .whereEqualTo(Constants.KEY_CODE, CODE_1331)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            ModelManager modelManager = documentSnapshot.toObject(ModelManager.class);
+                            modelManager.setDocumentId(documentSnapshot.getId());
+                            modelManagerMutableLiveData.postValue(modelManager);
+                        }
+                    }
+                });
+    }
+
+    public void updateDataManager(FirebaseFirestore db, String document, String collection, String value){
+        db.collection(Constants.COLLECTION_MANAGER)
+                .document(document)
+                .update(collection, value)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
     }
 
     public interface listener {

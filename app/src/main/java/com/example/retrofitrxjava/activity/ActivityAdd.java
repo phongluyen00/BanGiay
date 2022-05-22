@@ -8,24 +8,31 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.retrofitrxjava.ModelManager;
 import com.example.retrofitrxjava.Product;
 import com.example.retrofitrxjava.R;
+import com.example.retrofitrxjava.constanst.Constants;
 import com.example.retrofitrxjava.databinding.ActivityAddProductBinding;
 import com.example.retrofitrxjava.dialog.BottomSheetMarkets;
 import com.example.retrofitrxjava.event.UpdateMain;
 import com.example.retrofitrxjava.model.Markets;
 import com.example.retrofitrxjava.model.ProductCategories;
 import com.example.retrofitrxjava.viewmodel.SetupViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jsoup.helper.StringUtil;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.example.retrofitrxjava.fragment.HomeFragment.EXTRA_DATA;
@@ -36,11 +43,17 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
     private ProductCategories productCategories = new ProductCategories();
     private SetupViewModel setupViewModel;
     private boolean isEdit;
+    private ModelManager objManager1331;
+    private ModelManager objManager632;
+    private ModelManager objManager112;
 
     @Override
     protected void initLayout() {
         setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
         setupViewModel.getMarket(db);
+        setupViewModel.loadManager(db, currentUser);
+
+        setupViewModel.readDataManager(db);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -65,7 +78,7 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
             bottomSheetMarkets.show(getSupportFragmentManager(), bottomSheetMarkets.getTag());
         });
         bd.submit.setOnClickListener(v -> {
-            if (!validate()){
+            if (!validate()) {
                 Toast.makeText(this, "Nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -96,6 +109,17 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
                                 Objects.requireNonNull(bd.quantity.getText()).toString().trim());
                         db.collection("product_markets").document().set(productCategories);
                         Toast.makeText(this, "Tạo mới sản phẩm thành công", Toast.LENGTH_SHORT).show();
+
+                        // update 1331, 632, 112
+                        if (objManager1331 != null && objManager112 != null && objManager632 != null){
+                            long price1331 = Long.parseLong(value1331(Long.parseLong(Objects.requireNonNull(bd.price.getText()).toString().trim())))
+                                    + Long.parseLong(objManager1331.getIn_debt());
+                            setupViewModel.updateDataManager(db, Constants.DOCUMENT_1331, Constants.COLLECTION_IN_DEBT, String.valueOf(price1331));
+                            long price632 = Long.parseLong(objManager632.getIn_debt()) + Long.parseLong(bd.price.getText().toString());
+                            setupViewModel.updateDataManager(db, Constants.DOCUMENT_632, Constants.COLLECTION_IN_DEBT, String.valueOf(price632));
+                            long price112 = price632 + price1331;
+                            setupViewModel.updateDataManager(db, Constants.DOCUMENT_112, Constants.COLLECTION_IN_DEBT, String.valueOf(price112));
+                        }
                         dismissDialog();
                         finish();
                         EventBus.getDefault().post(new UpdateMain());
@@ -118,7 +142,27 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
                     Toast.makeText(this, "Nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
 
+        initObserver();
+    }
+
+    private void initObserver() {
+        setupViewModel.getListModelManagerMutableLiveData().observe(this, modelManagers -> {
+            if (modelManagers.size() > 0){
+                for (ModelManager modelManager : modelManagers) {
+                    if (modelManager.getCode() == Constants.CODE_632){
+                        objManager632 = modelManager;
+                    }
+                    if (modelManager.getCode().equalsIgnoreCase(Constants.CODE_1331)){
+                        objManager1331 = modelManager;
+                    }
+
+                    if (modelManager.getCode().equalsIgnoreCase(Constants.CODE_112)){
+                        objManager112 = modelManager;
+                    }
+                }
+            }
         });
     }
 
@@ -148,11 +192,10 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
     private boolean validate() {
         if (StringUtil.isBlank(bd.tvName.getText().toString()) || StringUtil.isBlank(bd.price.getText().toString()) ||
                 StringUtil.isBlank(bd.lai.getText().toString()) || StringUtil.isBlank(bd.description.getText().toString()) ||
-                StringUtil.isBlank(bd.quantity.getText().toString()) || StringUtil.isBlank(bd.theLoai.getText().toString())){
+                StringUtil.isBlank(bd.quantity.getText().toString()) || StringUtil.isBlank(bd.theLoai.getText().toString())) {
             return false;
         }
         return true;
-
     }
 
     @Override
@@ -164,4 +207,10 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
         long giaban = (giagoc * phantram) / 100;
         return String.valueOf(giagoc + giaban);
     }
+
+    private String value1331(long giagoc) {
+        long value = (giagoc * 10) / 100;
+        return String.valueOf(giagoc + value);
+    }
+
 }

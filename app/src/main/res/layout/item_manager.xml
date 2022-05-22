@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.example.retrofitrxjava.ModelManager" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{item.code}"
+                android:textStyle="bold"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/black"
+                app:layout_constraintEnd_toStartOf="@id/quantity"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/quantity"
+                tools:text="511" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="#4A000000"
+                app:layout_constraintBottom_toBottomOf="@id/quantity"
+                app:layout_constraintStart_toEndOf="@id/title"
+                app:layout_constraintTop_toTopOf="@id/quantity" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="#4A000000"
+                app:layout_constraintBottom_toBottomOf="@id/quantity"
+                app:layout_constraintStart_toEndOf="@id/quantity"
+                app:layout_constraintTop_toTopOf="@id/quantity" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="#4A000000"
+                app:layout_constraintBottom_toBottomOf="@id/quantity"
+                app:layout_constraintStart_toEndOf="@id/pricedefault"
+                app:layout_constraintTop_toTopOf="@id/quantity" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/quantity"
+                android:textColor="@android:color/black"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@{item.name}"
+                app:layout_constraintEnd_toStartOf="@+id/pricedefault"
+                app:layout_constraintStart_toEndOf="@id/title"
+                tools:text="Cát(đơn vị)Cát(đơn vị)Cát(đơn vị)" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/pricedefault"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                price="@{item.in_debt == `` ? `0` : item.in_debt}"
+                app:layout_constraintEnd_toStartOf="@id/price"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/quantity"
+                app:layout_constraintStart_toEndOf="@+id/quantity"
+                tools:text="100.000" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/price"
+                android:layout_width="0dp"
+                android:textColor="@android:color/black"
+                android:layout_height="match_parent"
+                android:gravity="end|center_vertical"
+                price="@{item.have == `` ? `0` : item.have }"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/quantity"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/pricedefault"
+                tools:text="200.000" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/ll"
+            android:background="#4A000000" />
+
+    </RelativeLayout>
+</layout>

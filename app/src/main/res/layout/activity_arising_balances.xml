@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="totalDebt"
+            type="String" />
+
+        <variable
+            name="totalHave"
+            type="String" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentStart="true"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_arrow_back_ios_24"
+            android:tint="#000000" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_toEndOf="@id/back"
+            android:gravity="center"
+            android:text="Bảng cân đối phát sinh"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginTop="10dp"
+            android:background="#4B494955"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Số tài khoản"
+                android:textColor="@android:color/black"
+                app:layout_constraintBottom_toBottomOf="@id/quantity"
+                app:layout_constraintEnd_toStartOf="@id/quantity"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="#4A000000"
+                app:layout_constraintBottom_toBottomOf="@id/quantity"
+                app:layout_constraintStart_toEndOf="@id/code"
+                app:layout_constraintTop_toTopOf="@id/quantity" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="#4A000000"
+                app:layout_constraintBottom_toBottomOf="@id/quantity"
+                app:layout_constraintStart_toEndOf="@id/quantity"
+                app:layout_constraintTop_toTopOf="@id/quantity" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="#4A000000"
+                app:layout_constraintBottom_toBottomOf="@id/quantity"
+                app:layout_constraintStart_toEndOf="@id/pricedefault"
+                app:layout_constraintTop_toTopOf="@id/quantity" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/quantity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Tên tài khoản"
+                android:textColor="@android:color/black"
+                app:layout_constraintEnd_toStartOf="@+id/pricedefault"
+                app:layout_constraintStart_toEndOf="@id/code" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/pricedefault"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Nợ"
+                android:textColor="@android:color/holo_red_dark"
+                app:layout_constraintBottom_toBottomOf="@id/quantity"
+                app:layout_constraintEnd_toStartOf="@id/price"
+                app:layout_constraintStart_toEndOf="@+id/quantity"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/price"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="end|center_vertical"
+                android:text="Có"
+                android:textColor="@android:color/holo_red_dark"
+                app:layout_constraintBottom_toBottomOf="@id/quantity"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/pricedefault"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_manager" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_below="@+id/rcl"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="Tổng"
+            android:textColor="@android:color/black" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title_debt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/title_sum"
+            android:layout_alignTop="@id/in_debt"
+            android:text="Nợ : "
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/in_debt"
+            price="@{totalDebt}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title_sum"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/title_debt"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:ignore="NotSibling"
+            tools:text="45454" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title_have"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/in_debt"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_toStartOf="@+id/pricedefault"
+            android:text="Có :"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            tools:ignore="NotSibling" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/have"
+            price="@{totalHave}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/in_debt"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/title_have"
+            tools:text="45454545"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:ignore="NotSibling" />
+
+    </RelativeLayout>
+</layout>

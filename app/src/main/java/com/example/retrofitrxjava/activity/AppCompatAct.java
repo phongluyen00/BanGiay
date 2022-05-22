@@ -21,11 +21,13 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.retrofitrxjava.R;
 import com.example.retrofitrxjava.UserModel;
 import com.example.retrofitrxjava.model.Markets;
+import com.example.retrofitrxjava.viewmodel.SetupViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,6 +50,7 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
     protected FirebaseAuth mAuth;
     protected FirebaseUser currentUser;
     protected ProgressDialog progressDialog;
+    protected SetupViewModel setupViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public abstract class AppCompatAct<BD extends ViewDataBinding> extends AppCompat
         currentUser =  mAuth.getCurrentUser();
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
+        setupViewModel = new ViewModelProvider(this).get(SetupViewModel.class);
         initLayout();
     }
 

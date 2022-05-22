@@ -24,10 +24,10 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
                 android:layout_toEndOf="@id/back"
+                android:gravity="center"
                 android:text="Báo cáo kết quả kinh doanh"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
@@ -133,6 +133,8 @@
                 android:layout_marginTop="18sp"
                 android:layout_toEndOf="@+id/tv_total"
                 android:gravity="end"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 android:text="9.300.000"
                 android:textSize="18sp" />
         </RelativeLayout>

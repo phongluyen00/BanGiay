@@ -1,8 +1,10 @@
 package com.example.retrofitrxjava.dialog;
 
 import android.content.Intent;
+import android.view.View;
 
 import com.example.retrofitrxjava.R;
+import com.example.retrofitrxjava.activity.ArisingBalancesActivity;
 import com.example.retrofitrxjava.activity.BusinessReportActivity;
 import com.example.retrofitrxjava.activity.ProfitRevenueReportActivity;
 import com.example.retrofitrxjava.databinding.ActivityStatisticBinding;
@@ -15,11 +17,8 @@ public class BottomSheetStatistic extends BaseBottomSheet<ActivityStatisticBindi
 
     @Override
     protected void initLayout() {
-        binding.viewKqkd.setOnClickListener(view -> {
-            startActivity(new Intent(getContext(), BusinessReportActivity.class));
-        });
-        binding.tvProfitRevenueReport.setOnClickListener(view -> {
-            startActivity(new Intent(getContext(), ProfitRevenueReportActivity.class));
-        });
+        binding.viewKqkd.setOnClickListener(view -> startActivity(new Intent(getContext(), BusinessReportActivity.class)));
+        binding.tvProfitRevenueReport.setOnClickListener(view -> startActivity(new Intent(getContext(), ProfitRevenueReportActivity.class)));
+        binding.cdps.setOnClickListener(view -> startActivity(new Intent(getContext(), ArisingBalancesActivity.class)));
     }
 }

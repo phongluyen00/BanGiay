@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.retrofitrxjava.BR;
-import com.example.retrofitrxjava.activity.AppCompatAct;
 import com.example.retrofitrxjava.databinding.ItemOrderPaymentBinding;
 import com.example.retrofitrxjava.databinding.ItemOrderPaymentTestBinding;
 import com.example.retrofitrxjava.model.Bill;
@@ -58,7 +57,8 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
 
     public void removeItem(int position) {
         listData.remove(position);
-        notifyDataSetChanged();
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, listData.size());
     }
 
 
@@ -90,12 +90,12 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
         }
 
         void bindView(Bill item) {
+            itemCartBinding.viewItemOrderChild.removeAllViews();
             if (item.getProductCategoriesList() != null && item.getProductCategoriesList().size() > 0 && item.getProductCategoriesList().get(0) != null) {
                 itemCartBinding.setVariable(BR.item, item.getProductCategoriesList().get(0));
                 for (int i = 1; i < item.getProductCategoriesList().size(); i++) {
                     ItemOrderPaymentTestBinding layout1 = ItemOrderPaymentTestBinding.inflate(LayoutInflater.from(context), itemCartBinding.viewItemOrderChild, false);
                     layout1.setVariable(BR.item, item.getProductCategoriesList().get(i));
-
                     itemCartBinding.viewItemOrderChild.addView(layout1.getRoot());
                 }
             }

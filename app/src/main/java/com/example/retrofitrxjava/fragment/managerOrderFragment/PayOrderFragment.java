@@ -10,10 +10,13 @@ import com.example.retrofitrxjava.adapter.MutilAdt;
 import com.example.retrofitrxjava.adapter.PayOrderAdapter;
 import com.example.retrofitrxjava.constanst.Constants;
 import com.example.retrofitrxjava.databinding.FragmentPayOrderBinding;
+import com.example.retrofitrxjava.event.UpdateMain;
 import com.example.retrofitrxjava.fragment.BaseFragment;
 import com.example.retrofitrxjava.model.Bill;
 import com.example.retrofitrxjava.model.ProductCategories;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,9 +85,9 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
 
     }
 
-    private void getAllCart(String idBill, int position) {
+    private void getAllCart() {
         db.collection(Constants.KEY_CART).whereEqualTo(Constants.KEY_UID, currentUser.getUid())
-                .whereEqualTo(Constants.KEY_ID_BILL, idBill)
+                .whereEqualTo(Constants.KEY_STATUS, Constants.KEY_ITEM_PENDING)
                 .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<ProductCategories> listProductCategories = new ArrayList<>();
@@ -95,10 +98,11 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
                         listProductCategories.add(productCategories);
                     }
                 }
-                Bill bill = listBills.get(position);
-                bill.setProductCategoriesList(listProductCategories);
-                listBills.set(position, bill);
-                adapter.setList(listBills);
+                List<Bill> listBillNew = new ArrayList<>();
+                for (int i = 0; i < listBills.size(); i++) {
+                    listBillNew.add(getListCategoriesBill(listBills.get(i), listProductCategories));
+                }
+                adapter.setList(listBillNew);
             }
         });
     }
@@ -113,17 +117,17 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
                     Bill productCategories = task.getResult().getDocuments().get(i).toObject(Bill.class);
                     productCategories.setBillId(task.getResult().getDocuments().get(i).getId());
                     listBills.add(productCategories);
-                    getAllCart(task.getResult().getDocuments().get(i).getId(), i);
                 }
+                getAllCart();
             }
         }).addOnFailureListener(e -> {
 
         });
     }
 
-    private void getAllCartAdmin(String idBill, int position) {
+    private void getAllCartAdmin() {
         db.collection(Constants.KEY_CART)
-                .whereEqualTo(Constants.KEY_ID_BILL, idBill)
+                .whereEqualTo(Constants.KEY_STATUS, Constants.KEY_ITEM_PENDING)
                 .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<ProductCategories> listProductCategories = new ArrayList<>();
@@ -134,12 +138,25 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
                         listProductCategories.add(productCategories);
                     }
                 }
-                Bill bill = listBills.get(position);
-                bill.setProductCategoriesList(listProductCategories);
-                listBills.set(position, bill);
-                adapter.setList(listBills);
+
+                List<Bill> listBillNew = new ArrayList<>();
+                for (int i = 0; i < listBills.size(); i++) {
+                    listBillNew.add(getListCategoriesBill(listBills.get(i), listProductCategories));
+                }
+                adapter.setList(listBillNew);
             }
         });
+    }
+
+    private Bill getListCategoriesBill(Bill bill, List<ProductCategories> listProductCategories) {
+        List<ProductCategories> listProductCategoriesNew = new ArrayList<>();
+        for (ProductCategories listProductCategory : listProductCategories) {
+            if (listProductCategory.getIdBill().equals(bill.getBillId())) {
+                listProductCategoriesNew.add(listProductCategory);
+            }
+        }
+        bill.setProductCategoriesList(listProductCategoriesNew);
+        return bill;
     }
 
     private void getAllBillAdmin() {
@@ -151,8 +168,8 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
                     Bill productCategories = task.getResult().getDocuments().get(i).toObject(Bill.class);
                     productCategories.setBillId(task.getResult().getDocuments().get(i).getId());
                     listBills.add(productCategories);
-                    getAllCartAdmin(task.getResult().getDocuments().get(i).getId(), i);
                 }
+                getAllCartAdmin();
             }
         }).addOnFailureListener(e -> {
 
@@ -179,7 +196,7 @@ public class PayOrderFragment extends BaseFragment<FragmentPayOrderBinding> impl
         db.collection(Constants.KEY_CART).document(productCategories.getDocumentId())
                 .update(productCategories.toMapData())
                 .addOnCompleteListener(task -> {
-
+                    EventBus.getDefault().post(new UpdateMain(isClickCancel ? "Cancel" : "Accept PayOrder"));
                 })
                 .addOnFailureListener(e -> {
 

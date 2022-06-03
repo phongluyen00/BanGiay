@@ -101,7 +101,7 @@
                     android:inputType="number"
                     android:padding="10dp"
                     android:singleLine="true"
-                    android:text="@{item.price}" />
+                    android:text="10" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/description"

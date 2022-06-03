@@ -63,7 +63,7 @@
                     android:layout_marginTop="25dp"
                     android:background="@drawable/rounded_border_edittext_login"
                     android:padding="8dp"
-                    android:text="vegetables"
+                    android:text="product"
                     android:textColor="#4CAD73"
                     android:textSize="14sp" />
 

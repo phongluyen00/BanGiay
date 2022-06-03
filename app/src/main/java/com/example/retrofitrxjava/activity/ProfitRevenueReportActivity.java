@@ -166,7 +166,7 @@ public class ProfitRevenueReportActivity extends AppCompatAct<ActivityProfitReve
 
     private void getProfit(ProductCategories productCategory, Map<String, String> mapTotal) {
         if (mapTotal.containsKey(productCategory.getId_markets())) {
-            double price = getPriceProfit(mapTotal.get(productCategory.getId_markets()), productCategory.getPriceDefault()) * productCategory.getCount() +
+            double price = getPrice(mapTotal.get(productCategory.getId_markets()))* productCategory.getCount() +
                     getPriceProfit(productCategory.getPrice(), productCategory.getPriceDefault()) * productCategory.getCount();
             mapTotal.put(productCategory.getId_markets(), String.valueOf(price));
         } else {

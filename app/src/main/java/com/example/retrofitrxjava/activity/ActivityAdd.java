@@ -151,7 +151,7 @@ public class ActivityAdd extends AppCompatAct<ActivityAddProductBinding> {
         setupViewModel.getListModelManagerMutableLiveData().observe(this, modelManagers -> {
             if (modelManagers.size() > 0){
                 for (ModelManager modelManager : modelManagers) {
-                    if (modelManager.getCode() == Constants.CODE_632){
+                    if (modelManager.getCode().equalsIgnoreCase(Constants.CODE_632)){
                         objManager632 = modelManager;
                     }
                     if (modelManager.getCode().equalsIgnoreCase(Constants.CODE_1331)){

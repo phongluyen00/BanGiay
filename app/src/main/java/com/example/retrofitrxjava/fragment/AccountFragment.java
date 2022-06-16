@@ -101,7 +101,7 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> {
 
     public void showAlertDialogButtonClicked(UserModel userModel) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Change password");
+        builder.setTitle("Đổi mật khẩu");
         CustomLayoutBinding customLayout = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.custom_layout, null, false);
         builder.setView(customLayout.getRoot());
         AlertDialog dialog = builder.create();

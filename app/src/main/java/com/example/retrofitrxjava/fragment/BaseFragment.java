@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
@@ -112,7 +113,7 @@ public abstract class BaseFragment<BD extends ViewDataBinding> extends Fragment 
     }
 
     @BindingAdapter("setTextHtml")
-    public static void setTextHtml(AppCompatTextView appCompatTextView, String text){
+    public static void setTextHtml(AppCompatEditText appCompatTextView, String text){
         if (StringUtil.isBlank(text)){
             appCompatTextView.setText("");
         }else {

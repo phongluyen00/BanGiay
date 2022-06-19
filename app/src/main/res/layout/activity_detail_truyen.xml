@@ -63,7 +63,7 @@
                     android:layout_marginTop="25dp"
                     android:background="@drawable/rounded_border_edittext_login"
                     android:padding="8dp"
-                    android:text="product"
+                    android:text="@{`Số lượng còn: ` + item.quantity}"
                     android:textColor="#4CAD73"
                     android:textSize="14sp" />
 
@@ -88,13 +88,14 @@
                     android:textSize="14sp"
                     tools:text="$ 1000" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatEditText
                     setTextHtml="@{item.description}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="5dp"
                     android:textColor="#454545"
+                    android:background="@android:color/transparent"
                     android:textSize="14sp"
                     tools:text="Sản phẩm khá là ok nhé mấy cưng Sản phẩm khá là ok nhé mấy cưng Sản phẩm khá là ok nhé mấy cưng" />
             </LinearLayout>

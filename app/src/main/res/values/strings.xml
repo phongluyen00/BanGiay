@@ -48,5 +48,7 @@
     <string name="tt">Truyện tranh</string>
     <string name="vnd">%s VNĐ</string>
     <string name="myPurchaseLabel">My Purchase</string>
+    <string name="sample_string"><![CDATA[some test line 1 <br />some test line 2]]></string>
+
 
 </resources>

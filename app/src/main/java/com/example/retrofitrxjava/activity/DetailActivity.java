@@ -72,6 +72,9 @@ public class DetailActivity extends AppCompatAct<ActivityDetailTruyenBinding> {
 
         bd.back.setOnClickListener(v -> finish());
         bd.icAdd.setOnClickListener(v -> {
+            if (count == Long.parseLong(productCategories.getQuantity())) {
+                return;
+            }
             count++;
             bd.count.setText(String.valueOf(count));
         });

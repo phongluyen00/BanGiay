@@ -120,7 +120,7 @@
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/quantity"
-                    setTextHtmledt="@{item.description}"
+                    setTextHtmledt="@{item.quantity}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/description"

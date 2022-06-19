@@ -52,7 +52,7 @@ public class ManageOrderFragment extends BaseFragment<FragmentManageOrderBinding
     @Override
     protected void initFragment() {
         animalsArray.add("To Pay");
-        animalsArray.add("To Receive");
+        animalsArray.add("To Deliver");
         animalsArray.add("Completed");
         animalsArray.add("Cancel");
 
